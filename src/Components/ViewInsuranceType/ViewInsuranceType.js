@@ -8,6 +8,14 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import SearchInput, { createFilter } from "react-search-input";
 import axios from "axios";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+
+import FormControl from "@mui/material/FormControl";
+import DialogTitle from "@mui/material/DialogTitle";
 function ViewInsuranceType() {
   const [focused, setFocused] = useState(false);
   const [limit, updateLimit] = useState(5);
@@ -71,6 +79,77 @@ function ViewInsuranceType() {
               style={{ width: "80px" }}
             />
           </td>
+          <td style={{ width: "15%" }}>
+            <span
+              onClick={handleClickOpen}
+              style={{ cursor: "pointer", color: "blue" }}
+              // id={s.cityName}
+            >
+              Edit
+            </span>
+            <Dialog
+              // id={s.credential.userName}
+              open={open}
+              onClose={handleClose}
+            >
+              <DialogTitle>Update Employee</DialogTitle>
+              <DialogContent>
+                {/* <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Property To Update"
+                        fullWidth
+                        variant="standard"
+                        onChange={(e) => {
+                          updatePropertyToUpdate(e.target.value);
+                        }}
+                      /> */}
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
+                  {/* <InputLabel id="demo-simple-select-standard-label">
+                    Property To Update
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    //   value={propertyToUpdate}
+                    autoWidth
+                    onChange={(event) => {
+                      updatePropertyToUpdate(event.target.value);
+                    }}
+                    label="Property To Update"
+                  >
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select> */}
+                </FormControl>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Value"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => {
+                    // updateValue(e.target.value);
+                  }}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>cancel</Button>
+                <Button
+                // id={s.cityName}
+                // onClick={(event) => {
+                //   handleEditCity(event);
+                // }}
+                >
+                  update
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </td>
+          <td id={c.insuranceType} style={{ width: "15%" }}>
+            {c.isActive ? "true" : "false"}
+          </td>
           <td id={c.insuranceType} style={{ width: "10%" }}>
             <FormGroup>
               <FormControlLabel
@@ -86,9 +165,6 @@ function ViewInsuranceType() {
               />
             </FormGroup>
           </td>
-          <td id={c.insuranceType} style={{ width: "15%" }}>
-            {c.isActive ? "true" : "false"}
-          </td>
         </tr>
       );
     });
@@ -101,7 +177,7 @@ function ViewInsuranceType() {
           <div id="wrap-login1002">
             <div>
               <span id="login100-form-title2" style={{ color: "#27CCFD" }}>
-                ViewEmployee
+                View Insurance Type
               </span>
               <br />
               <SearchInput
@@ -126,13 +202,16 @@ function ViewInsuranceType() {
                       Insurance Type
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
-                      Status
+                      image
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
                       Edit
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
-                      Is Active
+                      status
+                    </th>
+                    <th scope="col" style={{ width: "15%" }}>
+                      is Active
                     </th>
                   </tr>
                 </thead>

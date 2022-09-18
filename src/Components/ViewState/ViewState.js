@@ -20,13 +20,16 @@ import SearchInput, { createFilter } from "react-search-input";
 import axios from "axios";
 
 import NavBar from "../NavBarAdmin/NavBarAdmin";
+import { useParams } from "react-router-dom";
 function ViewState() {
+  const currentUser = useParams();
   const [searchTerm, updateSearchTerm] = useState("");
   const [open, setOpen] = useState("");
-
+  const [StatetoUpdate, updateStatetoUpdate] = useState("");
+  const [value, updateValue] = useState("");
   const handleClickOpen = (e) => {
-    // console.log(e.target.id);
-    // updateEmployetoUpdate(e.target.id);
+    console.log(e.target.id);
+    updateStatetoUpdate(e.target.id);
     setOpen(true);
   };
   const searchUpdated = (term) => {
@@ -41,6 +44,20 @@ function ViewState() {
   useEffect(() => {
     getStates();
   }, []);
+  const handleEditState = async (e) => {
+    await axios
+      .put(`http://localhost:8082/api/v1/updateState`, {
+        StatetoUpdate,
+        value,
+      })
+      .then((resp) => {
+        getStates();
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+    setOpen(false);
+  };
   async function getStates() {
     await axios
       .get("http://localhost:8082/api/v1/getAllState")
@@ -53,6 +70,19 @@ function ViewState() {
         console.log(error.response.data);
       });
   }
+  const toogleActiveFlag = async (e) => {
+    console.log(e.target.id);
+    const stateName = e.target.id;
+    await axios
+      .post("http://localhost:8082/api/v1/deleteState", { stateName })
+      .then((resp) => {
+        getStates();
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
   let rowOfState;
   if (allStates != null) {
     const KEYS_TO_FILTERS = ["credential.userName"];
@@ -81,15 +111,11 @@ function ViewState() {
             <span
               onClick={handleClickOpen}
               style={{ cursor: "pointer", color: "blue" }}
-              // id={s.credential.userName}
+              id={s.stateName}
             >
               Edit
             </span>
-            <Dialog
-              // id={s.credential.userName}
-              open={open}
-              onClose={handleClose}
-            >
+            <Dialog id={s.stateName} open={open} onClose={handleClose}>
               <DialogTitle>Update Employee</DialogTitle>
               <DialogContent>
                 {/* <TextField
@@ -104,24 +130,23 @@ function ViewState() {
                       }}
                     /> */}
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
+                  {/* <InputLabel id="demo-simple-select-standard-label">
                     Property To Update
-                  </InputLabel>
-                  <Select
+                  </InputLabel> */}
+                  {/* <Select
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
                     //   value={propertyToUpdate}
                     autoWidth
                     onChange={(event) => {
-                      // updatePropertyToUpdate(event.target.value);
+                      updatePropertyToUpdate(event.target.value);
                     }}
                     label="Property To Update"
                   >
-                    <MenuItem value="FirstName">FirstName</MenuItem>
-                    <MenuItem value="LastName">LastName</MenuItem>
-                    <MenuItem value="UserName">UserName</MenuItem>
-                    {/* <MenuItem value={30}>Thirty</MenuItem> */}
-                  </Select>
+                    <MenuItem value="stateName">State name</MenuItem>
+                    
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select> */}
                 </FormControl>
                 <TextField
                   autoFocus
@@ -131,16 +156,16 @@ function ViewState() {
                   fullWidth
                   variant="standard"
                   onChange={(e) => {
-                    //   updateValue(e.target.value);
+                    updateValue(e.target.value);
                   }}
                 />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>cancel</Button>
                 <Button
-                  //   id={s.credential.userName}
+                  id={s.stateName}
                   onClick={(event) => {
-                    //   handleEditEmployee(event);
+                    handleEditState(event);
                   }}
                 >
                   update
@@ -158,9 +183,9 @@ function ViewState() {
                   <Switch
                     checked={s.isActive}
                     onChange={(event) => {
-                      // toogleActiveFlag(event, s);
+                      toogleActiveFlag(event, s);
                     }}
-                    // id={s.credential.userName}
+                    id={s.stateName}
                   />
                 }
               />

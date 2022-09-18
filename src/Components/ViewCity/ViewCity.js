@@ -22,12 +22,14 @@ import NavBar from "../NavBarAdmin/NavBarAdmin";
 function ViewCity() {
   const [searchTerm, updateSearchTerm] = useState("");
   const [open, setOpen] = useState("");
+  const [value, updateValue] = useState("");
   const [stateName, updateStateName] = useState("");
   const [allStates, updateAllStates] = useState([]);
   const [allCities, updateAllCities] = useState([]);
+  const [citytoUpdate, updatecitytoUpdate] = useState();
   const handleClickOpen = (e) => {
-    // console.log(e.target.id);
-    // updateEmployetoUpdate(e.target.id);
+    console.log(e.target.id);
+    updatecitytoUpdate(e.target.id);
     setOpen(true);
   };
   const searchUpdated = (term) => {
@@ -71,6 +73,33 @@ function ViewCity() {
   const states = Object.values(allStates).map((s) => {
     return <MenuItem value={s.stateName}>{s.stateName}</MenuItem>;
   });
+  const handleEditCity = async () => {
+    await axios
+      .put(`http://localhost:8082/api/v1/updateCity`, {
+        citytoUpdate,
+        value,
+      })
+      .then((resp) => {
+        getCities();
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+    setOpen(false);
+  };
+  const toogleActiveFlag = async (e) => {
+    console.log(e.target.id);
+    const cityName = e.target.id;
+    await axios
+      .post("http://localhost:8082/api/v1/deleteCity", { cityName })
+      .then((resp) => {
+        getCities();
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
   let rowOfCity;
   if (allCities != null) {
     const KEYS_TO_FILTERS = ["credential.userName"];
@@ -99,7 +128,7 @@ function ViewCity() {
             <span
               onClick={handleClickOpen}
               style={{ cursor: "pointer", color: "blue" }}
-              // id={s.credential.userName}
+              id={s.cityName}
             >
               Edit
             </span>
@@ -122,7 +151,7 @@ function ViewCity() {
                         }}
                       /> */}
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
+                  {/* <InputLabel id="demo-simple-select-standard-label">
                     Property To Update
                   </InputLabel>
                   <Select
@@ -131,12 +160,12 @@ function ViewCity() {
                     //   value={propertyToUpdate}
                     autoWidth
                     onChange={(event) => {
-                      // updatePropertyToUpdate(event.target.value);
+                      updatePropertyToUpdate(event.target.value);
                     }}
                     label="Property To Update"
                   >
-                    {/* <MenuItem value={30}>Thirty</MenuItem> */}
-                  </Select>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select> */}
                 </FormControl>
                 <TextField
                   autoFocus
@@ -146,16 +175,16 @@ function ViewCity() {
                   fullWidth
                   variant="standard"
                   onChange={(e) => {
-                    //   updateValue(e.target.value);
+                    updateValue(e.target.value);
                   }}
                 />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>cancel</Button>
                 <Button
-                  //   id={s.credential.userName}
+                  id={s.cityName}
                   onClick={(event) => {
-                    //   handleEditEmployee(event);
+                    handleEditCity(event);
                   }}
                 >
                   update
@@ -173,9 +202,9 @@ function ViewCity() {
                   <Switch
                     checked={s.isActive}
                     onChange={(event) => {
-                      // toogleActiveFlag(event, s);
+                      toogleActiveFlag(event);
                     }}
-                    // id={s.credential.userName}
+                    id={s.cityName}
                   />
                 }
               />
