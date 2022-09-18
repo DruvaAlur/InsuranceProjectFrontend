@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
+import swal from 'sweetalert';
 import Box from "@mui/material/Box";
 function Login() {
   const navigation = new useNavigate();
@@ -17,14 +18,14 @@ function Login() {
     await axios
       .post("http://localhost:8082/api/v1/login", { userName, password })
       .then((resp) => {
-        console.log(resp.data);
+        swal("LogIn", "Succesfully Logged In!", "success");
         if (resp.data.role == "customer")
           navigation(`/CustomerDashboard/${userName}`);
         if (resp.data.role == "admin")
           navigation(`/AdminDashboard/${userName}`);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"You Can't LogIn","warning");
       });
   };
   return (

@@ -117,10 +117,25 @@ function BasicExample() {
     await axios
       .post(`http://localhost:8082/api/v1/logout`)
       .then((resp) => {
-        navigate(`/`);
+        swal({
+          title: "Are you sure?",
+          text: "Click OK for LogOut",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willLogout) => {
+          if (willLogout) {
+            swal("Logged Out", {
+              icon: "success",
+            },
+            navigate('/'));
+          } 
+        });
+
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal("You Can't Logout",(error.response.data),"warning");
       });
   };
   return (
