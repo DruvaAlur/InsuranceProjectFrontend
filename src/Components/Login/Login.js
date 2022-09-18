@@ -18,8 +18,10 @@ function Login() {
       .post("http://localhost:8082/api/v1/login", { userName, password })
       .then((resp) => {
         console.log(resp.data);
-        if (resp.data.role == "customer") navigation("/CustomerDashboard");
-        if (resp.data.role == "admin") navigation("/AdminDashboard");
+        if (resp.data.role == "customer")
+          navigation(`/CustomerDashboard/${userName}`);
+        if (resp.data.role == "admin")
+          navigation(`/AdminDashboard/${userName}`);
       })
       .catch((error) => {
         console.log(error.response.data);
