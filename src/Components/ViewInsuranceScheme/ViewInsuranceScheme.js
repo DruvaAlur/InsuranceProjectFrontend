@@ -24,6 +24,7 @@ function ViewInsuranceScheme() {
   const [allInsuranceScheme, updateAllInsuranceScheme] = useState("");
   const [allInsuranceTypes, updateallInsuranceTypes] = useState("");
   const [insuranceType, updateInsuranceType] = useState("");
+
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
   const handleClickOpen = (e) => {
@@ -79,26 +80,36 @@ function ViewInsuranceScheme() {
       createFilter(searchTerm, KEYS_TO_FILTERS)
     );
     rowOfAllInsuranceScheme = filteredEmails.map((c) => {
+      const binaryString = Array.from(new Uint8Array(c.image.data), (v) =>
+        String.fromCharCode(v)
+      ).join("");
+      const theImage = btoa(binaryString);
       return (
         <tr id={c.insuranceScheme}>
           <td id={c.insuranceScheme} style={{ width: "15%" }}>
-            {c.image}
+            <img
+              src={`data:image/png;base64,${theImage}`}
+              style={{ width: "80px" }}
+            />
           </td>
           <td id={c.insuranceScheme} style={{ width: "15%" }}>
-            <p>{c.commissionNewReg}</p>
-            <br /> <p>{c.commissionInstall}</p>
+            <p style={{ color: "black" }}>
+              <b>Commission for new registration:</b>
+              {c.commissionNewReg}
+            </p>
+            <br />{" "}
+            <p style={{ color: "black" }}>
+              <b>Commission for installment payment:</b>
+              {c.commissionInstall}
+            </p>
           </td>
           <td id={c.insuranceScheme} style={{ width: "15%" }}>
-            <p>{c.insuranceScheme}</p>
-            <br /> <p>{c.insuranceNote}</p>
+            <p style={{ color: "black" }}>{c.insuranceScheme}</p>
+            <br />
+            <div dangerouslySetInnerHTML={{ __html: c.insuranceNote }}></div>
           </td>
           <td id={c.insuranceScheme} style={{ width: "15%" }}>
-            <p>{c.minTermPlan}</p>
-            <br /> <p>{c.maxTermPlan}</p>
-          </td>
-          <td id={c.insuranceScheme} style={{ width: "15%" }}>
-            <p>{c.minAge}</p>
-            <br /> <p>{c.maxAge}</p>
+            {c.isActive ? "true" : "false"}
           </td>
           <td id={c.insuranceScheme} style={{ width: "10%" }}>
             <FormGroup>
@@ -114,9 +125,6 @@ function ViewInsuranceScheme() {
                 }
               />
             </FormGroup>
-          </td>
-          <td id={c.insuranceScheme} style={{ width: "15%" }}>
-            {c.isActive ? "true" : "false"}
           </td>
         </tr>
       );
@@ -198,28 +206,12 @@ function ViewInsuranceScheme() {
                     <th scope="col" style={{ width: "15%" }}>
                       Image
                     </th>
-                    <th scope="col" style={{ width: "15%" }}>
-                      Insurance Type
-                    </th>
+
                     <th scope="col" style={{ width: "15%" }}>
                       Agent Commission
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
                       Insurance Scheme and Note
-                    </th>
-                    <th scope="col" style={{ width: "15%" }}>
-                      Policy Term
-                    </th>
-
-                    <th scope="col" style={{ width: "15%" }}>
-                      Age
-                    </th>
-
-                    <th scope="col" style={{ width: "15%" }}>
-                      sum assured
-                    </th>
-                    <th scope="col" style={{ width: "15%" }}>
-                      Profit Ratio
                     </th>
 
                     <th scope="col" style={{ width: "10%" }}>

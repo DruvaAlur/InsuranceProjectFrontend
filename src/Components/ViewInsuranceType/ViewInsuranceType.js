@@ -15,6 +15,7 @@ function ViewInsuranceType() {
   const [open, setOpen] = useState("");
   const [pageNumber, updatePageNumber] = useState(1);
   const [allInsuranceType, updateAllInsuranceType] = useState("");
+  const [image, updateImage] = useState();
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
   const handleClickOpen = (e) => {
@@ -50,12 +51,26 @@ function ViewInsuranceType() {
       createFilter(searchTerm, KEYS_TO_FILTERS)
     );
     rowOfAllInsuranceType = filteredEmails.map((c) => {
+      console.log(c.image.data);
+      // const base64String = btoa(
+      //   String.fromCharCode(...new Uint8Array((c.image.data)))
+      // );
+      const binaryString = Array.from(new Uint8Array(c.image.data), (v) =>
+        String.fromCharCode(v)
+      ).join("");
+      const theImage = btoa(binaryString);
+
       return (
         <tr id={c.insuranceType}>
           <td id={c.insuranceType} style={{ width: "15%" }}>
             {c.insuranceType}
           </td>
-
+          <td id={c.insuranceType} style={{ width: "15%" }}>
+            <img
+              src={`data:image/png;base64,${theImage}`}
+              style={{ width: "80px" }}
+            />
+          </td>
           <td id={c.insuranceType} style={{ width: "10%" }}>
             <FormGroup>
               <FormControlLabel

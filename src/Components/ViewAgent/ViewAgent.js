@@ -32,13 +32,13 @@ function ViewAgent() {
   const [open, setOpen] = useState("");
   const [propertyToUpdate, updatePropertyToUpdate] = useState("FirstName");
   const [value, updateValue] = useState("");
-  const [agenttoUpdate, updateagenttoUpdate] = useState("");
+  const [agentToUpdate, updateagenttoUpdate] = useState("");
   const [focused, setFocused] = useState(false);
 
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
   const handleClickOpen = (e) => {
-    // console.log(e.target.id);
+    console.log(e.target.id);
     updateagenttoUpdate(e.target.id);
     setOpen(true);
   };
@@ -70,10 +70,10 @@ function ViewAgent() {
         pageNumber,
       })
       .then((resp) => {
-        let [allEmps, allEmpsCount] = resp.data;
-        updateAllAgent(allEmps);
-        updateAllAgents(allEmpsCount);
-        console.log(allEmps);
+        let [allAgts, allAgtsCount] = resp.data;
+        updateAllAgent(allAgts);
+        updateAllAgents(allAgtsCount);
+        console.log(allAgts);
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -81,10 +81,10 @@ function ViewAgent() {
   }
   const handleEditEmployee = async (e) => {
     // console.log(e.target.id);
-    // const agenttoUpdate = e.target.id;
+    // const agentToUpdate = e.target.id;
     await axios
       .put(`http://localhost:8082/api/v1/updateAgent/${currentUser.username}`, {
-        agenttoUpdate,
+        agentToUpdate,
         propertyToUpdate,
         value,
       })
@@ -97,13 +97,17 @@ function ViewAgent() {
     setOpen(false);
   };
   const toogleActiveFlag = (e, c) => {
-    const employeeId = c._id;
+    console.log(c);
+    const AgentId = c._id;
     const userName = currentUser.username;
     console.log(userName);
     axios
-      .post(`http://localhost:8082/api/v1/deleteAgent/${userName}`, {
-        employeeId,
-      })
+      .post(
+        `http://localhost:8082/api/v1/deleteAgent/${currentUser.username}`,
+        {
+          AgentId,
+        }
+      )
       .then((resp) => {
         getAgents();
       })
@@ -189,10 +193,11 @@ function ViewAgent() {
                       }}
                       label="Property To Update"
                     >
-                      <MenuItem value="FirstName">FirstName</MenuItem>
-                      <MenuItem value="LastName">LastName</MenuItem>
+                      <MenuItem value="FullName">FullName</MenuItem>
                       <MenuItem value="UserName">UserName</MenuItem>
-                      {/* <MenuItem value={30}>Thirty</MenuItem> */}
+                      <MenuItem value="address">address</MenuItem>
+                      <MenuItem value="email">email</MenuItem>
+                      <MenuItem value="qualification">qualification</MenuItem>
                     </Select>
                   </FormControl>
                   <TextField

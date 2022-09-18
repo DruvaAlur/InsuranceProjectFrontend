@@ -6,19 +6,22 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import { useState } from "react";
+import { useRef, useState } from "react";
 function AddInsuranceType() {
   const [isActive, updateIsActive] = useState(true);
   const [insuranceType, updateInsuranceType] = useState("");
   const [image, updateImage] = useState("");
+  const fileInput = useRef();
   const handleAddInsuranceType = async (e) => {
     e.preventDefault();
+    let testImage = fileInput.current.files[0];
+
+    var bodyFormData = new FormData();
+    bodyFormData.append("testImage", testImage);
+    bodyFormData.append("insuranceType", insuranceType);
+    bodyFormData.append("isActive", isActive);
     await axios
-      .post(`http://localhost:8082/api/v1/createInsuranceType`, {
-        insuranceType,
-        image,
-        isActive,
-      })
+      .post(`http://localhost:8082/api/v1/createInsuranceType`, bodyFormData)
       .then((resp) => {
         console.log(resp.data);
       })
@@ -62,12 +65,7 @@ function AddInsuranceType() {
                 noValidate
                 autoComplete="off"
               >
-                <TextField
-                  id="standard-basic"
-                  label="Image"
-                  variant="standard"
-                  onChange={(e) => updateImage(e.target.value)}
-                />
+                <input type="file" ref={fileInput} />
               </Box>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                 <InputLabel id="demo-simple-select-standard-label">

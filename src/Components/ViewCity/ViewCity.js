@@ -36,10 +36,11 @@ function ViewCity() {
   const handleClose = () => {
     setOpen(false);
   };
-
+  useEffect(() => {
+    getCities();
+  }, [stateName]);
   useEffect(() => {
     getStates();
-    getCities();
   }, []);
   async function getStates() {
     await axios
@@ -54,16 +55,18 @@ function ViewCity() {
       });
   }
   async function getCities() {
-    await axios
-      .post("http://localhost:8082/api/v1/getAllCity", { stateName })
-      .then((resp) => {
-        updateAllCities(resp.data);
+    if (stateName != "") {
+      await axios
+        .post("http://localhost:8082/api/v1/getAllCity", { stateName })
+        .then((resp) => {
+          updateAllCities(resp.data);
 
-        console.log(resp.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+          console.log(resp.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    }
   }
   const states = Object.values(allStates).map((s) => {
     return <MenuItem value={s.stateName}>{s.stateName}</MenuItem>;
@@ -83,7 +86,7 @@ function ViewCity() {
             // id={s.credential.userName}
             style={{ width: "15%" }}
           >
-            {s.stateName}
+            {s.cityName}
           </td>
 
           <td
@@ -218,7 +221,7 @@ function ViewCity() {
               />
               <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                 <InputLabel id="demo-simple-select-standard-label">
-                  State
+                  city
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-standard-label"
@@ -239,7 +242,7 @@ function ViewCity() {
                 <thead>
                   <tr>
                     <th scope="col" style={{ width: "15%" }}>
-                      State
+                      City
                     </th>
 
                     <th scope="col" style={{ width: "10%" }}>

@@ -1,11 +1,12 @@
 import NavBar from "../NavBarAdmin/NavBarAdmin";
 import ReactQuill from "react-quill";
 import TextField from "@mui/material/TextField";
+import Parser from "html-react-parser";
 import Box from "@mui/material/Box";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -37,25 +38,30 @@ function AddInsuranceScheme() {
   const [maxInvestment, updateMaxInvestment] = useState("");
   const [profitRatio, updateProfitRatio] = useState("");
   const [isActive, updateIsActive] = useState("");
+  const fileInput = useRef();
   const handleAddInsuranceScheme = async (e) => {
     e.preventDefault();
+
+    let testImage = fileInput.current.files[0];
+
+    var bodyFormData = new FormData();
+    bodyFormData.append("testImage", testImage);
+    bodyFormData.append("insuranceType", insuranceType);
+    bodyFormData.append("insuranceScheme", insuranceScheme);
+    bodyFormData.append("commissionNewReg", commissionNewReg);
+    bodyFormData.append("commissionInstall", commissionInstall);
+    bodyFormData.append("insuranceNote", insuranceNote);
+    bodyFormData.append("minTermPlan", minTermPlan);
+    bodyFormData.append("maxTermPlan", maxTermPlan);
+    bodyFormData.append("minAge", minAge);
+    bodyFormData.append("maxAge", maxAge);
+    bodyFormData.append("minInvestment", minInvestment);
+    bodyFormData.append("maxInvestment", maxInvestment);
+    bodyFormData.append("profitRatio", profitRatio);
+
+    bodyFormData.append("isActive", isActive);
     await axios
-      .post("http://localhost:8082/api/v1/createInsuranceScheme", {
-        insuranceType,
-        insuranceScheme,
-        image,
-        commissionNewReg,
-        commissionInstall,
-        insuranceNote,
-        minTermPlan,
-        maxTermPlan,
-        minAge,
-        maxAge,
-        minInvestment,
-        maxInvestment,
-        profitRatio,
-        isActive,
-      })
+      .post("http://localhost:8082/api/v1/createInsuranceScheme", bodyFormData)
       .then((resp) => {
         console.log(resp.data);
       })
@@ -108,12 +114,7 @@ function AddInsuranceScheme() {
                 noValidate
                 autoComplete="off"
               >
-                <TextField
-                  id="standard-basic"
-                  label="Image"
-                  onChange={(e) => updateImage(e.target.value)}
-                  variant="standard"
-                />
+                <input type="file" ref={fileInput} />
               </Box>
               <Box
                 sx={{
@@ -125,6 +126,7 @@ function AddInsuranceScheme() {
                 <TextField
                   id="standard-basic"
                   label="Commission For New Registration (in %)"
+                  type="number"
                   variant="standard"
                   onChange={(e) => updateCommissionNewReg(e.target.value)}
                 />
@@ -139,6 +141,7 @@ function AddInsuranceScheme() {
                 <TextField
                   id="standard-basic"
                   label="Commission Installment Payment (in %)"
+                  typeof="Number"
                   variant="standard"
                   onChange={(e) => updateCommissionInstall(e.target.value)}
                 />
@@ -173,6 +176,7 @@ function AddInsuranceScheme() {
                 <TextField
                   id="standard-basic"
                   label="Minimum Termplan"
+                  typeof="Number"
                   onChange={(e) => updateMinTermPlan(e.target.value)}
                   variant="standard"
                 />
@@ -186,6 +190,7 @@ function AddInsuranceScheme() {
               >
                 <TextField
                   id="standard-basic"
+                  typeof="Number"
                   label="Maximum Termplan"
                   onChange={(e) => updateMaxTermPlan(e.target.value)}
                   variant="standard"
@@ -201,6 +206,7 @@ function AddInsuranceScheme() {
                 <TextField
                   id="standard-basic"
                   label="Minimum Age"
+                  typeof="Number"
                   variant="standard"
                   onChange={(e) => updateMinAge(e.target.value)}
                 />
@@ -215,6 +221,7 @@ function AddInsuranceScheme() {
                 <TextField
                   id="standard-basic"
                   label="Maximum Age"
+                  typeof="Number"
                   onChange={(e) => updateMaxAge(e.target.value)}
                   variant="standard"
                 />
@@ -230,6 +237,7 @@ function AddInsuranceScheme() {
                   id="standard-basic"
                   onChange={(e) => updateMinInvestment(e.target.value)}
                   label="Minimum Investment"
+                  typeof="Number"
                   variant="standard"
                 />
               </Box>
@@ -243,7 +251,8 @@ function AddInsuranceScheme() {
                 {" "}
                 <TextField
                   id="standard-basic"
-                  label="Minimum Investment Relation"
+                  label="Maximum Investment"
+                  typeof="Number"
                   onChange={(e) => updateMaxInvestment(e.target.value)}
                   variant="standard"
                 />
@@ -259,6 +268,7 @@ function AddInsuranceScheme() {
                 <TextField
                   id="standard-basic"
                   label="Profit Ratio"
+                  typeof="Number"
                   onChange={(e) => updateProfitRatio(e.target.value)}
                   variant="standard"
                 />
