@@ -44,7 +44,7 @@ function AdminDashboard() {
                       }}
                     >
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/AddAgent/${username}`);
                         }}
@@ -52,7 +52,7 @@ function AdminDashboard() {
                         Add
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/ViewAgent/${username}`);
                         }}
@@ -60,7 +60,7 @@ function AdminDashboard() {
                         View
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/ViewCommission/${username}`
@@ -70,7 +70,7 @@ function AdminDashboard() {
                         View Commission
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/ViewCommissionWithdrawal/${username}`
@@ -104,7 +104,7 @@ function AdminDashboard() {
                       }}
                     >
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/AddInsuranceType/${username}`
@@ -114,7 +114,7 @@ function AdminDashboard() {
                         Add Insurance Type
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/ViewInsuranceType/${username}`
@@ -124,7 +124,7 @@ function AdminDashboard() {
                         View Insurance Type
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/AddInsuranceScheme/${username}`
@@ -134,7 +134,7 @@ function AdminDashboard() {
                         Add Insurance Scheme
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/ViewInsuranceScheme/${username}`
@@ -144,7 +144,7 @@ function AdminDashboard() {
                         View Insurance Scheme
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/ViewInsurancePlan/${username}`
@@ -177,7 +177,7 @@ function AdminDashboard() {
                       }}
                     >
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/Profile/${username}`);
                         }}
@@ -185,7 +185,7 @@ function AdminDashboard() {
                         Profile
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/ChangePassword/${username}`
@@ -195,7 +195,7 @@ function AdminDashboard() {
                         Change Password
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/AddEmployee/${username}`);
                         }}
@@ -203,7 +203,7 @@ function AdminDashboard() {
                         Add Employee
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/ViewEmployee/${username}`);
                         }}
@@ -234,7 +234,7 @@ function AdminDashboard() {
                       }}
                     >
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/TaxSettings/${username}`);
                         }}
@@ -242,7 +242,7 @@ function AdminDashboard() {
                         Tax Settings
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(
                             `/AdminDashboard/InsuranceSettings/${username}`
@@ -252,7 +252,7 @@ function AdminDashboard() {
                         Insurance Settings
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/AddCity/${username}`);
                         }}
@@ -260,7 +260,7 @@ function AdminDashboard() {
                         Add City
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/ViewCity/${username}`);
                         }}
@@ -268,7 +268,7 @@ function AdminDashboard() {
                         View City
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/AddState/${username}`);
                         }}
@@ -276,7 +276,7 @@ function AdminDashboard() {
                         Add State
                       </Button>
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/ViewState/${username}`);
                         }}
@@ -307,7 +307,7 @@ function AdminDashboard() {
                       }}
                     >
                       <Button
-                        variant="white"
+                        variant="primary"
                         onClick={() => {
                           navigate(`/AdminDashboard/ViewFeedback/${username}`);
                         }}
