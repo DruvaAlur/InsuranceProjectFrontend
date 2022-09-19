@@ -3,8 +3,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
-import swal from 'sweetalert';
+import swal from "sweetalert";
 import Box from "@mui/material/Box";
+import Footer from "../footer/footer";
 function Login() {
   const navigation = new useNavigate();
   const [userName, updateUserName] = useState("");
@@ -25,7 +26,7 @@ function Login() {
           navigation(`/AdminDashboard/${userName}`);
       })
       .catch((error) => {
-        swal((error.response.data),"You Can't LogIn","warning");
+        swal(error.response.data, "You Can't LogIn", "warning");
       });
   };
   return (

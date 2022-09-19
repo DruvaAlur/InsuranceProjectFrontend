@@ -223,7 +223,7 @@ iframe {
   overflow: hidden;
   overflow-y: scroll;
   padding: 33px 55px 33px 55px;
-  height: 90vh;
+  height: auto;
   box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
