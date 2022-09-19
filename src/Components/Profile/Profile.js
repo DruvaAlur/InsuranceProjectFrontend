@@ -41,7 +41,6 @@ function Profile() {
             <br />
             <Table striped bordered hover size="sm">
               {
-                /* <tbody>{rowOfProfile}</tbody> */
                 <tbody>
                   <tr>
                     <th style={{ width: "30%", height: "50%" }}>FirstName :</th>
@@ -69,10 +68,12 @@ function Profile() {
                     </th>
                     <td>
                       {user.createdAt
-                        .split("T")[0]
-                        .split("-")
-                        .reverse()
-                        .join("-")}
+                        ? user.createdAt
+                            .split("T")[0]
+                            .split("-")
+                            .reverse()
+                            .join("-")
+                        : user.createdAt}
                     </td>
                   </tr>
                 </tbody>
