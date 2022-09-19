@@ -2,6 +2,7 @@ import NavBar from "../NavBarAdmin/NavBarAdmin";
 import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import ReactQuill from "react-quill";
 import Table from "react-bootstrap/Table";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -12,6 +13,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import "react-quill/dist/quill.bubble.css";
 function ViewInsuranceScheme() {
   const [pageNumber, updatePageNumber] = useState(1);
   const [limit, updateLimit] = useState(5);
@@ -24,12 +32,14 @@ function ViewInsuranceScheme() {
   const [allInsuranceScheme, updateAllInsuranceScheme] = useState("");
   const [allInsuranceTypes, updateallInsuranceTypes] = useState("");
   const [insuranceType, updateInsuranceType] = useState("");
-
+  const [schemetoUpdate, updateSchemetoUpdate] = useState("");
+  const [insurNote, updateInsurNote] = useState();
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-  const handleClickOpen = (e) => {
+  const handleClickOpen = (e, c) => {
     // console.log(e.target.id);
-    updateEmployetoUpdate(e.target.id);
+    updateInsurNote(c.insuranceNote);
+    updateSchemetoUpdate(e.target.id);
     setOpen(true);
   };
 
@@ -73,8 +83,40 @@ function ViewInsuranceScheme() {
         console.log(error.response.data);
       });
   }
-  const handleEditInsuranceScheme = async (e) => {
+  const handleDeleteInsScheme = async (e, c) => {
     e.preventDefault();
+    const insuranceScheme = c.insuranceScheme;
+    await axios
+      .post("http://localhost:8082/api/v1/deleteInsuranceScheme", {
+        insuranceScheme,
+      })
+      .then((resp) => {
+        getAllInsuranceScheme();
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+  const handleEditInsScheme = async (e) => {
+    e.preventDefault();
+
+    await axios
+      .put("http://localhost:8082/api/v1/updateInsuranceScheme", {
+        schemetoUpdate,
+        propertyToUpdate,
+        value,
+      })
+      .then((resp) => {
+        getAllInsuranceScheme();
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+    updateValue("");
+    updatePropertyToUpdate("");
+    setOpen(false);
   };
   let rowOfAllInsuranceScheme;
   if (allInsuranceScheme != null) {
@@ -116,12 +158,86 @@ function ViewInsuranceScheme() {
           </td>
           <td id={c.insuranceScheme} style={{ width: "15%" }}>
             <span
-              //  onClick={handleEditInsuranceScheme}
+              onClick={(event) => handleClickOpen(event, c)}
               style={{ cursor: "pointer", color: "blue" }}
               id={c.insuranceScheme}
             >
               edit
             </span>
+            <Dialog
+              // id={s.credential.userName}
+              open={open}
+              onClose={handleClose}
+            >
+              <DialogTitle>Update Employee</DialogTitle>
+              <DialogContent>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Property To Update
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={propertyToUpdate}
+                    autoWidth
+                    onChange={(event) => {
+                      updatePropertyToUpdate(event.target.value);
+                    }}
+                    label="Property To Update"
+                  >
+                    <MenuItem value="Insurance Scheme">
+                      Insurance Scheme
+                    </MenuItem>
+                    <MenuItem value="Commission on New Regesteration in %">
+                      Commission on New Regesteration in %
+                    </MenuItem>
+                    <MenuItem value="Commission on per Installment in %">
+                      Commission on per Installment in %
+                    </MenuItem>
+                    <MenuItem
+                      value="Insurance Note"
+                      onClick={() => {
+                        updateValue(insurNote);
+                      }}
+                    >
+                      Insurance Note
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                {propertyToUpdate === "Insurance Note" ? (
+                  <ReactQuill
+                    theme="bubble"
+                    value={value}
+                    onChange={updateValue}
+
+                    //   style={{ height: "20vh" }}
+                  />
+                ) : (
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Value"
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => {
+                      updateValue(e.target.value);
+                    }}
+                  />
+                )}
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>cancel</Button>
+                <Button
+                  id={c.insuranceScheme}
+                  onClick={(event) => {
+                    handleEditInsScheme(event);
+                  }}
+                >
+                  update
+                </Button>
+              </DialogActions>
+            </Dialog>
           </td>
           <td id={c.insuranceScheme} style={{ width: "10%" }}>
             <FormGroup>
@@ -130,7 +246,7 @@ function ViewInsuranceScheme() {
                   <Switch
                     checked={c.isActive}
                     onChange={(event) => {
-                      // toogleActiveFlag(event, c);
+                      handleDeleteInsScheme(event, c);
                     }}
                     id={c.insuranceScheme}
                   />

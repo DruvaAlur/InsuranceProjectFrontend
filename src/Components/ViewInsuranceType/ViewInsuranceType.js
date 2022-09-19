@@ -58,15 +58,21 @@ function ViewInsuranceType() {
   }
   const handleEditInsuranceType = async (e) => {
     e.preventDefault();
-    // await axios
-    //   .put("http://localhost:8082/api/v1/getAllInsuranceType")
-    //   .then((resp) => {
-    //     updateAllInsuranceType(resp.data);
-    //     console.log(resp.data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error.response.data);
-    //   });
+    const insuranceTypetoUpdate = e.target.id;
+    console.log(insuranceTypetoUpdate);
+    await axios
+      .put("http://localhost:8082/api/v1/updateInsuranceType", {
+        insuranceTypetoUpdate,
+        value,
+      })
+      .then((resp) => {
+        getInsuranceTypes();
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+    setOpen(false);
   };
   const handleDeleteInsuranceType = async (e, c) => {
     e.preventDefault();
@@ -126,10 +132,10 @@ function ViewInsuranceType() {
               <DialogTitle>Update Employee</DialogTitle>
               <DialogContent>
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
-                  <InputLabel id="demo-simple-select-standard-label">
+                  {/* <InputLabel id="demo-simple-select-standard-label">
                     Property To Update
-                  </InputLabel>
-                  <Select
+                  </InputLabel> */}
+                  {/* <Select
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
                     value={propertyToUpdate}
@@ -140,7 +146,7 @@ function ViewInsuranceType() {
                     label="Property To Update"
                   >
                     <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
+                  </Select> */}
                 </FormControl>
                 <TextField
                   autoFocus
