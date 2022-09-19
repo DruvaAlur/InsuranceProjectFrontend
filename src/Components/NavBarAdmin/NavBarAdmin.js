@@ -4,6 +4,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import "./NavBarAdmin.css";
+import swal from "sweetalert";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 function BasicExample() {
   const navigate = new useNavigate();
@@ -114,29 +115,31 @@ function BasicExample() {
   };
   const handleLogout = async (e) => {
     e.preventDefault();
-    await axios
-      .post(`http://localhost:8082/api/v1/logout`)
-      .then((resp) => {
-        swal({
-          title: "Are you sure?",
-          text: "Click OK for LogOut",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-        })
-        .then((willLogout) => {
-          if (willLogout) {
-            swal("Logged Out", {
-              icon: "success",
-            },
-            navigate('/'));
-          } 
-        });
-
-      })
-      .catch((error) => {
-        swal("You Can't Logout",(error.response.data),"warning");
-      });
+    swal({
+      title: "Are you sure?",
+      text: "Click OK for LogOut",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willLogout) => {
+      console.log(willLogout);
+      if (willLogout === true) {
+        await axios
+          .post(`http://localhost:8082/api/v1/logout`)
+          .then((resp) => {
+            swal(
+              "Logged Out",
+              {
+                icon: "success",
+              },
+              navigate("/")
+            );
+          })
+          .catch((error) => {
+            swal("You Can't Logout", error.response.data, "warning");
+          });
+      }
+    });
   };
   return (
     <Navbar className="sticky-top" bg="#AE2CFF" variant="dark" expand="lg">
