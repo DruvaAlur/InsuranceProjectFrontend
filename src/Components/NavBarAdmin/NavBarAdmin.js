@@ -85,10 +85,10 @@ function BasicExample() {
     e.preventDefault();
     navigate(`/AdminDashboard/ViewInsuranceScheme/${username}`);
   };
-  const handleAddInsurancePlan = (e) => {
-    e.preventDefault();
-    navigate(`/AdminDashboard/AddInsurancePlan/${username}`);
-  };
+  // const handleAddInsurancePlan = (e) => {
+  //   e.preventDefault();
+  //   navigate(`/AdminDashboard/AddInsurancePlan/${username}`);
+  // };
   const handleViewInsurancePlan = (e) => {
     e.preventDefault();
     navigate(`/AdminDashboard/ViewInsurancePlan/${username}`);
@@ -200,9 +200,9 @@ function BasicExample() {
               <NavDropdown.Item onClick={handleViewInsuranceScheme}>
                 View Insurance Scheme
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={handleAddInsurancePlan}>
+              {/* <NavDropdown.Item onClick={handleAddInsurancePlan}>
                 Add Insurance Plan
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
               <NavDropdown.Item onClick={handleViewInsurancePlan}>
                 View Insurance Plan
               </NavDropdown.Item>

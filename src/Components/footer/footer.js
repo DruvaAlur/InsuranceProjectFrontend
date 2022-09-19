@@ -1,4 +1,5 @@
 import { CDBFooter, CDBFooterLink, CDBBox, CDBBtn, CDBIcon } from "cdbreact";
+import "./footer.css";
 function Footer() {
   return (
     <CDBFooter className="shadow">
