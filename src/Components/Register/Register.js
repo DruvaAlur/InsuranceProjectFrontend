@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useState } from "react";
+import { useEffect,useState } from "react";
 // import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 // or for Day.js
 
@@ -12,7 +12,11 @@ import { useState } from "react";
 // import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 // // or for Moment.js
 // import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import swal from "sweetalert"
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -25,14 +29,66 @@ function Login() {
   const [dateOfBirth, updateDateOfBirth] = useState(dayjs("2014-08-18"));
   const [address, updateAddress] = useState("");
   const [email, updateEmail] = useState("");
-  const [state, updateState] = useState("");
-  const [city, updateCity] = useState("");
   const [pincode, updatePincode] = useState("");
   const [nominee, updateNominee] = useState("");
   const [nomineeRelation, updateNomineeRelation] = useState("");
+  const [allStates, updateAllStates] = useState([]);
+  const [allCities, updateAllCities] = useState([]);
+  const [stateName, updateStateName] = useState("");
+  const [cityName, updateCityName] = useState("");
+  async function getStates() {
+    await axios
+      .get("http://localhost:8082/api/v1/getAllState")
+      .then((resp) => {
+        updateAllStates(resp.data);
+
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
+  async function getCities() {
+    if (stateName != "") {
+      await axios
+        .post("http://localhost:8082/api/v1/getAllCity", { stateName })
+        .then((resp) => {
+          updateAllCities(resp.data);
+
+          console.log(resp.data);
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+        });
+    }
+  }
+
+  const states = Object.values(allStates).map((s) => {
+    return <MenuItem value={s.stateName}>{s.stateName}</MenuItem>;
+  });
+
+  const cities = Object.values(allCities).map((s) => {
+    return <MenuItem value={s.cityName}>{s.cityName}</MenuItem>;
+  });
+
+  useEffect(() => {
+    getCities();
+  }, [stateName]);
+  useEffect(() => {
+    getStates();
+  }, []);
+
   const handleRegister = async (e) => {
     e.preventDefault();
-    await axios
+    swal({
+      title: "Are you sure?",
+      text: "Click OK for Creating Your Customer Account",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (AddingCustomer) => {
+    if (AddingCustomer === true) {
+      await axios
       .post("http://localhost:8082/api/v1/createCustomer", {
         firstName,
         lastName,
@@ -41,20 +97,27 @@ function Login() {
         dateOfBirth,
         address,
         email,
-        state,
-        city,
+        stateName,
+        cityName,
         pincode,
         nominee,
         nomineeRelation,
       })
       .then((resp) => {
-        console.log(resp.data);
-        navigation("/");
+        swal(
+          (resp.data),`Congrats!! ${userName},Customer Account Successfully Created`,
+          {
+            icon: "success",
+          }
+        );
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Your Account is not Created","warning");
       });
+    }});
   };
+
+
   return (
     <>
       <div className="limiter">
@@ -182,34 +245,43 @@ function Login() {
                   variant="standard"
                 />
               </Box>
-              <Box
-                sx={{
-                  "& > :not(style)": { m: 1, width: "32ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  id="standard-basic"
+
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
+                <InputLabel id="demo-simple-select-standard-label">
+                  State
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard"
+                  value={stateName}
+                  autoWidth
+                  onChange={(event) => {
+                    updateStateName(event.target.value);
+                  }}
                   label="State"
-                  onChange={(e) => updateState(e.target.value)}
-                  variant="standard"
-                />
-              </Box>
-              <Box
-                sx={{
-                  "& > :not(style)": { m: 1, width: "32ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  id="standard-basic"
-                  label="City"
-                  variant="standard"
-                  onChange={(e) => updateCity(e.target.value)}
-                />
-              </Box>
+                >
+                  {states}
+                </Select>
+              </FormControl>
+
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
+                <InputLabel id="demo-simple-select-standard-label">
+                  City
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard"
+                  value={cityName}
+                  autoWidth
+                  onChange={(event) => {
+                    updateCityName(event.target.value);
+                  }}
+                  label="State"
+                >
+                  {cities}
+                </Select>
+              </FormControl>
+
               <Box
                 sx={{
                   "& > :not(style)": { m: 1, width: "32ch" },

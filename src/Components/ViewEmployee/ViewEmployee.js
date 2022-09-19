@@ -17,6 +17,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import swal from "sweetalert"
 // import SearchBar from "material-ui-search-bar";
 import SearchInput, { createFilter } from "react-search-input";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
@@ -76,14 +77,23 @@ function ViewEmployee() {
         console.log(allEmps);
       })
       .catch((error) => {
+        swal((error.response.data),"Error Occured!","warning");
         console.log(error.response.data);
       });
   }
   const handleEditEmployee = async (e) => {
     // console.log(e.target.id);
     // const employetoUpdate = e.target.id;
-    await axios
-      .put(
+    swal({
+      title: "Are you sure?",
+      text: "Click OK to Update the Employee",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (UpdatingEmployee) => {
+      if (UpdatingEmployee === true) {
+        await axios
+        .put(
         `http://localhost:8082/api/v1/updateEmployee/${currentUser.username}`,
         {
           employetoUpdate,
@@ -92,11 +102,19 @@ function ViewEmployee() {
         }
       )
       .then((resp) => {
+        swal(
+          (resp.data),"Updated Succesfully",
+          {
+            icon: "success",
+          }
+        );
         getEmployees();
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Employee not Updated","warning");
       });
+    }
+  });
     setOpen(false);
   };
   const toogleActiveFlag = (e, c) => {

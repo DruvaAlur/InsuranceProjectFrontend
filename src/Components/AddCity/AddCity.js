@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import NavBar from "../NavBarAdmin/NavBarAdmin";
 import axios from "axios";
+import swal from "sweetalert";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
@@ -14,17 +15,33 @@ function AddcityName() {
   const [allStates, updateAllStates] = useState("");
   const handleAddcityName = async (e) => {
     e.preventDefault();
+    swal({
+      title: "Are you sure?",
+      text: "Click OK for Adding City",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (AddingCity) => {
+      if (AddingCity === true) {
     await axios
       .post(`http://localhost:8082/api/v1/createCity`, {
         stateName,
         cityName,
+        isActive
       })
       .then((resp) => {
-        console.log(resp.data);
+        swal(
+          (resp.data),"Created Succesfully",
+          {
+            icon: "success",
+          }
+        );
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"City not Created","warning");
       });
+    }
+  });
   };
   useEffect(() => {
     getStates();

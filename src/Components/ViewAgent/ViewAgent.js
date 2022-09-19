@@ -17,6 +17,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import swal from "sweetalert";
 // import SearchBar from "material-ui-search-bar";
 import SearchInput, { createFilter } from "react-search-input";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
@@ -76,24 +77,40 @@ function ViewAgent() {
         console.log(allAgts);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Error Occured!","warning");
       });
   }
   const handleEditEmployee = async (e) => {
     // console.log(e.target.id);
     // const agentToUpdate = e.target.id;
-    await axios
-      .put(`http://localhost:8082/api/v1/updateAgent/${currentUser.username}`, {
+    swal({
+      title: "Are you sure?",
+      text: "Click OK to Update the Agent",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (UpdatingAgent) => {
+      if (UpdatingAgent === true) {
+        await axios
+        .put(`http://localhost:8082/api/v1/updateAgent/${currentUser.username}`, {
         agentToUpdate,
         propertyToUpdate,
         value,
       })
       .then((resp) => {
+        swal(
+          (resp.data),"Updated Succesfully",
+          {
+            icon: "success",
+          }
+        );
         getAgents();
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Agent not Updated","warning");
       });
+    }
+  });
     setOpen(false);
   };
   const toogleActiveFlag = (e, c) => {

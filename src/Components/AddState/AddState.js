@@ -1,5 +1,6 @@
 import NavBar from "../NavBarAdmin/NavBarAdmin";
 import axios from "axios";
+import swal from "sweetalert"
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,16 +13,32 @@ function AddState() {
   const [isActive, updateIsActive] = useState(true);
   const handleAddStateName = async (e) => {
     e.preventDefault();
-    await axios
-      .post(`http://localhost:8082/api/v1/createState`, {
+    swal({
+      title: "Are you sure?",
+      text: "Click OK for Adding State",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (AddingState) => {
+      if (AddingState === true) {
+        await axios
+        .post(`http://localhost:8082/api/v1/createState`, {
         stateName,
+        isActive
       })
       .then((resp) => {
-        console.log(resp.data);
+        swal(
+          (resp.data),"Created Succesfully",
+          {
+            icon: "success",
+          }
+        );
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"State not Created","warning");
       });
+    }
+  });
   };
   return (
     <>

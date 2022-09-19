@@ -1,7 +1,7 @@
 import "./AddAgent.css";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-
+import swal from "sweetalert"
 import NavBar from "../NavBarAdmin/NavBarAdmin";
 import axios from "axios";
 import { useState } from "react";
@@ -10,7 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 function AddAgent() {
-  const [role, updateRole] = useState("admin");
+  const [role, updateRole] = useState("agent");
   const [userName, updateUserName] = useState("");
   const [password, updatePassword] = useState("");
   const [address, updateAddress] = useState("");
@@ -22,24 +22,43 @@ function AddAgent() {
   const onAddAgent = async (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      await axios
-        .post(`http://localhost:8082/api/v1/createAgent`, {
-          fullName,
-          userName,
-          password,
-          address,
-          emailId,
-          qualification,
-          role,
-          isActive,
-        })
-        .then((resp) => {
-          console.log(resp.data);
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-        });
+      swal({
+        title: "Are you sure?",
+        text: "Click OK for Adding an Agent",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (AddingAgent) => {
+        if (AddingAgent === true) {
+          await axios
+          .post(`http://localhost:8082/api/v1/createAgent`, {
+            fullName,
+            userName,
+            password,
+            address,
+            emailId,
+            qualification,
+            role,
+            isActive,
+          })
+            .then((resp) => {
+              swal(
+                (resp.data),"Created Succesfully",
+                {
+                  icon: "success",
+                }
+              );
+            })
+            .catch((error) => {
+              swal((error.response.data),"Agent not Created","warning");
+            });
+        }
+      });
     }
+    else{
+      swal("Agent not Created","Password and Confirm Password are not same","warning");
+    }
+    
   };
   return (
     <>
