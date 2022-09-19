@@ -13,7 +13,9 @@ import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
-
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import DialogTitle from "@mui/material/DialogTitle";
 function ViewInsuranceType() {
@@ -23,6 +25,8 @@ function ViewInsuranceType() {
   const [open, setOpen] = useState("");
   const [pageNumber, updatePageNumber] = useState(1);
   const [allInsuranceType, updateAllInsuranceType] = useState("");
+  const [propertyToUpdate, updatePropertyToUpdate] = useState("FirstName");
+  const [value, updateValue] = useState("");
   const [image, updateImage] = useState();
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
@@ -52,6 +56,33 @@ function ViewInsuranceType() {
         console.log(error.response.data);
       });
   }
+  const handleEditInsuranceType = async (e) => {
+    e.preventDefault();
+    // await axios
+    //   .put("http://localhost:8082/api/v1/getAllInsuranceType")
+    //   .then((resp) => {
+    //     updateAllInsuranceType(resp.data);
+    //     console.log(resp.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error.response.data);
+    //   });
+  };
+  const handleDeleteInsuranceType = async (e, c) => {
+    e.preventDefault();
+    const insuranceType = c.insuranceType;
+    await axios
+      .post("http://localhost:8082/api/v1/deleteInsuranceType", {
+        insuranceType,
+      })
+      .then((resp) => {
+        getInsuranceTypes();
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
   let rowOfAllInsuranceType;
   if (allInsuranceType != null) {
     const KEYS_TO_FILTERS = ["insuranceType"];
@@ -94,25 +125,14 @@ function ViewInsuranceType() {
             >
               <DialogTitle>Update Employee</DialogTitle>
               <DialogContent>
-                {/* <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Property To Update"
-                        fullWidth
-                        variant="standard"
-                        onChange={(e) => {
-                          updatePropertyToUpdate(e.target.value);
-                        }}
-                      /> */}
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
-                  {/* <InputLabel id="demo-simple-select-standard-label">
+                  <InputLabel id="demo-simple-select-standard-label">
                     Property To Update
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
-                    //   value={propertyToUpdate}
+                    value={propertyToUpdate}
                     autoWidth
                     onChange={(event) => {
                       updatePropertyToUpdate(event.target.value);
@@ -120,7 +140,7 @@ function ViewInsuranceType() {
                     label="Property To Update"
                   >
                     <MenuItem value={30}>Thirty</MenuItem>
-                  </Select> */}
+                  </Select>
                 </FormControl>
                 <TextField
                   autoFocus
@@ -130,17 +150,17 @@ function ViewInsuranceType() {
                   fullWidth
                   variant="standard"
                   onChange={(e) => {
-                    // updateValue(e.target.value);
+                    updateValue(e.target.value);
                   }}
                 />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>cancel</Button>
                 <Button
-                // id={s.cityName}
-                // onClick={(event) => {
-                //   handleEditCity(event);
-                // }}
+                  id={c.insuranceType}
+                  onClick={(event) => {
+                    handleEditInsuranceType(event);
+                  }}
                 >
                   update
                 </Button>
@@ -157,7 +177,7 @@ function ViewInsuranceType() {
                   <Switch
                     checked={c.isActive}
                     onChange={(event) => {
-                      // toogleActiveFlag(event, c);
+                      handleDeleteInsuranceType(event, c);
                     }}
                     id={c.insuranceType}
                   />

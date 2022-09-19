@@ -25,7 +25,7 @@ function ViewInsurancePlan() {
   const [open, setOpen] = useState("");
   const [propertyToUpdate, updatePropertyToUpdate] = useState("FirstName");
   const [value, updateValue] = useState("");
-  const [employetoUpdate, updateEmployetoUpdate] = useState("");
+  const [schemetoUpdate, updateSchemetoUpdate] = useState("");
   const [focused, setFocused] = useState(false);
   const [allInsuranceScheme, updateAllInsuranceScheme] = useState("");
   const [allInsuranceTypes, updateallInsuranceTypes] = useState("");
@@ -33,8 +33,8 @@ function ViewInsurancePlan() {
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
   const handleClickOpen = (e) => {
-    // console.log(e.target.id);
-    updateEmployetoUpdate(e.target.id);
+    console.log(e.target.id);
+    updateSchemetoUpdate(e.target.id);
     setOpen(true);
   };
 
@@ -78,6 +78,39 @@ function ViewInsurancePlan() {
         console.log(error.response.data);
       });
   }
+  const handleEditInsScheme = async (e) => {
+    e.preventDefault();
+
+    await axios
+      .put("http://localhost:8082/api/v1/updateInsuranceScheme", {
+        schemetoUpdate,
+        propertyToUpdate,
+        value,
+      })
+      .then((resp) => {
+        getAllInsuranceScheme();
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+    setOpen(false);
+  };
+  const handleDeleteInsScheme = async (e, c) => {
+    e.preventDefault();
+    const insuranceScheme = c.insuranceScheme;
+    await axios
+      .post("http://localhost:8082/api/v1/deleteInsuranceScheme", {
+        insuranceScheme,
+      })
+      .then((resp) => {
+        getAllInsuranceScheme();
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
   let rowOfAllInsuranceScheme;
   if (allInsuranceScheme != null) {
     const KEYS_TO_FILTERS = ["allInsuranceTypes"];
@@ -119,7 +152,7 @@ function ViewInsurancePlan() {
             <span
               onClick={handleClickOpen}
               style={{ cursor: "pointer", color: "blue" }}
-              // id={s.credential.userName}
+              id={c.insuranceScheme}
             >
               Edit
             </span>
@@ -130,17 +163,6 @@ function ViewInsurancePlan() {
             >
               <DialogTitle>Update Employee</DialogTitle>
               <DialogContent>
-                {/* <TextField
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Property To Update"
-                      fullWidth
-                      variant="standard"
-                      onChange={(e) => {
-                        updatePropertyToUpdate(e.target.value);
-                      }}
-                    /> */}
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Property To Update
@@ -148,17 +170,23 @@ function ViewInsurancePlan() {
                   <Select
                     labelId="demo-simple-select-standard-label"
                     id="demo-simple-select-standard"
-                    //   value={propertyToUpdate}
+                    value={propertyToUpdate}
                     autoWidth
                     onChange={(event) => {
-                      // updatePropertyToUpdate(event.target.value);
+                      updatePropertyToUpdate(event.target.value);
                     }}
                     label="Property To Update"
                   >
-                    <MenuItem value="FirstName">FirstName</MenuItem>
-                    <MenuItem value="LastName">LastName</MenuItem>
-                    <MenuItem value="UserName">UserName</MenuItem>
-                    {/* <MenuItem value={30}>Thirty</MenuItem> */}
+                    <MenuItem value="Insurance Scheme">
+                      Insurance Scheme
+                    </MenuItem>
+                    <MenuItem value="Min Term Plan">Min Term Plan</MenuItem>
+                    <MenuItem value="Max Term Plan">Max Term Plan</MenuItem>
+                    <MenuItem value="Min Age">Min Age</MenuItem>
+                    <MenuItem value="Max Age">Max Age</MenuItem>
+                    <MenuItem value="Min Investment">Min Investment</MenuItem>
+                    <MenuItem value="Max Investment">Max Investment</MenuItem>
+                    <MenuItem value="Profit Ratio">Profit Ratio</MenuItem>
                   </Select>
                 </FormControl>
                 <TextField
@@ -169,16 +197,16 @@ function ViewInsurancePlan() {
                   fullWidth
                   variant="standard"
                   onChange={(e) => {
-                    //   updateValue(e.target.value);
+                    updateValue(e.target.value);
                   }}
                 />
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleClose}>cancel</Button>
                 <Button
-                  //   id={s.credential.userName}
+                  id={c.insuranceScheme}
                   onClick={(event) => {
-                    //   handleEditEmployee(event);
+                    handleEditInsScheme(event);
                   }}
                 >
                   update
@@ -193,7 +221,7 @@ function ViewInsurancePlan() {
                   <Switch
                     checked={c.isActive}
                     onChange={(event) => {
-                      // toogleActiveFlag(event, c);
+                      handleDeleteInsScheme(event, c);
                     }}
                     id={c.insuranceScheme}
                   />

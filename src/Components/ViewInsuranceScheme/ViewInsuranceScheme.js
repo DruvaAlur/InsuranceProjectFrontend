@@ -73,6 +73,9 @@ function ViewInsuranceScheme() {
         console.log(error.response.data);
       });
   }
+  const handleEditInsuranceScheme = async (e) => {
+    e.preventDefault();
+  };
   let rowOfAllInsuranceScheme;
   if (allInsuranceScheme != null) {
     const KEYS_TO_FILTERS = ["allInsuranceTypes"];
@@ -110,6 +113,15 @@ function ViewInsuranceScheme() {
           </td>
           <td id={c.insuranceScheme} style={{ width: "15%" }}>
             {c.isActive ? "true" : "false"}
+          </td>
+          <td id={c.insuranceScheme} style={{ width: "15%" }}>
+            <span
+              //  onClick={handleEditInsuranceScheme}
+              style={{ cursor: "pointer", color: "blue" }}
+              id={c.insuranceScheme}
+            >
+              edit
+            </span>
           </td>
           <td id={c.insuranceScheme} style={{ width: "10%" }}>
             <FormGroup>
