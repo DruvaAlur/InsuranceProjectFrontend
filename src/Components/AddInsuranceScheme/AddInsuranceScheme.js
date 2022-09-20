@@ -157,10 +157,11 @@ function AddInsuranceScheme() {
               </Box>
               <div style={{ display: "block", width: "70vw" }}>
                 <label>Insurance Note:</label>
+
                 <br />
                 <ReactQuill
                   theme="snow"
-                  value={insuranceNote}
+                  // value={insuranceNote}
                   onChange={updateInsuranceNote}
                   //   style={{ height: "20vh" }}
                 />

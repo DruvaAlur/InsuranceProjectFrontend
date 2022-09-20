@@ -3,6 +3,7 @@ import NavBar from "../NavBarAdmin/NavBarAdmin";
 import ReactQuill from "react-quill";
 import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
+import "react-quill/dist/quill.bubble.css";
 import Stack from "@mui/material/Stack";
 import Table from "react-bootstrap/Table";
 import FormGroup from "@mui/material/FormGroup";
@@ -154,11 +155,12 @@ function ViewFeedback() {
                 Reply
               </span>
               <Dialog id={c.customerName} open={open} onClose={handleClose}>
-                <DialogTitle>Update Employee</DialogTitle>
+                <DialogTitle>Reply</DialogTitle>
+                <p>{reply}</p>
                 <DialogContent>
                   <ReactQuill
                     theme="snow"
-                    value={reply}
+                    // value={reply}
                     onChange={updateReply}
                     //   style={{ height: "20vh" }}
                   />
@@ -210,7 +212,7 @@ function ViewFeedback() {
           <div id="wrap-login1002">
             <div>
               <span id="login100-form-title2" style={{ color: "#27CCFD" }}>
-                View Customer
+                View Queries
               </span>
               <br />
               <SearchInput

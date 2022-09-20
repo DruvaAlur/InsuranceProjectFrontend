@@ -206,8 +206,8 @@ function ViewInsuranceScheme() {
                 </FormControl>
                 {propertyToUpdate === "Insurance Note" ? (
                   <ReactQuill
-                    theme="bubble"
-                    value={value}
+                    theme="snow"
+                    // value={value}
                     onChange={updateValue}
 
                     //   style={{ height: "20vh" }}
