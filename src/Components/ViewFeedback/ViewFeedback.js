@@ -38,10 +38,12 @@ function ViewFeedback() {
   const [customertoUpdate, updateCustomertoUpdate] = useState("");
   const [focused, setFocused] = useState(false);
   const [reply, updateReply] = useState();
+  const [queryId, updateQueryId] = useState();
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
   const handleClickOpen = (e, c) => {
-    console.log(c.customerName);
+    console.log(c._id);
+    updateQueryId(c._id);
     updateCustomertoUpdate(c.customerName);
     setOpen(true);
   };
@@ -77,9 +79,7 @@ function ViewFeedback() {
         console.log(error.response.data);
       });
   }
-  const handleReply = async (e) => {
-    const queryId = e.target.id;
-    console.log(queryId);
+  const handleReply = async (e, c) => {
     await axios
       .post(`http://localhost:8082/api/v1/replytQuery`, {
         reply,
@@ -94,10 +94,8 @@ function ViewFeedback() {
     setOpen(false);
   };
   const toogleActiveFlag = (e, c) => {
+    console.log(c._id);
     const queryId = c._id;
-
-    const userName = currentUser.username;
-    console.log(queryId);
     axios
       .post(`http://localhost:8082/api/v1/deleteQuery`, {
         queryId,
@@ -170,7 +168,7 @@ function ViewFeedback() {
                   <Button
                     id={c._id}
                     onClick={(event) => {
-                      handleReply(event);
+                      handleReply(event, c);
                     }}
                   >
                     Reply
