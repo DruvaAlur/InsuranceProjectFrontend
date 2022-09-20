@@ -1,6 +1,6 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewCommissionWithdrawalComp from "../ViewCommissionWithdrawalComp/ViewCommissionWithdrawalComp";
-function ViewCommissionWithdrawal() {
+function ViewCommissionWithdrawalEmp() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewCommissionWithdrawal() {
     </>
   );
 }
-export default ViewCommissionWithdrawal;
+export default ViewCommissionWithdrawalEmp;

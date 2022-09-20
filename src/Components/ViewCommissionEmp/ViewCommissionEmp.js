@@ -1,6 +1,6 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewCommissionComp from "../ViewCommissionComp/ViewCommissionComp";
-function ViewCommission() {
+function ViewCommissionEmp() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewCommission() {
     </>
   );
 }
-export default ViewCommission;
+export default ViewCommissionEmp;

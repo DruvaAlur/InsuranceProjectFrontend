@@ -1,6 +1,6 @@
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewCityComp from "../ViewCityComp/ViewCityComp";
-import NavBar from "../NavBarAdmin/NavBarAdmin";
-function ViewCity() {
+function ViewCityEmp() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewCity() {
     </>
   );
 }
-export default ViewCity;
+export default ViewCityEmp;

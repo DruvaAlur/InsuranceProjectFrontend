@@ -32,6 +32,19 @@ import Profile from "./Components/Profile/Profile";
 import ChangePassword from "./Components/ChangePassword/ChangePassword";
 import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
 import EmployeeDashboard from "./Components/EmployeeDashboard/EmployeeDashboard";
+import AddAgentEmp from "./Components/AddAgentEmp/AddAgentEmp";
+import ViewAgentEmp from "./Components/ViewAgentEmp/ViewAgentEmp";
+import ViewFeedbackEmp from "./Components/ViewFeedbackEmp/ViewFeedbackEmp";
+import ViewCommissionEmp from "./Components/ViewCommissionEmp/ViewCommissionEmp";
+import ViewCommissionWithdrawalEmp from "./Components/ViewCommissionWithdrawalEmp/ViewCommissionWithdrawalEmp";
+import ViewCustomerEmp from "./Components/ViewCustomerEmp/ViewCustomerEmp";
+import ViewStateEmp from "./Components/ViewStateEmp/ViewStateEmp";
+import ViewCityEmp from "./Components/ViewCityEmp/ViewCityEmp";
+import ViewInsuranceTypeEmp from "./Components/ViewInsuranceTypeEmp/ViewInsuranceTypeEmp";
+import ViewInsuranceSchemeEmp from "./Components/ViewInsuranceSchemeEmp/ViewInsuranceSchemeEmp";
+import ViewInsurancePlanEmp from "./Components/ViewInsurancePlanEmp/ViewInsurancePlanEmp";
+import AgentMarketing from "./Components/AgentMarketing/AgentMarketing";
+import InterestCalculator from "./Components/InterestCalculator/InterestCalculator";
 function App() {
   return (
     <ScrollToTop>
@@ -73,11 +86,13 @@ function App() {
           path="/AdminDashboard/ViewAgent/:username"
           element={<ViewAgent />}
         />
-        <Route
-          exact
-          path="/AdminDashboard/ViewFeedback/:username"
-          element={<ViewFeedback />}
-        />
+        {/* {[
+          "/AdminDashboard/ViewFeedback/:username",
+          "/EmployeeDashboard/ViewFeedback/:username",
+        ].map((path) => (
+          <Route path={path} element={<ViewFeedback />} />
+        ))} */}
+
         <Route
           exact
           path="/AdminDashboard/ViewCommission/:username"
@@ -178,10 +193,84 @@ function App() {
           path="/AdminDashboard/ChangePassword/:username"
           element={<ChangePassword />}
         />
+
+        {/* Employee routes */}
+        {/*___________________________________________________________________*/}
+        <Route
+          exact
+          path={"/EmployeeDashboard/AddAgent/:username"}
+          element={<AddAgentEmp />}
+        />
+        <Route
+          exact
+          path={"/EmployeeDashboard/ViewAgent/:username"}
+          element={<ViewAgentEmp />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewFeedback/:username"
+          element={<ViewFeedbackEmp />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewCommission/:username"
+          element={<ViewCommissionEmp />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewCommissionWithdrawal/:username"
+          element={<ViewCommissionWithdrawalEmp />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewCustomer/:username"
+          element={<ViewCustomerEmp />}
+        />
         <Route
           exact
           path="/EmployeeDashboard/:username"
           element={<EmployeeDashboard />}
+        />
+
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewState/:username"
+          element={<ViewStateEmp />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewCity/:username"
+          element={<ViewCityEmp />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewInsuranceType/:username"
+          element={<ViewInsuranceTypeEmp />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewInsuranceScheme/:username"
+          element={<ViewInsuranceSchemeEmp />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewInsurancePlan/:username"
+          element={<ViewInsurancePlanEmp />}
+        />
+
+        {/* ------------------------Agent----------------------------- */}
+        <Route
+          exact
+          path="/AgentDashboard/AgentMarketing"
+          element={<AgentMarketing />}
+        />
+
+        {/* _________________________customer--------------------------- */}
+
+        <Route
+          exact
+          path="/CustomerDashboard/InterestCalculator"
+          element={<InterestCalculator />}
         />
       </Routes>
     </ScrollToTop>

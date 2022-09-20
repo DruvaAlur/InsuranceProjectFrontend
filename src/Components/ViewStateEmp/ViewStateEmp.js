@@ -1,6 +1,6 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewStateComp from "../ViewStateComp/ViewStateComp";
-function ViewState() {
+function ViewStateEmp() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewState() {
     </>
   );
 }
-export default ViewState;
+export default ViewStateEmp;

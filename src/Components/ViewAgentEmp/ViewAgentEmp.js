@@ -1,6 +1,6 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewAgentComp from "../ViewAgentComp/ViewAgentComp";
-function ViewAgent() {
+function ViewAgentEmp() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewAgent() {
     </>
   );
 }
-export default ViewAgent;
+export default ViewAgentEmp;

@@ -1,7 +1,6 @@
-import "./ViewFeedback.css";
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewFeedbackComp from "../ViewFeedbackComp/ViewFeedbackComp";
-function ViewFeedback() {
+function ViewFeedbackEmp() {
   return (
     <>
       <NavBar />
@@ -9,4 +8,4 @@ function ViewFeedback() {
     </>
   );
 }
-export default ViewFeedback;
+export default ViewFeedbackEmp;

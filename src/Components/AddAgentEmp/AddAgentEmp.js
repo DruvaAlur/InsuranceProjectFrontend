@@ -1,8 +1,6 @@
-import "./AddAgent.css";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import AddAgentComp from "../AddAgentComp/AddAgentComp";
-import NavBar from "../NavBarAdmin/NavBarAdmin";
-
-function AddAgent() {
+function AddAgentEmp() {
   return (
     <>
       <NavBar />
@@ -10,4 +8,4 @@ function AddAgent() {
     </>
   );
 }
-export default AddAgent;
+export default AddAgentEmp;

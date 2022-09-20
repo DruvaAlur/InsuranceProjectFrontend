@@ -1,6 +1,6 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewInsuranceSchemeComp from "../ViewInsuranceSchemeComp/ViewInsuranceSchemeComp";
-function ViewInsuranceScheme() {
+function ViewInsuranceSchemeEmp() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewInsuranceScheme() {
     </>
   );
 }
-export default ViewInsuranceScheme;
+export default ViewInsuranceSchemeEmp;

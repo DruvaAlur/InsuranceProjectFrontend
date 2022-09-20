@@ -1,6 +1,6 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewInsurancePlanComp from "../ViewInsurancePlanComp/ViewInsurancePlanComp";
-function ViewInsurancePlan() {
+function ViewInsurancePlanEmp() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewInsurancePlan() {
     </>
   );
 }
-export default ViewInsurancePlan;
+export default ViewInsurancePlanEmp;

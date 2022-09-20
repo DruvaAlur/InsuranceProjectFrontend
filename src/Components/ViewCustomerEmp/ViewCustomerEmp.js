@@ -1,6 +1,6 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import ViewCustomerComp from "../ViewCustomerComp/ViewCustomerComp";
-function ViewCustomer() {
+function ViewCustomerEmp() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewCustomer() {
     </>
   );
 }
-export default ViewCustomer;
+export default ViewCustomerEmp;
