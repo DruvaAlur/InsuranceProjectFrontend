@@ -129,7 +129,7 @@ function ViewAgent() {
         getAgents();
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Error Occured!","warning");
       });
   };
   const searchUpdated = (term) => {

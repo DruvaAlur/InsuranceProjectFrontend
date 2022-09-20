@@ -15,6 +15,7 @@ function AddcityName() {
   const [allStates, updateAllStates] = useState("");
   const handleAddcityName = async (e) => {
     e.preventDefault();
+    if(cityName !=""){
     swal({
       title: "Are you sure?",
       text: "Click OK for Adding City",
@@ -41,8 +42,11 @@ function AddcityName() {
         swal((error.response.data),"City not Created","warning");
       });
     }
-  });
-  };
+  });}
+  else{
+    swal("Require CityName!","City not Created","warning");
+  }
+}
   useEffect(() => {
     getStates();
   }, []);

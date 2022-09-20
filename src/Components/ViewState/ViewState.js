@@ -13,7 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-
+import swal from "sweetalert";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchInput, { createFilter } from "react-search-input";
 
@@ -45,17 +45,32 @@ function ViewState() {
     getStates();
   }, []);
   const handleEditState = async (e) => {
+    swal({
+      title: "Are you sure?",
+      text: "Click OK to Update this State",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (UpdatingCity) => {
+    if (UpdatingCity === true) {
     await axios
       .put(`http://localhost:8082/api/v1/updateState`, {
         StatetoUpdate,
         value,
       })
       .then((resp) => {
+        swal(
+          (resp.data),"Updated Succesfully",
+          {
+            icon: "success",
+          }
+        );
         getStates();
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"State not Updated","warning");
       });
+    }});
     setOpen(false);
   };
   async function getStates() {
@@ -68,6 +83,7 @@ function ViewState() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal((error.response.data),"Error Occured!","warning");
       });
   }
   const toogleActiveFlag = async (e) => {
@@ -81,6 +97,7 @@ function ViewState() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal((error.response.data),"Error Occured!","warning");
       });
   };
   let rowOfState;

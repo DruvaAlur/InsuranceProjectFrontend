@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
+import swal from "sweetalert";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -54,10 +55,20 @@ function ViewInsuranceType() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal((error.response.data),"Error Occured!","warning");
       });
   }
   const handleEditInsuranceType = async (e) => {
     e.preventDefault();
+    swal({
+      title: "Are you sure?",
+      text: "Click OK to Update this Scheme",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (UpdatingCity) => {
+    if (UpdatingCity === true) {
+    await axios
     const insuranceTypetoUpdate = e.target.id;
     console.log(insuranceTypetoUpdate);
     await axios
@@ -66,12 +77,18 @@ function ViewInsuranceType() {
         value,
       })
       .then((resp) => {
+        swal(
+          (resp.data),"Updated Succesfully",
+          {
+            icon: "success",
+          }
+        );
         getInsuranceTypes();
-        console.log(resp.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Scheme not Updated","warning");
       });
+    }});
     setOpen(false);
   };
   const handleDeleteInsuranceType = async (e, c) => {
@@ -87,6 +104,7 @@ function ViewInsuranceType() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal((error.response.data),"Error Occured!","warning");
       });
   };
   let rowOfAllInsuranceType;

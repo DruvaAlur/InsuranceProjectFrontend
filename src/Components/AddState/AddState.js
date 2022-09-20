@@ -13,6 +13,8 @@ function AddState() {
   const [isActive, updateIsActive] = useState(true);
   const handleAddStateName = async (e) => {
     e.preventDefault();
+    if(stateName!="")
+    {
     swal({
       title: "Are you sure?",
       text: "Click OK for Adding State",
@@ -38,8 +40,11 @@ function AddState() {
         swal((error.response.data),"State not Created","warning");
       });
     }
-  });
-  };
+  });}
+  else{
+    swal("Require StateName" ,"State not Created","warning");
+  }
+  }
   return (
     <>
       <NavBar />
@@ -92,7 +97,7 @@ function AddState() {
                     onClick={handleAddStateName}
                     style={{ width: "100%" }}
                   >
-                    Add cityName
+                    Add StateName
                   </button>
                 </div>
               </div>

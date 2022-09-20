@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import swal from "sweetalert"
 import { useRef, useState } from "react";
 function AddInsuranceType() {
   const [isActive, updateIsActive] = useState(true);
@@ -14,6 +15,14 @@ function AddInsuranceType() {
   const fileInput = useRef();
   const handleAddInsuranceType = async (e) => {
     e.preventDefault();
+    swal({
+      title: "Are you sure?",
+      text: "Click OK for Adding an Agent",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (AddingAgent) => {
+      if (AddingAgent === true) {
     let testImage = fileInput.current.files[0];
 
     var bodyFormData = new FormData();
@@ -23,11 +32,18 @@ function AddInsuranceType() {
     await axios
       .post(`http://localhost:8082/api/v1/createInsuranceType`, bodyFormData)
       .then((resp) => {
-        console.log(resp.data);
+        swal(
+          (resp.data),"Created Succesfully",
+          {
+            icon: "success",
+          }
+        );
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Agent not Created","warning");
       });
+  }
+});
   };
   return (
     <>

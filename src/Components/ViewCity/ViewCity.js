@@ -13,7 +13,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-
+import swal from "sweetalert";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchInput, { createFilter } from "react-search-input";
 
@@ -53,7 +53,7 @@ function ViewCity() {
         console.log(resp.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Error Occured!","warning");
       });
   }
   async function getCities() {
@@ -66,7 +66,7 @@ function ViewCity() {
           console.log(resp.data);
         })
         .catch((error) => {
-          console.log(error.response.data);
+          swal((error.response.data),"Error Occured!","warning");
         });
     }
   }
@@ -74,17 +74,32 @@ function ViewCity() {
     return <MenuItem value={s.stateName}>{s.stateName}</MenuItem>;
   });
   const handleEditCity = async () => {
+    swal({
+      title: "Are you sure?",
+      text: "Click OK to Update this City",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (UpdatingCity) => {
+    if (UpdatingCity === true) {
     await axios
       .put(`http://localhost:8082/api/v1/updateCity`, {
         citytoUpdate,
         value,
       })
       .then((resp) => {
+        swal(
+          (resp.data),"Updated Succesfully",
+          {
+            icon: "success",
+          }
+        );
         getCities();
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"City not Updated","warning");
       });
+    }});
     setOpen(false);
   };
   const toogleActiveFlag = async (e) => {
@@ -97,7 +112,7 @@ function ViewCity() {
         console.log(resp.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal((error.response.data),"Error Occured!","warning");
       });
   };
   let rowOfCity;
@@ -250,7 +265,7 @@ function ViewCity() {
               />
               <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                 <InputLabel id="demo-simple-select-standard-label">
-                  city
+                  States
                 </InputLabel>
                 <Select
                   labelId="demo-simple-select-standard-label"

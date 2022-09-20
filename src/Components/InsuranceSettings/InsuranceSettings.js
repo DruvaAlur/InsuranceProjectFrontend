@@ -4,6 +4,7 @@ import { TextField } from "@mui/material";
 
 function InsuranceSettings() {
   const [value, setValue] = useState(0);
+  const [value1, setValue1] = useState(0);
   return (
     <>
     <NavBar />
@@ -28,14 +29,14 @@ function InsuranceSettings() {
             <TextField type="number" min ="0" step="1"
             value={value && Math.max(0, value)}
             onChange={e => setValue(e.target.value ? Number(e.target.value) : e.target.value)}
-            id="outlined-basic" label="Policy Claim %" variant="outlined" />
+            id="outlined-basic" label="Claim %" variant="outlined" />
             <br />
             <br />
             <label>Penatly Amount (in  %) : </label>
             <TextField type="number" min ="0" step="1"
-            value={value && Math.max(0, value)}
-            onChange={e => setValue(e.target.value ? Number(e.target.value) : e.target.value)}
-            id="outlined-basic" label="Policy Claim %" variant="outlined" />
+            value={value1 && Math.max(0, value1)}
+            onChange={e => setValue1(e.target.value ? Number(e.target.value) : e.target.value)}
+            id="outlined-basic" label="Penalty  %" variant="outlined" />
             <br />
             <br />
             <div className="container-login100-form-btn1">
