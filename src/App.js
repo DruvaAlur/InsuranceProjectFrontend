@@ -31,6 +31,7 @@ import InsuranceSettings from "./Components/InsuranceSettings/InsuranceSettings"
 import Profile from "./Components/Profile/Profile";
 import ChangePassword from "./Components/ChangePassword/ChangePassword";
 import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
+import EmployeeDashboard from "./Components/EmployeeDashboard/EmployeeDashboard";
 function App() {
   return (
     <ScrollToTop>
@@ -176,6 +177,11 @@ function App() {
           exact
           path="/AdminDashboard/ChangePassword/:username"
           element={<ChangePassword />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/:username"
+          element={<EmployeeDashboard />}
         />
       </Routes>
     </ScrollToTop>

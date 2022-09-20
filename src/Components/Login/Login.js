@@ -24,6 +24,8 @@ function Login() {
           navigation(`/CustomerDashboard/${userName}`);
         if (resp.data.role == "admin")
           navigation(`/AdminDashboard/${userName}`);
+        if (resp.data.role == "employee")
+          navigation(`/EmployeeDashboard/${userName}`);
       })
       .catch((error) => {
         swal(error.response.data, "You Can't LogIn", "warning");
