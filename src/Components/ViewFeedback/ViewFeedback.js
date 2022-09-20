@@ -40,9 +40,9 @@ function ViewFeedback() {
   const [reply, updateReply] = useState();
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-  const handleClickOpen = (e) => {
-    console.log(e.target.id);
-    updateCustomertoUpdate(e.target.id);
+  const handleClickOpen = (e, c) => {
+    console.log(c.customerName);
+    updateCustomertoUpdate(c.customerName);
     setOpen(true);
   };
 
@@ -148,7 +148,7 @@ function ViewFeedback() {
             </td> */}
             <td id={c.customerName} style={{ width: "15%", padding: "10px" }}>
               <span
-                onClick={handleClickOpen}
+                onClick={(event) => handleClickOpen(event, c)}
                 style={{ cursor: "pointer", color: "blue" }}
                 id={c.customerName}
               >
@@ -156,7 +156,7 @@ function ViewFeedback() {
               </span>
               <Dialog id={c.customerName} open={open} onClose={handleClose}>
                 <DialogTitle>Reply</DialogTitle>
-                <p>{reply}</p>
+
                 <DialogContent>
                   <ReactQuill
                     theme="snow"
