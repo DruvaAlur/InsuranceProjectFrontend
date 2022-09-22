@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 // import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 // or for Day.js
 
@@ -12,16 +12,17 @@ import { useEffect,useState } from "react";
 // import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 // // or for Moment.js
 // import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import swal from "sweetalert"
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import swal from "sweetalert";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 function Login() {
   const navigation = new useNavigate();
+  const [agentName, updateAgentName] = useState("");
   const [firstName, updateFirstName] = useState("");
   const [lastName, updateLastName] = useState("");
   const [userName, updateUserName] = useState("");
@@ -87,36 +88,38 @@ function Login() {
       buttons: true,
       dangerMode: true,
     }).then(async (AddingCustomer) => {
-    if (AddingCustomer === true) {
-      await axios
-      .post("http://localhost:8082/api/v1/createCustomer", {
-        firstName,
-        lastName,
-        userName,
-        password,
-        dateOfBirth,
-        address,
-        email,
-        stateName,
-        cityName,
-        pincode,
-        nominee,
-        nomineeRelation,
-      })
-      .then((resp) => {
-        swal(
-          (resp.data),`Congrats!! ${userName},Customer Account Successfully Created`,
-          {
-            icon: "success",
-          }
-        );
-      })
-      .catch((error) => {
-        swal((error.response.data),"Your Account is not Created","warning");
-      });
-    }});
+      if (AddingCustomer === true) {
+        await axios
+          .post("http://localhost:8082/api/v1/createCustomer", {
+            firstName,
+            lastName,
+            userName,
+            password,
+            dateOfBirth,
+            address,
+            email,
+            stateName,
+            cityName,
+            pincode,
+            nominee,
+            nomineeRelation,
+            agentName,
+          })
+          .then((resp) => {
+            swal(
+              resp.data,
+              `Congrats!! ${userName},Customer Account Successfully Created`,
+              {
+                icon: "success",
+              }
+            );
+          })
+          .catch((error) => {
+            swal(error.response.data, "Your Account is not Created", "warning");
+          });
+      }
+    });
   };
-
 
   return (
     <>
@@ -322,6 +325,21 @@ function Login() {
                   id="standard-basic"
                   label="Nominee Relation"
                   onChange={(e) => updateNomineeRelation(e.target.value)}
+                  variant="standard"
+                />
+              </Box>
+              <Box
+                sx={{
+                  "& > :not(style)": { m: 1, width: "32ch" },
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                {" "}
+                <TextField
+                  id="standard-basic"
+                  label="Agent Name"
+                  onChange={(e) => updateAgentName(e.target.value)}
                   variant="standard"
                 />
               </Box>

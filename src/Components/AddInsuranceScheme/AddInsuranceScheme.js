@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -39,6 +39,7 @@ function AddInsuranceScheme() {
   const [profitRatio, updateProfitRatio] = useState("");
   const [isActive, updateIsActive] = useState("");
   const fileInput = useRef();
+  const [allInsuranceTypes, updateallInsuranceTypes] = useState("");
   const handleAddInsuranceScheme = async (e) => {
     e.preventDefault();
 
@@ -69,6 +70,25 @@ function AddInsuranceScheme() {
         console.log(error.response.data);
       });
   };
+  useEffect(() => {
+    getInsuranceTypes();
+  }, []);
+  async function getInsuranceTypes() {
+    await axios
+      .get("http://localhost:8082/api/v1/getAllInsuranceType")
+      .then((resp) => {
+        updateallInsuranceTypes(resp.data);
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
+  let InsTypes;
+  if (allInsuranceTypes != null)
+    InsTypes = Object.values(allInsuranceTypes).map((s) => {
+      return <MenuItem value={s.insuranceType}>{s.insuranceType}</MenuItem>;
+    });
   return (
     <>
       <NavBar />
@@ -79,20 +99,23 @@ function AddInsuranceScheme() {
               Add Insurance Scheme
             </span>
             <form className="login100-form validate-form">
-              <Box
-                sx={{
-                  "& > :not(style)": { m: 1, width: "50ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  id="standard-basic"
+              <FormControl variant="standard" sx={{ m: 1, width: "50ch" }}>
+                <InputLabel id="demo-simple-select-standard-label">
+                  Insurance Type
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard"
+                  value={insuranceType}
+                  autoWidth
+                  onChange={(event) => {
+                    updateInsuranceType(event.target.value);
+                  }}
                   label="Insurance Type"
-                  variant="standard"
-                  onChange={(e) => updateInsuranceType(e.target.value)}
-                />
-              </Box>
+                >
+                  {InsTypes}
+                </Select>
+              </FormControl>
               <Box
                 sx={{
                   "& > :not(style)": { m: 1, width: "50ch" },

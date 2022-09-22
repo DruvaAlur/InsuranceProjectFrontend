@@ -1,48 +1,13 @@
-import NavBar from "../NavBar/NavBar";
+import NavBar from "../AgentNavBar/AgentNavBar";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import "./CustomerDashboard.css";
-function CustomerDashboard() {
-  const [insuranceType, updateInsuranceType] = useState("");
-  useEffect(() => {
-    getAllInsuranceTypes();
-  }, []);
-  async function getAllInsuranceTypes() {
-    await axios
-      .get("http://localhost:8082/api/v1/getAllInsuranceType")
-      .then((resp) => {
-        console.log(resp.data);
-        updateInsuranceType(resp.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  }
-  const handleOnClick = (i) => {
-    navigate(`/CustomerDashboard/InsuranceScheme/${username}`, {
-      state: i,
-    });
-  };
+
+function AgentDashboard() {
   const navigate = new useNavigate();
   const username = useParams().username;
-  let OptionOfInsuranceTypes;
-  if (insuranceType != null) {
-    OptionOfInsuranceTypes = Object.values(insuranceType).map((i) => {
-      return (
-        <Button
-          variant="primary"
-          onClick={() => {
-            handleOnClick(i.insuranceType);
-          }}
-        >
-          {i.insuranceType}
-        </Button>
-      );
-    });
-  }
   return (
     <>
       <NavBar />
@@ -68,7 +33,7 @@ function CustomerDashboard() {
                   />
 
                   <Card.Body>
-                    <Card.Title>Insurance Type</Card.Title>
+                    <Card.Title>Insurance</Card.Title>
                     <div
                       style={{
                         display: "flex",
@@ -78,7 +43,46 @@ function CustomerDashboard() {
                         rowGap: "1.1em",
                       }}
                     >
-                      {OptionOfInsuranceTypes}
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          navigate(
+                            `/CustomerDashboard/CustomerProfile/${username}`
+                          );
+                        }}
+                      >
+                        View Customer
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          navigate(
+                            `/CustomerDashboard/CustomerProfile/${username}`
+                          );
+                        }}
+                      >
+                        Insurance Account
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          navigate(
+                            `/CustomerDashboard/CustomerProfile/${username}`
+                          );
+                        }}
+                      >
+                        View Policy Payment
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          navigate(
+                            `/CustomerDashboard/CustomerProfile/${username}`
+                          );
+                        }}
+                      >
+                        View Policy Claim
+                      </Button>
                     </div>
                   </Card.Body>
                 </Card>
@@ -112,16 +116,7 @@ function CustomerDashboard() {
                       >
                         Profile
                       </Button>
-                      <Button
-                        variant="primary"
-                        onClick={() => {
-                          navigate(
-                            `/CustomerDashboard/CustomerDocument/${username}`
-                          );
-                        }}
-                      >
-                        Document
-                      </Button>
+
                       <Button
                         variant="primary"
                         onClick={() => {
@@ -131,6 +126,36 @@ function CustomerDashboard() {
                         }}
                       >
                         Change Password
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          navigate(
+                            `/CustomerDashboard/CustomerChangePassword/${username}`
+                          );
+                        }}
+                      >
+                        View Commission
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          navigate(
+                            `/CustomerDashboard/CustomerChangePassword/${username}`
+                          );
+                        }}
+                      >
+                        View Commission Withdrawal
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          navigate(
+                            `/CustomerDashboard/CustomerChangePassword/${username}`
+                          );
+                        }}
+                      >
+                        Withdraw Amount
                       </Button>
                     </div>
                   </Card.Body>
@@ -147,10 +172,10 @@ function CustomerDashboard() {
                     variant="top"
                     height="254px"
                     width="254px"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7V4AhHJDGybY_McwD634MW666JerOafDbBQ&usqp=CAU"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREUQ0g0eunmR1T7t9RX5oUNz_gFiEjf_mttw&usqp=CAU"
                   />
                   <Card.Body>
-                    <Card.Title>Insurance Account</Card.Title>
+                    <Card.Title>Marketing</Card.Title>
                     <div
                       style={{
                         display: "flex",
@@ -159,7 +184,18 @@ function CustomerDashboard() {
                         flexWrap: "wrap",
                         rowGap: "1.1em",
                       }}
-                    ></div>
+                    >
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          navigate(
+                            `/CustomerDashboard/CustomerChangePassword/${username}`
+                          );
+                        }}
+                      >
+                        Marketing
+                      </Button>
+                    </div>
                   </Card.Body>
                 </Card>
               </div>
@@ -211,4 +247,4 @@ function CustomerDashboard() {
     </>
   );
 }
-export default CustomerDashboard;
+export default AgentDashboard;

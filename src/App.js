@@ -45,6 +45,28 @@ import ViewInsuranceSchemeEmp from "./Components/ViewInsuranceSchemeEmp/ViewInsu
 import ViewInsurancePlanEmp from "./Components/ViewInsurancePlanEmp/ViewInsurancePlanEmp";
 import AgentMarketing from "./Components/AgentMarketing/AgentMarketing";
 import InterestCalculator from "./Components/InterestCalculator/InterestCalculator";
+import InsuranceScheme from "./Components/InsuranceScheme/InsuranceScheme";
+import InsuranceSchemeDetails from "./Components/InsuranceSchemeDetails/InsuranceSchemeDetails";
+import InsuranceAccountDetails from "./Components/InsuranceAccountDetails/InsuranceAccountDetails";
+import PolicyPayment from "./Components/PolicyPayment/PolicyPayment";
+import PolicyPaymentReceipt from "./Components/policyPaymentReceipt/policyPaymentReceipt";
+import CustomerGiveFeedback from "./Components/CustomerGiveFeedback/CustomerGiveFeedback";
+import CustomerViewFeedback from "./Components/CustomerViewFeedback/CustomerViewFeedback";
+import CustomerChangePassword from "./Components/CustomerChangePassword/CustomerChangePassword";
+import CustomerProfile from "./Components/CustomerProfile/CustomerProfile";
+import CustomerDocument from "./Components/CustomerDocument/CustomerDocument";
+import CustomerInsuranceAccount from "./Components/CustomerInsuranceAccount/CustomerInsuranceAccount";
+import AgentDashboard from "./Components/AgentDashboard/AgentDashboard";
+import AgentProfile from "./Components/AgentProfile/AgentProfile";
+import AgentChangePassword from "./Components/AgentChangePassword/AgentChangePassword";
+import AgentViewCustomer from "./Components/AgentViewCustomer/AgentViewCustomer";
+import AgentInsuranceAccount from "./Components/AgentInsuranceAccount/AgentInsuranceAccount";
+import AgentViewPolicyPayment from "./Components/AgentViewPolicyPayment/AgentViewPolicyPayment";
+import AgentViewPolicyClaim from "./Components/AgentViewPolicyClaim/AgentViewPolicyClaim";
+import AgentViewCommission from "./Components/AgentViewCommission/AgentViewCommission";
+import AgentViewCommissionWithdrawal from "./Components/AgentViewCommissionWithdrawal/AgentViewCommissionWithdrawal";
+import AgentWithdrawAmount from "./Components/AgentWithdrawAmount/AgentWithdrawAmount";
+import ViewAllInstallments from "./Components/ViewAllInstallments/ViewAllInstallments";
 function App() {
   return (
     <ScrollToTop>
@@ -92,7 +114,11 @@ function App() {
         ].map((path) => (
           <Route path={path} element={<ViewFeedback />} />
         ))} */}
-
+        <Route
+          exact
+          path="/AdminDashboard/ViewFeedback/:username"
+          element={<ViewFeedback />}
+        />
         <Route
           exact
           path="/AdminDashboard/ViewCommission/:username"
@@ -261,16 +287,125 @@ function App() {
         {/* ------------------------Agent----------------------------- */}
         <Route
           exact
-          path="/AgentDashboard/AgentMarketing"
+          path="/AgentDashboard/Marketing/:username"
           element={<AgentMarketing />}
         />
-
+        <Route
+          exact
+          path="/AgentDashboard/:username"
+          element={<AgentDashboard />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/Profile/:username"
+          element={<AgentProfile />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/ChangePassword/:username"
+          element={<AgentChangePassword />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/ViewCustomer/:username"
+          element={<AgentViewCustomer />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/InsuranceAccount/:username"
+          element={<AgentInsuranceAccount />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/PolicyPayment/:username"
+          element={<AgentViewPolicyPayment />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/PolicyClaim/:username"
+          element={<AgentViewPolicyClaim />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/Commission/:username"
+          element={<AgentViewCommission />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/CommissionWithdrawal/:username"
+          element={<AgentViewCommissionWithdrawal />}
+        />
+        <Route
+          exact
+          path="/AgentDashboard/WithdrawAmount/:username"
+          element={<AgentWithdrawAmount />}
+        />
         {/* _________________________customer--------------------------- */}
 
         <Route
           exact
-          path="/CustomerDashboard/InterestCalculator"
+          path="/CustomerDashboard/InterestCalculator/:username"
           element={<InterestCalculator />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/InsuranceScheme/:username"
+          element={<InsuranceScheme />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/InsuranceSchemeDetails/:username"
+          element={<InsuranceSchemeDetails />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/InsuranceAccountDetails/:username"
+          element={<InsuranceAccountDetails />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/PolicyPayment/:username"
+          element={<PolicyPayment />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/PolicyPaymentReceipt/:username"
+          element={<PolicyPaymentReceipt />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/Enquiry/:username"
+          element={<CustomerGiveFeedback />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/CustomerViewFeedback/:username"
+          element={<CustomerViewFeedback />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/CustomerChangePassword/:username"
+          element={<CustomerChangePassword />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/CustomerProfile/:username"
+          element={<CustomerProfile />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/CustomerDocument/:username"
+          element={<CustomerDocument />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/InsuranceAccount/:username"
+          element={<CustomerInsuranceAccount />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/Installments/:username"
+          element={<ViewAllInstallments />}
         />
       </Routes>
     </ScrollToTop>

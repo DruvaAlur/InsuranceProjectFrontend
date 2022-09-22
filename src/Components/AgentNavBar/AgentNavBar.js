@@ -9,109 +9,52 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 function BasicExample() {
   const navigate = new useNavigate();
   const username = useParams().username;
-  const handleAddEmployee = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/AddEmployee/${username}`);
-  };
-  const handleViewEmployee = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewEmployee/${username}`);
-  };
-  const handleAddAgent = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/AddAgent/${username}`);
-  };
-  const handleViewAgent = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewAgent/${username}`);
-  };
-  const handleViewFeedback = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewFeedback/${username}`);
-  };
+
   const handleViewCommission = (e) => {
     e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewCommission/${username}`);
+    navigate(`/AgentDashboard/Commission/${username}`);
   };
   const handleViewCommissionWithdrawal = (e) => {
     e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewCommissionWithdrawal/${username}`);
-  };
-  const handleViewCustomer = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewCustomer/${username}`);
-  };
-  const handleAddCity = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/AddCity/${username}`);
-  };
-  const handleAddState = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/AddState/${username}`);
-  };
-  const handleViewCity = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewCity/${username}`);
-  };
-  const handleViewState = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewState/${username}`);
+    navigate(`/AgentDashboard/CommissionWithdrawal/${username}`);
   };
   const handleInsuranceAccount = (e) => {
     e.preventDefault();
-    navigate(`/EmployeeDashboard/InsuranceAccount/${username}`);
+    navigate(`/AgentDashboard/InsuranceAccount/${username}`);
   };
   const handleViewPolicyPayment = (e) => {
     e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewPolicyPayment/${username}`);
+    navigate(`/AgentDashboard/PolicyPayment/${username}`);
   };
   const handleViewPolicyClaim = (e) => {
     e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewPolicyClaim/${username}`);
+    navigate(`/AgentDashboard/PolicyClaim/${username}`);
   };
-  const handleAddInsuranceType = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/AddInsuranceType/${username}`);
-  };
-  const handleViewInsuranceType = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewInsuranceType/${username}`);
-  };
-  const hanldeAddInsuranceScheme = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/AddInsuranceScheme/${username}`);
-  };
-  const handleViewInsuranceScheme = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewInsuranceScheme/${username}`);
-  };
-  // const handleAddInsurancePlan = (e) => {
-  //   e.preventDefault();
-  //   navigate(`/EmployeeDashboard/AddInsurancePlan/${username}`);
-  // };
-  const handleViewInsurancePlan = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/ViewInsurancePlan/${username}`);
-  };
-  const handleTaxSettings = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/TaxSettings/${username}`);
-  };
-  const handleInsuranceSettings = (e) => {
-    e.preventDefault();
-    navigate(`/EmployeeDashboard/InsuranceSettings/${username}`);
-  };
+
   const handleProfile = (e) => {
     e.preventDefault();
-    navigate(`/EmployeeDashboard/Profile/${username}`);
+    navigate(`/AgentDashboard/Profile/${username}`);
   };
   const handleChangePassword = (e) => {
     e.preventDefault();
-    navigate(`/EmployeeDashboard/ChangePassword/${username}`);
+    navigate(`/AgentDashboard/ChangePassword/${username}`);
   };
-  const handleEmployeeDashboard = (e) => {
+  const handleAgentDashboard = (e) => {
     e.preventDefault();
-    navigate(`/EmployeeDashboard/${username}`);
+    navigate(`/AgentDashboard/${username}`);
+  };
+
+  const handleViewWithdrawAmount = (e) => {
+    e.preventDefault();
+    navigate(`/AgentDashboard/WithdrawAmount/${username}`);
+  };
+  const handleViewCustomer = (e) => {
+    e.preventDefault();
+    navigate(`/AgentDashboard/ViewCustomer/${username}`);
+  };
+  const handleMarketing = (e) => {
+    e.preventDefault();
+    navigate(`/AgentDashboard/Marketing/${username}`);
   };
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -144,72 +87,13 @@ function BasicExample() {
   return (
     <Navbar className="sticky-top" bg="#AE2CFF" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand onClick={handleEmployeeDashboard}>
-          E-Insurance
-        </Navbar.Brand>
+        <Navbar.Brand onClick={handleAgentDashboard}>E-Insurance</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link onClick={handleEmployeeDashboard}>Dashboard</Nav.Link>
+            <Nav.Link onClick={handleAgentDashboard}>Agent Dashboard</Nav.Link>
 
             {/* <Nav.Link href="#link">Link</Nav.Link> */}
-            <NavDropdown title="Agent" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={handleAddAgent}>
-                Add Agent
-              </NavDropdown.Item>
-              <NavDropdown.Item onClick={handleViewAgent}>
-                View Agent
-              </NavDropdown.Item>
-              <NavDropdown.Item onClick={handleViewCommission}>
-                View Commission
-              </NavDropdown.Item>
-
-              <NavDropdown.Item onClick={handleViewCommissionWithdrawal}>
-                View Commission Withdrawal
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Insurance" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={handleViewCustomer}>
-                View Customers
-              </NavDropdown.Item>
-              <NavDropdown.Item onClick={handleInsuranceAccount}>
-                Insurance Account
-              </NavDropdown.Item>
-              <NavDropdown.Item onClick={handleViewPolicyPayment}>
-                View Policy Payment
-              </NavDropdown.Item>
-
-              <NavDropdown.Item onClick={handleViewPolicyClaim}>
-                View Policy Claim
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Query" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={handleViewFeedback}>
-                View Feedback
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Insurance Type" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={handleViewInsuranceType}>
-                View Insurance Type
-              </NavDropdown.Item>
-
-              <NavDropdown.Item onClick={handleViewInsuranceScheme}>
-                View Insurance Scheme
-              </NavDropdown.Item>
-
-              <NavDropdown.Item onClick={handleViewInsurancePlan}>
-                View Insurance Plan
-              </NavDropdown.Item>
-            </NavDropdown>
-            <NavDropdown title="Settings" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={handleViewCity}>
-                View City
-              </NavDropdown.Item>
-
-              <NavDropdown.Item onClick={handleViewState}>
-                View State
-              </NavDropdown.Item>
-            </NavDropdown>
             <NavDropdown title="Account" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={handleProfile}>
                 Profile
@@ -218,6 +102,37 @@ function BasicExample() {
                 Change Password
               </NavDropdown.Item>
             </NavDropdown>
+            <Nav.Link onClick={handleMarketing}>Marketing</Nav.Link>
+            <NavDropdown title="Insurance" id="basic-nav-dropdown">
+              <NavDropdown.Item onClick={handleViewCustomer}>
+                View Customer
+              </NavDropdown.Item>
+
+              <NavDropdown.Item onClick={handleInsuranceAccount}>
+                Insurance Account
+              </NavDropdown.Item>
+
+              <NavDropdown.Item onClick={handleViewPolicyPayment}>
+                View Policy Payment
+              </NavDropdown.Item>
+
+              <NavDropdown.Item onClick={handleViewPolicyClaim}>
+                View Policy Claim
+              </NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title="Account" id="basic-nav-dropdown">
+              <NavDropdown.Item onClick={handleViewCommission}>
+                View Commission
+              </NavDropdown.Item>
+
+              <NavDropdown.Item onClick={handleViewCommissionWithdrawal}>
+                View Commission Withdrawal
+              </NavDropdown.Item>
+              <NavDropdown.Item onClick={handleViewWithdrawAmount}>
+                Withdraw Amount
+              </NavDropdown.Item>
+            </NavDropdown>
+
             <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
           </Nav>
         </Navbar.Collapse>
