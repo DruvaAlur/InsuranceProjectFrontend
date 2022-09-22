@@ -14,6 +14,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import axios from "axios";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 function PolicyPayment() {
   const navigate = new useNavigate();
   const username = useParams().username;
@@ -32,13 +33,33 @@ function PolicyPayment() {
   let tempdate = getdate; // value from your state
   let date = moment(tempdate).format("DD/MM/YYYY");
   console.log(date);
+  let tax;
+  let totalAmount;
   const [paymentType, updatePaymentType] = useState("");
   const [cardHolder, updateCardHolder] = useState("");
   const [cardNumber, updateCardNumber] = useState("");
   const [cvvNumber, updateCvvNumber] = useState("");
   const [expDate, updateExpireDate] = useState("");
-  const tax = (installmentAmount * 12) / 100;
-  const totalAmount = tax + installmentAmount;
+  const [taxper, updateTaxper] = useState("");
+
+  useEffect(() => {
+    getTax();
+  }, []);
+  async function getTax() {
+    await axios
+      .get("http://localhost:8082/api/v1/gettaxper")
+      .then((resp) => {
+        console.log(resp.data);
+        updateTaxper(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
+  if (taxper != null) {
+    tax = (installmentAmount * taxper) / 100;
+    totalAmount = tax + installmentAmount;
+  }
   const handleSubmit = () => {
     let tempdate = expDate; // value from your state
     let expireDate = moment(tempdate).format("DD/MM/YYYY");
@@ -59,11 +80,28 @@ function PolicyPayment() {
       .then((resp) => {
         console.log(resp.data);
         navigate(`/CustomerDashboard/policyPaymentReceipt/${username}`, {
-          state: [],
+          state: [
+            username,
+            date,
+            paymentType,
+            installmentAmount,
+            tax,
+            totalAmount,
+          ],
         });
       })
       .catch((error) => {
         console.log(error.response.data);
+        navigate(`/CustomerDashboard/policyPaymentReceipt/${username}`, {
+          state: [
+            username,
+            date,
+            paymentType,
+            installmentAmount,
+            tax,
+            totalAmount,
+          ],
+        });
       });
   };
   return (

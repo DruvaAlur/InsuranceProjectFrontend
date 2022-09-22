@@ -67,6 +67,8 @@ import AgentViewCommission from "./Components/AgentViewCommission/AgentViewCommi
 import AgentViewCommissionWithdrawal from "./Components/AgentViewCommissionWithdrawal/AgentViewCommissionWithdrawal";
 import AgentWithdrawAmount from "./Components/AgentWithdrawAmount/AgentWithdrawAmount";
 import ViewAllInstallments from "./Components/ViewAllInstallments/ViewAllInstallments";
+import InstallmentPayment from "./Components/InstallmentPayment/InstallmentPayment";
+import InstallmentPaymentReceipt from "./Components/InstallmentPaymentReceipt/InstallmentPaymentReceipt";
 function App() {
   return (
     <ScrollToTop>
@@ -406,6 +408,16 @@ function App() {
           exact
           path="/CustomerDashboard/Installments/:username"
           element={<ViewAllInstallments />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/InstallmentPayment/:username"
+          element={<InstallmentPayment />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/InstallmentPaymentReceipt/:username"
+          element={<InstallmentPaymentReceipt />}
         />
       </Routes>
     </ScrollToTop>

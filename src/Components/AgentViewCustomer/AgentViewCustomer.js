@@ -66,10 +66,13 @@ function AgentViewCustomer() {
   // };
   async function getCustomer() {
     axios
-      .post("http://localhost:8082/api/v1/getAllCustomer", {
-        limit,
-        pageNumber,
-      })
+      .post(
+        `http://localhost:8082/api/v1/getAllAgentRefer/${currentUser.username}`,
+        {
+          limit,
+          pageNumber,
+        }
+      )
       .then((resp) => {
         let [allCusts, allCustsCount] = resp.data;
         updateAllCustomers(allCusts);
@@ -161,61 +164,27 @@ function AgentViewCustomer() {
               id={c.credential.userName}
               style={{ width: "15%", padding: "10px" }}
             >
-              <b>Firstname:&nbsp;</b>
-              <br />
-              {c.firstName}
-              <br />
-              <br />
-              <b>Lastname:&nbsp;</b>
-              <br />
-              {c.lastName}
-            </td>
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
               {c.dateOfBirth.split("T")[0].split("-").reverse().join("-")}
             </td>
-
             <td
               id={c.credential.userName}
               style={{ width: "15%", padding: "10px" }}
             >
-              {c.email}
+              {c.address}
             </td>
 
             <td
               id={c.credential.userName}
               style={{ width: "15%", padding: "10px" }}
             >
-              <b>State:&nbsp;</b> <br />
-              {c.state}
-              <br />
-              <br />
-              <b>City:&nbsp;</b> <br />
-              {c.city}
-              <br />
-              <br />
-              <b>Pincode:&nbsp;</b> <br />
-              {c.pincode}
-            </td>
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              <b>Nominee:&nbsp;</b>
               {c.nominee}
-              <br />
-              <br />
-
-              <b>Nominee Relation:&nbsp;</b>
-              {c.nomineeRelation}
             </td>
+
             <td
               id={c.credential.userName}
               style={{ width: "15%", padding: "10px" }}
             >
-              {c.policies}
+              {c.nomineeRelation}
             </td>
 
             <td
@@ -224,110 +193,6 @@ function AgentViewCustomer() {
             >
               {c.isActive ? "true" : "false"}
             </td>
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              <span
-                onClick={handleClickOpen}
-                style={{ cursor: "pointer", color: "blue" }}
-                id={c.credential.userName}
-              >
-                Edit
-              </span>
-              <Dialog
-                id={c.credential.userName}
-                open={open}
-                onClose={handleClose}
-              >
-                <DialogTitle>Update Employee</DialogTitle>
-                <DialogContent>
-                  {/* <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Property To Update"
-                    fullWidth
-                    variant="standard"
-                    onChange={(e) => {
-                      updatePropertyToUpdate(e.target.value);
-                    }}
-                  /> */}
-                  <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
-                    <InputLabel id="demo-simple-select-standard-label">
-                      Property To Update
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-standard-label"
-                      id="demo-simple-select-standard"
-                      value={propertyToUpdate}
-                      autoWidth
-                      onChange={(event) => {
-                        updatePropertyToUpdate(event.target.value);
-                      }}
-                      label="Property To Update"
-                    >
-                      <MenuItem value="FirstName">FirstName</MenuItem>
-                      <MenuItem value="LastName">LastName</MenuItem>
-                      <MenuItem value="UserName">UserName</MenuItem>
-                      <MenuItem value="dateOfBirth">dateOfBirth</MenuItem>
-                      <MenuItem value="address">address</MenuItem>
-                      <MenuItem value="email">email</MenuItem>
-                      <MenuItem value="state">state</MenuItem>
-                      <MenuItem value="city">city</MenuItem>
-                      <MenuItem value="pincode">pincode</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <TextField
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    label="Value"
-                    fullWidth
-                    variant="standard"
-                    onChange={(e) => {
-                      updateValue(e.target.value);
-                    }}
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleClose}>cancel</Button>
-                  <Button
-                    id={c.credential.userName}
-                    onClick={(event) => {
-                      handleEditCustomer(event);
-                    }}
-                  >
-                    update
-                  </Button>
-                </DialogActions>
-              </Dialog>
-            </td>
-            <td id={c.credential.userName} style={{ width: "10%" }}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={c.isActive}
-                      onChange={(event) => {
-                        toogleActiveFlag(event, c);
-                      }}
-                      id={c.credential.userName}
-                    />
-                  }
-                />
-              </FormGroup>
-            </td>
-            {/* <td style={{ width: "10%" }}>
-              <button
-                type="button"
-                class="btn btn-primary"
-                onClick={() => handleGetAccountDetails(c)}
-                style={{ width: "auto" }}
-              >
-                account details
-              </button>
-            </td> */}
           </tr>
         );
       });
@@ -389,37 +254,22 @@ function AgentViewCustomer() {
                 <thead>
                   <tr>
                     <th scope="col" style={{ width: "15%" }}>
-                      UserName
-                    </th>
-                    <th scope="col" style={{ width: "15%" }}>
                       Customer Name
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
                       DOB
                     </th>
-                    <th scope="col" style={{ width: "15%" }}>
-                      Email-Id
-                    </th>
                     <th scope="col" style={{ width: "10%" }}>
                       Address
                     </th>
-                    <th scope="col" style={{ width: "10%" }}>
+                    <th scope="col" style={{ width: "15%" }}>
                       Nominee
                     </th>
                     <th scope="col" style={{ width: "10%" }}>
-                      Policy
+                      Nominee Relation
                     </th>
                     <th scope="col" style={{ width: "10%" }}>
-                      status
-                    </th>
-                    {/* <th scope="col" style={{ width: "10%" }}>
-                  Account Details
-                </th> */}
-                    <th scope="col" style={{ width: "12%" }}>
-                      edit
-                    </th>
-                    <th scope="col" style={{ width: "12%" }}>
-                      is Active
+                      Status
                     </th>
                   </tr>
                 </thead>

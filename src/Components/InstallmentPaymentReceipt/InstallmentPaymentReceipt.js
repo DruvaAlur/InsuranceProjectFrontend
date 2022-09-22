@@ -1,19 +1,18 @@
 import NavBar from "../NavBar/NavBar";
-import "./PolicyPaymentReceipt.css";
-import { useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import html2canvas from "html2canvas";
-function PolicyPaymentReceipt() {
-  // const username = useParams().username;const policy = useLocation().state;
+import { useLocation } from "react-router-dom";
+function InstallmentPaymentReceipt() {
   const username = useLocation().state[0];
-
-  const date = useLocation().state[1];
-  const paymentType = useLocation().state[2];
-  const installAmount = useLocation().state[3];
-
-  const taxAmount = useLocation().state[4];
-  const totalPayAmount = useLocation().state[5];
+  const accountNo = useLocation().state[1];
+  const date = useLocation().state[2];
+  const paymentType = useLocation().state[3];
+  const installAmount = useLocation().state[4];
+  const penaltyfee = useLocation().state[5];
+  const taxAmount = useLocation().state[6];
+  const totalPayAmount = useLocation().state[7];
+  //   const username = useParams().username;
   const printDocument = () => {
     console.log("in here");
     const input = document.getElementById("divToPrint");
@@ -95,6 +94,9 @@ function PolicyPaymentReceipt() {
                                         <td>
                                           <b>Name:</b> {username}
                                           <br />
+                                          <b>Account Number:</b>
+                                          {accountNo}
+                                          <br />
                                           <b>Date:</b>
                                           {date}
                                           <br />
@@ -116,7 +118,12 @@ function PolicyPaymentReceipt() {
                                                   {installAmount}
                                                 </td>
                                               </tr>
-
+                                              <tr>
+                                                <td>Penalty Fee</td>
+                                                <td class="alignright">
+                                                  {penaltyfee}
+                                                </td>
+                                              </tr>
                                               <tr>
                                                 <td>Tax</td>
                                                 <td class="alignright">
@@ -143,16 +150,6 @@ function PolicyPaymentReceipt() {
                                   </table>
                                 </td>
                               </tr>
-                              <tr>
-                                <td class="contentPPR-block">
-                                  {/* <a href="#">View in browser</a> */}
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="contentPPR-block">
-                                  E-Insurance Technopulse 3rd Floor Mangalore
-                                </td>
-                              </tr>
                             </tbody>
                           </table>
                         </td>
@@ -160,17 +157,17 @@ function PolicyPaymentReceipt() {
                     </tbody>
                   </table>
                   {/* <div class="footer">
-                    <table width="100%">
-                      <tbody>
-                        <tr>
-                          <td class="aligncenter contentPPR-block">
-                            Questions? Email{" "}
-                            <a href="mailto:">support@company.inc</a>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div> */}
+                      <table width="100%">
+                        <tbody>
+                          <tr>
+                            <td class="aligncenter contentPPR-block">
+                              Questions? Email{" "}
+                              <a href="mailto:">support@company.inc</a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div> */}
                 </div>
               </td>
               <td></td>
@@ -181,4 +178,4 @@ function PolicyPaymentReceipt() {
     </>
   );
 }
-export default PolicyPaymentReceipt;
+export default InstallmentPaymentReceipt;

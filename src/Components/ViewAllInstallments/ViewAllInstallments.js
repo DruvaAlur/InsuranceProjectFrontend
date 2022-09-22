@@ -3,74 +3,84 @@ import { useLocation } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Table from "react-bootstrap/Table";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import { useState } from "react";
 function ViewAllInstallments() {
   const policy = useLocation().state;
   const username = useParams().username;
+  const navigation = new useNavigate();
+  const [allInstallments, updateAllInstallments] = useState();
   console.log(policy);
-  const hanldePayInstallment = () => {
-    navigation(`/adminDashboard/GetAccountDetails/${currentUser.username}`, {
-      state: c,
+  useEffect(() => {
+    getInstallments();
+  }, []);
+  async function getInstallments() {
+    const policyId = policy._id;
+    await axios
+      .post(
+        `http://localhost:8082/api/v1/getAllInstallmentPolicy/${username}`,
+        { policyId }
+      )
+      .then((resp) => {
+        updateAllInstallments(resp.data);
+        console.log(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
+  const hanldePayInstallment = (e, i) => {
+    e.preventDefault();
+    navigation(`/CustomerDashboard/InstallmentPayment/${username}`, {
+      state: [policy.accountno, policy.insuranceScheme, i._id],
     });
   };
-  const rowOfPaymentDetails = Object.values(policy.installmentLeft).map((i) => {
-    return (
-      <tr>
-        <td>{i.installmentNo}</td>
-        <td>{i.installmentDate.split("T")[0]}</td>
-        <td>{i.installAmount}</td>
-        <td>{i.payDate.split("GMT")[0]}</td>
-        <td>{i.paymentStatus}</td>
-        <td>
-          {i.paymentStatus == "Paid" ? (
-            <button style={{ color: "blue" }} disabled>
-              pay
-            </button>
-          ) : (
-            <button
-              style={{ color: "blue" }}
-              onClick={{ hanldePayInstallment }}
-            >
-              pay
-            </button>
-          )}
-        </td>
-      </tr>
-    );
-  });
-
+  let rowOfPaymentDetails;
+  if (allInstallments != null) {
+    rowOfPaymentDetails = Object.values(allInstallments).map((i) => {
+      return (
+        <tr>
+          <td>{i.installmentNo}</td>
+          <td>{i.installmentDate.split("T")[0]}</td>
+          <td>{i.installAmount}</td>
+          <td>{i.payDate.split("GMT")[0]}</td>
+          <td>{i.paymentStatus}</td>
+          <td>
+            {i.paymentStatus == "Paid" ? (
+              <button style={{ color: "Grey" }} disabled>
+                pay
+              </button>
+            ) : (
+              <button
+                style={{ color: "blue" }}
+                onClick={(event) => hanldePayInstallment(event, i)}
+              >
+                pay
+              </button>
+            )}
+          </td>
+        </tr>
+      );
+    });
+  }
   return (
     <>
       <NavBar />
       <div id="limiter2">
         <div id="container-login1002">
           <div id="wrap-login1002">
+            <span id="login100-form-title2" style={{ color: "#27CCFD" }}>
+              Installments
+            </span>
             <Table striped bordered hover size="sm">
               <thead>
                 <tr>
-                  <th scope="col" style={{ width: "15%" }}>
-                    Customer Name
-                  </th>
-
-                  <th scope="col" style={{ width: "15%" }}>
-                    Customer Address
-                  </th>
-                  <th scope="col" style={{ width: "15%" }}>
-                    Email-ID
-                  </th>
-                  <th scope="col" style={{ width: "15%" }}>
-                    Mobile No
-                  </th>
-                  <th scope="col" style={{ width: "10%" }}>
-                    Login Id
-                  </th>
+                  <th scope="col">Customer Name</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>{username}</td>
-                  <td>{username}</td>
-                  <td>{username}</td>
-                  <td>{username}</td>
                   <td>{username}</td>
                 </tr>
               </tbody>
