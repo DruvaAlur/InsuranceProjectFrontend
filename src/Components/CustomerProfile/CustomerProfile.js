@@ -13,7 +13,9 @@ function CustomerProfile() {
   }, []);
   async function getProfile() {
     axios
-      .get(`http://localhost:8082/api/v1/profile/${currentUser.username}`)
+      .get(
+        `http://localhost:8082/api/v1/profileCustomer/${currentUser.username}`
+      )
       .then((resp) => {
         console.log(resp.data);
         updateuser(resp.data);
@@ -36,7 +38,7 @@ function CustomerProfile() {
                 textStyle: "bold",
               }}
             >
-              Profile
+              user
             </h1>
             <br />
             <Table striped bordered hover size="sm">
@@ -46,31 +48,41 @@ function CustomerProfile() {
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Customer Name :
+                      Name :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.firstName}</td>
+                    <td style={{ padding: "10px" }}>
+                      {user.firstName + " " + user.lastName}
+                    </td>
                   </tr>
                   <tr>
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Date Of Birth :
+                      Email :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.lastName}</td>
+                    <td style={{ padding: "10px" }}>{user.email}</td>
                   </tr>
                   <tr>
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Login ID :
+                      Nominee :
                     </th>
-                    <td style={{ padding: "10px" }}>{currentUser.username}</td>
+                    <td style={{ padding: "10px" }}>{user.nominee}</td>
                   </tr>
                   <tr>
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Address :
+                      Nominee Relation:
+                    </th>
+                    <td style={{ padding: "10px" }}>{user.nomineeRelation}</td>
+                  </tr>
+                  <tr>
+                    <th
+                      style={{ width: "30%", height: "50%", padding: "10px" }}
+                    >
+                      isActive :
                     </th>
                     <td style={{ padding: "10px" }}>
                       {user.isActive ? "Active" : "InActive"}
@@ -80,17 +92,9 @@ function CustomerProfile() {
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Email ID :
-                    </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
                       State :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
+                    <td style={{ padding: "10px" }}>{user.state}</td>
                   </tr>
                   <tr>
                     <th
@@ -98,39 +102,15 @@ function CustomerProfile() {
                     >
                       City :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
+                    <td style={{ padding: "10px" }}>{user.city}</td>
                   </tr>
                   <tr>
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Pincode :
+                      Address :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
-                      Mobile Number :
-                    </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
-                      Nominee :
-                    </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
-                      Nominee Relation :
-                    </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
+                    <td style={{ padding: "10px" }}>{user.address}</td>
                   </tr>
                 </tbody>
               }

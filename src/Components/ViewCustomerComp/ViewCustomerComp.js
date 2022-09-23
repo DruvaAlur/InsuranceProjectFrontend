@@ -214,7 +214,14 @@ function ViewCustomerComp() {
               id={c.credential.userName}
               style={{ width: "15%", padding: "10px" }}
             >
-              {c.policies}
+              {Object.values(c.policies).map((c) => {
+                return (
+                  <>
+                    <p>{c.insuranceScheme}</p>
+                    <br />
+                  </>
+                );
+              })}
             </td>
 
             <td

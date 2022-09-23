@@ -2,9 +2,25 @@ import NavBar from "../AgentNavBar/AgentNavBar";
 import Table from "react-bootstrap/Table";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 function AgentProfile() {
   const currentUser = useParams();
-  const [user, updateuser] = useState("");
+  const [profile, updateProfile] = useState("");
+  useEffect(() => {
+    getProfile();
+  }, []);
+  async function getProfile() {
+    await axios
+      .get(`http://localhost:8082/api/v1/profileAgent/${currentUser.username}`)
+      .then((resp) => {
+        console.log(resp.data);
+        updateProfile(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
   return (
     <>
       <NavBar />
@@ -29,35 +45,17 @@ function AgentProfile() {
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Customer Name :
+                      Agent Code :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.firstName}</td>
+                    <td style={{ padding: "10px" }}>{profile.agentCode}</td>
                   </tr>
                   <tr>
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Date Of Birth :
+                      Agent Name :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.lastName}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
-                      Login ID :
-                    </th>
-                    <td style={{ padding: "10px" }}>{currentUser.username}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
-                      Address :
-                    </th>
-                    <td style={{ padding: "10px" }}>
-                      {user.isActive ? "Active" : "InActive"}
-                    </td>
+                    <td style={{ padding: "10px" }}>{profile.fullName}</td>
                   </tr>
                   <tr>
                     <th
@@ -65,55 +63,33 @@ function AgentProfile() {
                     >
                       Email ID :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
+                    <td style={{ padding: "10px" }}>{profile.emailId}</td>
                   </tr>
                   <tr>
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      State :
+                      isActive :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
+                    <td style={{ padding: "10px" }}>
+                      {profile.isActive ? "Active" : "InActive"}
+                    </td>
                   </tr>
                   <tr>
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      City :
+                      Qualification :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
+                    <td style={{ padding: "10px" }}>{profile.qualification}</td>
                   </tr>
                   <tr>
                     <th
                       style={{ width: "30%", height: "50%", padding: "10px" }}
                     >
-                      Pincode :
+                      Address :
                     </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
-                      Mobile Number :
-                    </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
-                      Nominee :
-                    </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
-                  </tr>
-                  <tr>
-                    <th
-                      style={{ width: "30%", height: "50%", padding: "10px" }}
-                    >
-                      Nominee Relation :
-                    </th>
-                    <td style={{ padding: "10px" }}>{user.role}</td>
+                    <td style={{ padding: "10px" }}>{profile.address}</td>
                   </tr>
                 </tbody>
               }

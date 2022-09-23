@@ -5,14 +5,14 @@ import ReactQuill from "react-quill";
 import { useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
-
+const htmlToFormattedText = require("html-to-formatted-text");
 // const { convert } = require("html-to-text");
 function AgentMarketing() {
   const [to, updateTo] = useState("");
   const [subject, updateSubject] = useState("");
   const [message, updateMessage] = useState("");
   const handleSendMail = () => {
-    const text = message;
+    const text = htmlToFormattedText(message);
     // console.log(text);
     axios
       .post("http://localhost:8082/api/v1/marketing", { to, subject, text })
