@@ -9,7 +9,9 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import axios from "axios";
 import swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
 function AddInsuranceScheme() {
   const [insuranceType, updateInsuranceType] = useState("");
   const [insuranceScheme, updateInsuranceScheme] = useState("");
@@ -26,6 +28,22 @@ function AddInsuranceScheme() {
   const [isActive, updateIsActive] = useState("");
   const fileInput = useRef();
   const [allInsuranceTypes, updateallInsuranceTypes] = useState("");
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAdminLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+  useEffect(() => {
+    getInsuranceTypes();
+  }, []);
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   const handleAddInsuranceScheme = async (e) => {
     e.preventDefault();
 
@@ -47,7 +65,21 @@ function AddInsuranceScheme() {
     bodyFormData.append("profitRatio", profitRatio);
 
     bodyFormData.append("isActive", isActive);
-    if (testImage != "") {
+    if (
+      testImage != null &&
+      insuranceType != "" &&
+      insuranceScheme != "" &&
+      commissionNewReg != "" &&
+      commissionInstall != "" &&
+      insuranceNote != "" &&
+      minTermPlan != "" &&
+      maxTermPlan != "" &&
+      minAge != "" &&
+      maxAge != "" &&
+      minInvestment != "" &&
+      maxInvestment != "" &&
+      profitRatio != ""
+    ) {
       swal({
         title: "Are you sure?",
         text: "Click OK for Adding Insurance Scheme",
@@ -79,9 +111,7 @@ function AddInsuranceScheme() {
       swal("Fill all fields", "Insurance Scheme not Created", "warning");
     }
   };
-  useEffect(() => {
-    getInsuranceTypes();
-  }, []);
+
   async function getInsuranceTypes() {
     await axios
       .get("http://localhost:8082/api/v1/getAllInsuranceType")
@@ -90,7 +120,7 @@ function AddInsuranceScheme() {
         console.log(resp.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal(error.response.data, "Error Occured!", "warning");
       });
   }
   let InsTypes;

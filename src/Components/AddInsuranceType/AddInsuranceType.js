@@ -6,44 +6,64 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import swal from "sweetalert"
+import swal from "sweetalert";
 import { useRef, useState } from "react";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 function AddInsuranceType() {
   const [isActive, updateIsActive] = useState(true);
   const [insuranceType, updateInsuranceType] = useState("");
   const [image, updateImage] = useState("");
   const fileInput = useRef();
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAdminLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const handleAddInsuranceType = async (e) => {
     e.preventDefault();
-    swal({
-      title: "Are you sure?",
-      text: "Click OK for Adding an Agent",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (AddingAgent) => {
-      if (AddingAgent === true) {
     let testImage = fileInput.current.files[0];
-
-    var bodyFormData = new FormData();
-    bodyFormData.append("testImage", testImage);
-    bodyFormData.append("insuranceType", insuranceType);
-    bodyFormData.append("isActive", isActive);
-    await axios
-      .post(`http://localhost:8082/api/v1/createInsuranceType`, bodyFormData)
-      .then((resp) => {
-        swal(
-          (resp.data),"Created Succesfully",
-          {
-            icon: "success",
-          }
-        );
-      })
-      .catch((error) => {
-        swal((error.response.data),"Agent not Created","warning");
+    if (testImage != null && insuranceType != "" && isActive != "") {
+      swal({
+        title: "Are you sure?",
+        text: "Click OK for Adding an Agent",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (AddingAgent) => {
+        if (AddingAgent === true) {
+          var bodyFormData = new FormData();
+          bodyFormData.append("testImage", testImage);
+          bodyFormData.append("insuranceType", insuranceType);
+          bodyFormData.append("isActive", isActive);
+          await axios
+            .post(
+              `http://localhost:8082/api/v1/createInsuranceType`,
+              bodyFormData
+            )
+            .then((resp) => {
+              swal(resp.data, "Created Succesfully", {
+                icon: "success",
+              });
+            })
+            .catch((error) => {
+              swal(error.response.data, "Agent not Created", "warning");
+            });
+        }
       });
-  }
-});
+    } else {
+      swal("Fill all fields", "Insurance Type not Created", "warning");
+    }
   };
   return (
     <>

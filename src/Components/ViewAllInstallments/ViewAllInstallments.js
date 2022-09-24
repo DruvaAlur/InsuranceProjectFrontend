@@ -5,16 +5,34 @@ import Table from "react-bootstrap/Table";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import swal from "sweetalert";
 import { useState } from "react";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+
 function ViewAllInstallments() {
   const policy = useLocation().state;
   const username = useParams().username;
   const navigation = new useNavigate();
   const [allInstallments, updateAllInstallments] = useState();
-  console.log(policy);
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(username));
+      console.log(isLoggedIn);
+    }
+  }, []);
   useEffect(() => {
     getInstallments();
   }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
+  console.log(policy);
+
   async function getInstallments() {
     const policyId = policy._id;
     await axios
@@ -28,6 +46,7 @@ function ViewAllInstallments() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal(error.response.data, "Error Occured", "warning");
       });
   }
   const hanldePayInstallment = (e, i) => {
@@ -49,7 +68,7 @@ function ViewAllInstallments() {
           <td>
             {i.paymentStatus == "Paid" ? (
               <button style={{ color: "Grey" }} disabled>
-                pay
+                paid
               </button>
             ) : (
               <button
@@ -70,9 +89,10 @@ function ViewAllInstallments() {
       <div id="limiter2">
         <div id="container-login1002">
           <div id="wrap-login1002">
-            <span id="login100-form-title2" style={{ color: "#27CCFD" }}>
+            <span id="login100-form-title1" style={{ color: "#27CCFD" }}>
               Installments
             </span>
+            <br />
             <Table striped bordered hover size="sm">
               <thead>
                 <tr>
@@ -86,6 +106,7 @@ function ViewAllInstallments() {
               </tbody>
               {/* <tbody>{rowOfCustomerDetails}</tbody> */}
             </Table>
+            <br />
             <Table striped bordered hover size="sm">
               <thead>
                 <tr>
@@ -121,6 +142,7 @@ function ViewAllInstallments() {
               </tbody>
               {/* <tbody>{rowOfAccountDetails}</tbody> */}
             </Table>
+            <br />
             <Table striped bordered hover size="sm">
               <thead>
                 <tr>
@@ -144,6 +166,7 @@ function ViewAllInstallments() {
               </tbody>
               {/* <tbody>{rowOfPremiumDetails}</tbody> */}
             </Table>
+            <br />
             <Table striped bordered hover size="sm">
               <thead>
                 <tr>
@@ -163,7 +186,7 @@ function ViewAllInstallments() {
                     Payment Status
                   </th>
                   <th scope="col" style={{ width: "10%" }}>
-                    Receipt
+                    Pay
                   </th>
                 </tr>
               </thead>

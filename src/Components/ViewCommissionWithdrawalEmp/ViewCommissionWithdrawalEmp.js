@@ -1,27 +1,13 @@
 import NavBar from "../EmployeeNavBar/EmployeeNavBar";
-import ViewCommissionWithdrawalComp from "../ViewCommissionWithdrawalComp/ViewCommissionWithdrawalComp";
 import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Table from "react-bootstrap/Table";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import swal from "sweetalert";
-// import SearchBar from "material-ui-search-bar";
 import SearchInput, { createFilter } from "react-search-input";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import IsValidUser from "../isValidUser/isValidUser";
+import isEmployeeLoggedIn from "../isEmployeeLoggedIn/isEmployeeLoggedIn";
 import axios from "axios";
 function ViewCommissionWithdrawalEmp() {
   const currentUser = useParams();
@@ -38,32 +24,26 @@ function ViewCommissionWithdrawalEmp() {
 
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-  const handleClickOpen = (e) => {
-    console.log(e.target.id);
-    updateCustomertoUpdate(e.target.id);
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
   const navigation = new useNavigate();
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isEmployeeLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
 
   useEffect(() => {
     getCustomer();
   }, [pageNumber, limit]);
-  const handleGetAccountDetails = (c) => {
-    console.log(c);
-    navigation(`/adminDashboard/GetAccountDetails/${currentUser.username}`, {
-      state: c,
-    });
-  };
 
-  // const handleUpdate = (username) => {
-  //   navigation(`/adminDashboard/UpdateCustomer/${currentUser.username}`, {
-  //     state: username,
-  //   });
-  // };
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   async function getCustomer() {
     axios
       .post(`http://localhost:8082/api/v1/getallCommisionWithdraw`, {
@@ -112,22 +92,6 @@ function ViewCommissionWithdrawalEmp() {
       }
     });
     setOpen(false);
-  };
-  const handleApprove = (e, c) => {
-    const WithdrawReqId = c._id;
-    const agentName = c.agentName;
-    console.log(agentName);
-    axios
-      .post(`http://localhost:8082/api/v1/accptwithdraw`, {
-        WithdrawReqId,
-        agentName,
-      })
-      .then((resp) => {
-        getCustomer();
-      })
-      .catch((error) => {
-        swal(error.response.data, "Error Occured!", "warning");
-      });
   };
   const searchUpdated = (term) => {
     updateSearchTerm(term);
@@ -186,19 +150,6 @@ function ViewCommissionWithdrawalEmp() {
                 <p style={{ color: "red" }}>false</p>
               )}
             </td>
-
-            {/* <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.particulars}
-            </td> */}
-            {/* <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              <button onClick={(e) => handleApprove(e, c)}>Approve</button>
-            </td> */}
           </tr>
         );
       });

@@ -3,7 +3,12 @@ import jsPDF from "jspdf";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import html2canvas from "html2canvas";
 import { useLocation } from "react-router-dom";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+
+import { useEffect, useState } from "react";
 function InstallmentPaymentReceipt() {
+  const userName = useParams().username;
   const username = useLocation().state[0];
   const accountNo = useLocation().state[1];
   const date = useLocation().state[2];
@@ -12,9 +17,19 @@ function InstallmentPaymentReceipt() {
   const penaltyfee = useLocation().state[5];
   const taxAmount = useLocation().state[6];
   const totalPayAmount = useLocation().state[7];
-  //   const username = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const printDocument = () => {
-    console.log("in here");
     const input = document.getElementById("divToPrint");
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");

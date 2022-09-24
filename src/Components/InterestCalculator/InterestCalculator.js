@@ -5,7 +5,10 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import { Button } from "react-bootstrap";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 function InterestCalculator(props) {
   const profit = props.profitRatio;
 
@@ -15,6 +18,19 @@ function InterestCalculator(props) {
   const [installmentAmount, updateInstallmentAmount] = useState("");
   const [interestAmount, updateInterestAmount] = useState("");
   const [totalAmount, updateTotalAmount] = useState("");
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
 
   const handleCalculate = () => {
     const interest = (totalInvestmentAmount * profit) / 100;

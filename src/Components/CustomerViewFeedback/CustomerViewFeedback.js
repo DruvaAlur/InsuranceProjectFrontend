@@ -1,36 +1,39 @@
 import NavBar from "../NavBar/NavBar";
-import ReactQuill from "react-quill";
 import { useEffect, useState } from "react";
-
 import "react-quill/dist/quill.bubble.css";
-
-import Table from "react-bootstrap/Table";
-
-import Button from "@mui/material/Button";
-
-import Dialog from "@mui/material/Dialog";
-
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-
-import DialogTitle from "@mui/material/DialogTitle";
-
 import SearchInput, { createFilter } from "react-search-input";
-import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import Table from "react-bootstrap/Table";
+import swal from "sweetalert";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+import { useParams } from "react-router-dom";
 function CustomerViewFeedback() {
   const [focused, setFocused] = useState(false);
   const [searchTerm, updateSearchTerm] = useState("");
-  const [open, setOpen] = useState("");
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-  const searchUpdated = (term) => {
-    updateSearchTerm(term);
-  };
+  const userName = useParams().username;
   const [allQuery, updateAllQuery] = useState("");
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
   useEffect(() => {
     getQuery();
   }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+  const searchUpdated = (term) => {
+    updateSearchTerm(term);
+  };
+
   let rowOfEmployee;
   async function getQuery() {
     axios
@@ -41,6 +44,7 @@ function CustomerViewFeedback() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal(error.response.data, "Error Occured!", "warning");
       });
   }
   if (allQuery != null) {
@@ -65,7 +69,11 @@ function CustomerViewFeedback() {
               {c.createdAt.split("T")[0].split("-").reverse().join("-")}
             </td>
             <td id={c.customerName} style={{ width: "15%", padding: "10px" }}>
-              {c.reply === "" ? <>No Reply Yet</> : c.reply}
+              {c.reply === "" ? (
+                <>No Reply Yet</>
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: c.reply }}></div>
+              )}
             </td>
           </tr>
         );

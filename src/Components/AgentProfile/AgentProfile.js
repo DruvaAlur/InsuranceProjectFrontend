@@ -4,12 +4,26 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAgentLoggedIn from "../isAgentLoggedIn/isAgentLoggedIn";
 function AgentProfile() {
   const currentUser = useParams();
   const [profile, updateProfile] = useState("");
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAgentLoggedIn(currentUser.username));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
   useEffect(() => {
     getProfile();
   }, []);
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   async function getProfile() {
     await axios
       .get(`http://localhost:8082/api/v1/profileAgent/${currentUser.username}`)

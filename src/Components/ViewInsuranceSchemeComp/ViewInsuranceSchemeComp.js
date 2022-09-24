@@ -16,6 +16,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import swal from "sweetalert";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import "react-quill/dist/quill.bubble.css";
@@ -79,6 +80,7 @@ function ViewInsuranceSchemeComp() {
         console.log(resp.data);
       })
       .catch((error) => {
+        swal(error.response.data, "Error Occured!", "warning");
         console.log(error.response.data);
       });
   }
@@ -107,10 +109,14 @@ function ViewInsuranceSchemeComp() {
         value,
       })
       .then((resp) => {
+        swal(resp.data, "Update Succesfull", {
+          icon: "success",
+        });
         getAllInsuranceScheme();
         console.log(resp.data);
       })
       .catch((error) => {
+        swal(error.response.data, "Update failed", "warning");
         console.log(error.response.data);
       });
     updateValue("");

@@ -2,6 +2,9 @@ import NavBar from "../NavBar/NavBar";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Table from "react-bootstrap/Table";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+import { useEffect, useState } from "react";
 
 function InsuranceAccountDetails() {
   const navigate = new useNavigate();
@@ -21,6 +24,19 @@ function InsuranceAccountDetails() {
     date.getMonth() +
     "-" +
     (Number(date.getFullYear()) + Number(noOfYears));
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const handleSubmit = () => {
     navigate(`/CustomerDashboard/PolicyPayment/${username}`, {
       state: [

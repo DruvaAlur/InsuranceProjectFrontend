@@ -3,10 +3,25 @@ import "../NavBar/NavBar.css";
 import NavBar from "../NavBarAdmin/NavBarAdmin";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 function AdminDashboard() {
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  const userName = useParams().username;
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAdminLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
   const navigate = new useNavigate();
   const username = useParams().username;
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   return (
     <>
       <NavBar />

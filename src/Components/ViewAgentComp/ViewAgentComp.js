@@ -185,17 +185,6 @@ function ViewAgentComp() {
               >
                 <DialogTitle>Update Employee</DialogTitle>
                 <DialogContent>
-                  {/* <TextField
-                  autoFocus
-                  margin="dense"
-                  id="name"
-                  label="Property To Update"
-                  fullWidth
-                  variant="standard"
-                  onChange={(e) => {
-                    updatePropertyToUpdate(e.target.value);
-                  }}
-                /> */}
                   <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                     <InputLabel id="demo-simple-select-standard-label">
                       Property To Update
@@ -257,16 +246,6 @@ function ViewAgentComp() {
                 />
               </FormGroup>
             </td>
-            {/* <td style={{ width: "10%" }}>
-            <button
-              type="button"
-              class="btn btn-primary"
-              onClick={() => handleGetAccountDetails(c)}
-              style={{ width: "auto" }}
-            >
-              account details
-            </button>
-          </td> */}
           </tr>
         );
       });

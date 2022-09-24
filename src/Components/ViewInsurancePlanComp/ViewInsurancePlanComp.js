@@ -17,6 +17,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
+import swal from "sweetalert";
 function ViewInsurancePlanComp() {
   const [pageNumber, updatePageNumber] = useState(1);
   const [limit, updateLimit] = useState(5);
@@ -87,10 +88,14 @@ function ViewInsurancePlanComp() {
         value,
       })
       .then((resp) => {
+        swal(resp.data, "Update Succesfull", {
+          icon: "success",
+        });
         getAllInsuranceScheme();
         console.log(resp.data);
       })
       .catch((error) => {
+        swal(error.response.data, "Update failed", "warning");
         console.log(error.response.data);
       });
     setOpen(false);

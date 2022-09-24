@@ -17,11 +17,13 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import swal from "sweetalert"
+import swal from "sweetalert";
 // import SearchBar from "material-ui-search-bar";
 import SearchInput, { createFilter } from "react-search-input";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
 import { useRef } from "react";
 function ViewEmployee() {
   const currentUser = useParams();
@@ -35,7 +37,14 @@ function ViewEmployee() {
   const [value, updateValue] = useState("");
   const [employetoUpdate, updateEmployetoUpdate] = useState("");
   const [focused, setFocused] = useState(false);
-
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAdminLoggedIn(currentUser.username));
+      console.log(isLoggedIn);
+    }
+  }, []);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
   const handleClickOpen = (e) => {
@@ -52,18 +61,9 @@ function ViewEmployee() {
   useEffect(() => {
     getEmployees();
   }, [pageNumber, limit]);
-  const handleGetAccountDetails = (c) => {
-    console.log(c);
-    navigation(`/adminDashboard/GetAccountDetails/${currentUser.username}`, {
-      state: c,
-    });
-  };
-
-  // const handleUpdate = (username) => {
-  //   navigation(`/adminDashboard/UpdateCustomer/${currentUser.username}`, {
-  //     state: username,
-  //   });
-  // };
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   async function getEmployees() {
     axios
       .post("http://localhost:8082/api/v1/getAllEmployee", {
@@ -77,13 +77,11 @@ function ViewEmployee() {
         console.log(allEmps);
       })
       .catch((error) => {
-        swal((error.response.data),"Error Occured!","warning");
+        swal(error.response.data, "Error Occured!", "warning");
         console.log(error.response.data);
       });
   }
   const handleEditEmployee = async (e) => {
-    // console.log(e.target.id);
-    // const employetoUpdate = e.target.id;
     swal({
       title: "Are you sure?",
       text: "Click OK to Update the Employee",
@@ -93,28 +91,25 @@ function ViewEmployee() {
     }).then(async (UpdatingEmployee) => {
       if (UpdatingEmployee === true) {
         await axios
-        .put(
-        `http://localhost:8082/api/v1/updateEmployee/${currentUser.username}`,
-        {
-          employetoUpdate,
-          propertyToUpdate,
-          value,
-        }
-      )
-      .then((resp) => {
-        swal(
-          (resp.data),"Updated Succesfully",
-          {
-            icon: "success",
-          }
-        );
-        getEmployees();
-      })
-      .catch((error) => {
-        swal((error.response.data),"Employee not Updated","warning");
-      });
-    }
-  });
+          .put(
+            `http://localhost:8082/api/v1/updateEmployee/${currentUser.username}`,
+            {
+              employetoUpdate,
+              propertyToUpdate,
+              value,
+            }
+          )
+          .then((resp) => {
+            swal(resp.data, "Updated Succesfully", {
+              icon: "success",
+            });
+            getEmployees();
+          })
+          .catch((error) => {
+            swal(error.response.data, "Employee not Updated", "warning");
+          });
+      }
+    });
     setOpen(false);
   };
   const toogleActiveFlag = (e, c) => {
@@ -130,6 +125,7 @@ function ViewEmployee() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal(error.response.data, "Employee not Updated", "warning");
       });
   };
   const searchUpdated = (term) => {

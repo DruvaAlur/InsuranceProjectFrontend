@@ -2,26 +2,14 @@ import NavBar from "../NavBar/NavBar";
 import { useEffect, useState } from "react";
 
 import Table from "react-bootstrap/Table";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
 import swal from "sweetalert";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import DialogTitle from "@mui/material/DialogTitle";
 import SearchInput, { createFilter } from "react-search-input";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
 function CustomerInsuranceAccount() {
   const [pageNumber, updatePageNumber] = useState(1);
   const userName = useParams().username;
@@ -32,26 +20,26 @@ function CustomerInsuranceAccount() {
   const [open, setOpen] = useState("");
   const [StatetoUpdate, updateStatetoUpdate] = useState("");
   const [value, updateValue] = useState("");
-  const handleClickOpen = (e) => {
-    console.log(e.target.id);
-    updateStatetoUpdate(e.target.id);
-    setOpen(true);
-  };
-  const searchUpdated = (term) => {
-    updateSearchTerm(term);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+  const [isLoggedIn, updateIsLoggedIn] = useState();
   const [allPolicies, updateAllPolicies] = useState("");
-
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
   useEffect(() => {
     getPolicies();
   }, [limit, pageNumber]);
 
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+  const searchUpdated = (term) => {
+    updateSearchTerm(term);
+  };
   async function getPolicies() {
-    // console.log(limil);
     await axios
       .post(`http://localhost:8082/api/v1/getUserAllPolicy/${userName}`, {
         limit,

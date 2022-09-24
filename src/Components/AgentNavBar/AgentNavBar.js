@@ -126,10 +126,10 @@ function BasicExample() {
               </NavDropdown.Item>
 
               <NavDropdown.Item onClick={handleViewCommissionWithdrawal}>
-                View Commission Withdrawal
+                Withdraw Amount
               </NavDropdown.Item>
               <NavDropdown.Item onClick={handleViewWithdrawAmount}>
-                Withdraw Amount
+                View Commission Withdrawal
               </NavDropdown.Item>
             </NavDropdown>
 

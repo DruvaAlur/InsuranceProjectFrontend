@@ -1,14 +1,17 @@
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import swal from "sweetalert"
+import swal from "sweetalert";
 import "./AddEmployee.css";
 import NavBar from "../NavBarAdmin/NavBarAdmin";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
+import { useParams } from "react-router-dom";
 function AddEmployee() {
   const [role, updateRole] = useState("employee");
   const [userName, updateUserName] = useState("");
@@ -17,7 +20,18 @@ function AddEmployee() {
   const [firstName, updateFirstName] = useState("");
   const [lastName, updateLastName] = useState("");
   const [isActive, updateIsActive] = useState(true);
-  // const [roles,updateRoles= ]
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  const username = useParams().username;
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAdminLoggedIn(username));
+      console.log(isLoggedIn);
+    }
+  }, []);
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const onAddEmployee = async (e) => {
     e.preventDefault();
     if (confirmPassword === password) {
@@ -29,33 +43,34 @@ function AddEmployee() {
         dangerMode: true,
       }).then(async (AddingAgent) => {
         if (AddingAgent === true) {
-      await axios
-        .post(`http://localhost:8082/api/v1/createEmployee`, {
-          userName,
-          password,
-          firstName,
-          lastName,
-          role,
-          isActive,
-        })
-        .then((resp) => {
-          swal(
-            (resp.data),"Created Succesfully",
-            {
-              icon: "success",
-            }
-          );
-        })
-        .catch((error) => {
-          swal((error.response.data),"Employee not Created","warning");
-        });    
-      }
-    });
-  }
-  else{
-    swal("Employee not Created","Password and Confirm Password are not same","warning");
-  }
-}
+          await axios
+            .post(`http://localhost:8082/api/v1/createEmployee`, {
+              userName,
+              password,
+              firstName,
+              lastName,
+              role,
+              isActive,
+            })
+            .then((resp) => {
+              swal(resp.data, "Created Succesfully", {
+                icon: "success",
+              });
+            })
+            .catch((error) => {
+              swal(error.response.data, "Employee not Created", "warning");
+            });
+        }
+      });
+    } else {
+      swal(
+        "Employee not Created",
+        "Password and Confirm Password are not same",
+        "warning"
+      );
+    }
+  };
+
   return (
     <>
       <NavBar />

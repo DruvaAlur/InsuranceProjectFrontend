@@ -15,6 +15,10 @@ import axios from "axios";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import swal from "sweetalert";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+
 function InstallmentPayment() {
   const navigate = new useNavigate();
   const username = useParams().username;
@@ -36,11 +40,22 @@ function InstallmentPayment() {
   const [cvvNumber, updateCvvNumber] = useState("");
   const [expDate, updateExpireDate] = useState("");
   const [ammountDesc, updateAmmountDesc] = useState();
-  //   const tax = (installmentAmount * 12) / 100;
-  //   const totalAmount = tax + installmentAmount;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(username));
+      console.log(isLoggedIn);
+    }
+  }, []);
   useEffect(() => {
     getAmountDescription();
   }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   async function getAmountDescription() {
     await axios
       .post(`http://localhost:8082/api/v1/getAmountDescrip`, {
@@ -52,54 +67,81 @@ function InstallmentPayment() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal(error.response.data, "Error Occured!", "warning");
       });
   }
   const handleSubmit = () => {
     let tempdate = expDate; // value from your state
     let expireDate = moment(tempdate).format("DD/MM/YYYY");
-    console.log(username);
-    axios
-      .post(`http://localhost:8082/api/v1/payInstallment/${username}`, {
-        accountNo,
-        insuranceScheme,
-        installmentLeftId,
+    if (
+      cardNumber.toString().length === 16 &&
+      cvvNumber.toString().length === 3
+    ) {
+      swal({
+        title: "Are you sure?",
+        text: "Click OK for Paying Amount",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (AddingCity) => {
+        if (AddingCity === true) {
+          axios
+            .post(`http://localhost:8082/api/v1/payInstallment/${username}`, {
+              accountNo,
+              insuranceScheme,
+              installmentLeftId,
 
-        paymentType,
-        cardHolder,
-        cardNumber,
-        cvvNumber,
-        expireDate,
-      })
-      .then((resp) => {
-        console.log(resp.data);
-        navigate(`/CustomerDashboard/InstallmentPaymentReceipt/${username}`, {
-          state: [
-            username,
-            accountNo,
-            date,
-            paymentType,
-            ammountDesc.installAmount,
-            ammountDesc.penaltyfee,
-            ammountDesc.taxAmount,
-            ammountDesc.totalPayAmount,
-          ],
-        });
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        navigate(`/CustomerDashboard/InstallmentPaymentReceipt/${username}`, {
-          state: [
-            username,
-            accountNo,
-            date,
-            paymentType,
-            ammountDesc.installAmount,
-            ammountDesc.penaltyfee,
-            ammountDesc.taxAmount,
-            ammountDesc.totalPayAmount,
-          ],
-        });
+              paymentType,
+              cardHolder,
+              cardNumber,
+              cvvNumber,
+              expireDate,
+            })
+            .then((resp) => {
+              swal(resp.data, "Payment Success", {
+                icon: "success",
+              });
+              console.log(resp.data);
+              navigate(
+                `/CustomerDashboard/InstallmentPaymentReceipt/${username}`,
+                {
+                  state: [
+                    username,
+                    accountNo,
+                    date,
+                    paymentType,
+                    ammountDesc.installAmount,
+                    ammountDesc.penaltyfee,
+                    ammountDesc.taxAmount,
+                    ammountDesc.totalPayAmount,
+                  ],
+                }
+              );
+            })
+            .catch((error) => {
+              swal(error.response.data, "Error Occured!", "warning");
+              console.log(error.response.data);
+              // navigate(
+              //   `/CustomerDashboard/InstallmentPaymentReceipt/${username}`,
+              //   {
+              //     state: [
+              //       username,
+              //       accountNo,
+              //       date,
+              //       paymentType,
+              //       ammountDesc.installAmount,
+              //       ammountDesc.penaltyfee,
+              //       ammountDesc.taxAmount,
+              //       ammountDesc.totalPayAmount,
+              //     ],
+              //   }
+              // );
+            });
+        }
       });
+    } else {
+      swal("wrong Card number", "Invalid Card or CVV Number", "warning");
+    }
   };
   if (ammountDesc != null) {
     return (
@@ -255,7 +297,7 @@ function InstallmentPayment() {
                     <td style={{ padding: "10px" }}>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DesktopDatePicker
-                          label="Date Of Birth"
+                          label="Expire Date"
                           inputFormat="DD/MM/YYYY"
                           value={expDate}
                           onChange={(value) => updateExpireDate(value)}

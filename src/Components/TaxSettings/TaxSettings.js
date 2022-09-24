@@ -2,19 +2,49 @@ import NavBar from "../NavBarAdmin/NavBarAdmin";
 import { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import axios from "axios";
-
+import swal from "sweetalert";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
+import { useParams } from "react-router-dom";
 function TaxSettings() {
   const [value, setValue] = useState(0);
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAdminLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const onSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:8082/api/v1/updatetaxSetting", { value })
-      .then((resp) => {
-        console.log(resp.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+    swal({
+      title: "Are you sure?",
+      text: "Click OK for Creating Your Customer Account",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (AddingCustomer) => {
+      if (AddingCustomer === true) {
+        axios
+          .post("http://localhost:8082/api/v1/updatetaxSetting", { value })
+          .then((resp) => {
+            console.log(resp.data);
+            swal(resp.data, `Congrats!! ,Update Success`, {
+              icon: "success",
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+            swal(error.response.data, "Update Failed", "warning");
+          });
+      }
+    });
   };
   return (
     <>

@@ -4,13 +4,28 @@ import swal from "sweetalert";
 import Table from "react-bootstrap/Table";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+
 function CustomerProfile() {
   const currentUser = useParams();
   const [user, updateuser] = useState("");
-
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(currentUser.username));
+      console.log(isLoggedIn);
+    }
+  }, []);
   useEffect(() => {
     getProfile();
   }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   async function getProfile() {
     axios
       .get(

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import swal from "sweetalert";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import "./CustomerDashboard.css";
 function CustomerDashboard() {
@@ -19,6 +20,7 @@ function CustomerDashboard() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal(error.response.data, "Error Occured", "warning");
       });
   }
   const handleOnClick = (i) => {

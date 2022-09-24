@@ -1,6 +1,7 @@
 import NavBar from "../NavBar/NavBar";
 import { useLocation } from "react-router-dom";
-
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
 import TextField from "@mui/material/TextField";
 import Table from "react-bootstrap/Table";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,7 +11,6 @@ import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PlanDetails from "../PlanDetails/PlanDetails";
-import InterestCalculator from "../InterestCalculator/InterestCalculator";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 function InsuranceSchemeDetails() {
   const navigate = new useNavigate();
@@ -26,22 +26,20 @@ function InsuranceSchemeDetails() {
   const [installmentAmount, updateInstallmentAmount] = useState("");
   const [interestAmount, updateInterestAmount] = useState("");
   const [totalAmount, updateTotalAmount] = useState("");
-  //   useEffect(() => {
-  //     getInsuranceScheme();
-  //   }, []);
-  //   async function getInsuranceScheme() {
-  //     await axios
-  //       .post("http://localhost:8082/api/v1/getInsuranceScheme", {
-  //         ,
-  //       })
-  //       .then((resp) => {
-  //         console.log(resp.data);
-  //         (resp.data);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error.response.data);
-  //       });
-  //   }
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   let insuranceSchemeDetail;
   if (insuranceScheme != null) {
     console.log(insuranceScheme);

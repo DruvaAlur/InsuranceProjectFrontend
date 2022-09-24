@@ -1,50 +1,62 @@
 import NavBar from "../NavBarAdmin/NavBarAdmin";
 import axios from "axios";
-import swal from "sweetalert"
+import swal from "sweetalert";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import { useState } from "react";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 function AddState() {
+  const userName = useParams().username;
   const [stateName, updateStateName] = useState("");
   const [isActive, updateIsActive] = useState(true);
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAdminLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   const handleAddStateName = async (e) => {
     e.preventDefault();
-    if(stateName!="")
-    {
-    swal({
-      title: "Are you sure?",
-      text: "Click OK for Adding State",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (AddingState) => {
-      if (AddingState === true) {
-        await axios
-        .post(`http://localhost:8082/api/v1/createState`, {
-        stateName,
-        isActive
-      })
-      .then((resp) => {
-        swal(
-          (resp.data),"Created Succesfully",
-          {
-            icon: "success",
-          }
-        );
-      })
-      .catch((error) => {
-        swal((error.response.data),"State not Created","warning");
+    if (stateName != "") {
+      swal({
+        title: "Are you sure?",
+        text: "Click OK for Adding State",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (AddingState) => {
+        if (AddingState === true) {
+          await axios
+            .post(`http://localhost:8082/api/v1/createState`, {
+              stateName,
+              isActive,
+            })
+            .then((resp) => {
+              swal(resp.data, "Created Succesfully", {
+                icon: "success",
+              });
+            })
+            .catch((error) => {
+              swal(error.response.data, "State not Created", "warning");
+            });
+        }
       });
+    } else {
+      swal("Require StateName", "State not Created", "warning");
     }
-  });}
-  else{
-    swal("Require StateName" ,"State not Created","warning");
-  }
-  }
+  };
   return (
     <>
       <NavBar />

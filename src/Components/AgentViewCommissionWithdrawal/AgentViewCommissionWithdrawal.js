@@ -3,16 +3,26 @@ import axios from "axios";
 import swal from "sweetalert";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAgentLoggedIn from "../isAgentLoggedIn/isAgentLoggedIn";
 import { useParams } from "react-router-dom";
 function AgentViewCommissionWithdrawal() {
   const [bankDetails, updateBankDetails] = useState("");
   const [withdrawAmount, updateWithdrawAmount] = useState("");
   const username = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAgentLoggedIn(username));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const handleAddStateName = async (e) => {
     e.preventDefault();
     if (bankDetails != "") {

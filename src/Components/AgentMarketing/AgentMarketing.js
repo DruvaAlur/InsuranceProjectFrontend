@@ -5,27 +5,48 @@ import ReactQuill from "react-quill";
 import { useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAgentLoggedIn from "../isAgentLoggedIn/isAgentLoggedIn";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 const htmlToFormattedText = require("html-to-formatted-text");
-// const { convert } = require("html-to-text");
+
 function AgentMarketing() {
   const [to, updateTo] = useState("");
   const [subject, updateSubject] = useState("");
   const [message, updateMessage] = useState("");
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAgentLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const handleSendMail = () => {
     const text = htmlToFormattedText(message);
     // console.log(text);
-    axios
-      .post("http://localhost:8082/api/v1/marketing", { to, subject, text })
-      .then((resp) => {
-        console.log(resp.data);
-        swal(resp.data, `Congrats!!, Email Sent Successfully`, {
-          icon: "success",
+    if (to != "" && subject != "" && message != "") {
+      axios
+        .post("http://localhost:8082/api/v1/marketing", { to, subject, text })
+        .then((resp) => {
+          console.log(resp.data);
+          swal(resp.data, `Congrats!!, Email Sent Successfully`, {
+            icon: "success",
+          });
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          swal(error.response.data, "Email Not Sent", "warning");
         });
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        swal(error.response.data, "Email Not Sent", "warning");
-      });
+    } else {
+      swal("Fill all fields", "Email Not Sent", "warning");
+    }
   };
   return (
     <>

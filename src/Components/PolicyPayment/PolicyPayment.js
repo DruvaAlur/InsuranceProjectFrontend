@@ -14,7 +14,10 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import axios from "axios";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
 import { useEffect } from "react";
+import swal from "sweetalert";
 function PolicyPayment() {
   const navigate = new useNavigate();
   const username = useParams().username;
@@ -41,10 +44,24 @@ function PolicyPayment() {
   const [cvvNumber, updateCvvNumber] = useState("");
   const [expDate, updateExpireDate] = useState("");
   const [taxper, updateTaxper] = useState("");
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
 
   useEffect(() => {
     getTax();
   }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   async function getTax() {
     await axios
       .get("http://localhost:8082/api/v1/gettaxper")
@@ -63,46 +80,59 @@ function PolicyPayment() {
   const handleSubmit = () => {
     let tempdate = expDate; // value from your state
     let expireDate = moment(tempdate).format("DD/MM/YYYY");
-    console.log(username);
-    axios
-      .post(`http://localhost:8082/api/v1/buyPolicy/${username}`, {
-        insuranceType,
-        insuranceScheme,
-        termPlan,
-        premiumType,
-        totalAmount,
-        paymentType,
-        cardHolder,
-        cardNumber,
-        cvvNumber,
-        expireDate,
-      })
-      .then((resp) => {
-        console.log(resp.data);
-        navigate(`/CustomerDashboard/policyPaymentReceipt/${username}`, {
-          state: [
-            username,
-            date,
-            paymentType,
-            installmentAmount,
-            tax,
-            totalAmount,
-          ],
-        });
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        navigate(`/CustomerDashboard/policyPaymentReceipt/${username}`, {
-          state: [
-            username,
-            date,
-            paymentType,
-            installmentAmount,
-            tax,
-            totalAmount,
-          ],
-        });
+    if (cardNumber.toString().length === 16) {
+      swal({
+        title: "Are you sure?",
+        text: "Click OK for Paying Amount",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (AddingCity) => {
+        if (AddingCity === true) {
+          axios
+            .post(`http://localhost:8082/api/v1/buyPolicy/${username}`, {
+              insuranceType,
+              insuranceScheme,
+              termPlan,
+              premiumType,
+              totalAmount,
+              paymentType,
+              cardHolder,
+              cardNumber,
+              cvvNumber,
+              expireDate,
+            })
+            .then((resp) => {
+              console.log(resp.data);
+              navigate(`/CustomerDashboard/policyPaymentReceipt/${username}`, {
+                state: [
+                  username,
+                  date,
+                  paymentType,
+                  installmentAmount,
+                  tax,
+                  totalAmount,
+                ],
+              });
+            })
+            .catch((error) => {
+              console.log(error.response.data);
+              navigate(`/CustomerDashboard/policyPaymentReceipt/${username}`, {
+                state: [
+                  username,
+                  date,
+                  paymentType,
+                  installmentAmount,
+                  tax,
+                  totalAmount,
+                ],
+              });
+            });
+        }
       });
+    } else {
+      swal("wrong Card number", "Card number must be 16 in length", "warning");
+    }
   };
   return (
     <>

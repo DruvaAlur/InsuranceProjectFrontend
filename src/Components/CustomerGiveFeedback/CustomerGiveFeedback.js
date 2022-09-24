@@ -3,32 +3,61 @@ import NavBar from "../NavBar/NavBar";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import ReactQuill from "react-quill";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import swal from "sweetalert";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+
 const htmlToFormattedText = require("html-to-formatted-text");
 function CustomerGiveFeedback() {
   const [title, updateTitle] = useState();
   const [Msg, updateMessage] = useState();
   const customerName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(customerName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const handleEnquiry = async () => {
-    // const parser = new DOMParser();
-    // const floatingElement = parser.parseFromSrting(Msg, "text/xml");
     const message = htmlToFormattedText(Msg);
-    // const message = Msg.replace(/<[^>]+>/g, "");
-    console.log(message);
-    await axios
-      .post(`http://localhost:8082/api/v1/createQuery/${customerName}`, {
-        title,
-        message,
-      })
-      .then((resp) => {
-        console.log(resp.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
+    if (Msg != "") {
+      swal({
+        title: "Are you sure?",
+        text: "Click OK for Changing Password",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (AddingCity) => {
+        if (AddingCity === true) {
+          await axios
+            .post(`http://localhost:8082/api/v1/createQuery/${customerName}`, {
+              title,
+              message,
+            })
+            .then((resp) => {
+              console.log(resp.data);
+              swal(resp.data, "Query sent Succesfully", {
+                icon: "success",
+              });
+            })
+            .catch((error) => {
+              console.log(error.response.data);
+              swal(error.response.data, "Error Occured", "warning");
+            });
+        }
       });
+    } else {
+      swal("Please type message to send", "Message is Empty", "warning");
+    }
   };
   return (
     <>

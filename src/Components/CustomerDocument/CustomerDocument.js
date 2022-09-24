@@ -6,9 +6,26 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import { useEffect, useRef, useState } from "react";
 import Table from "react-bootstrap/Table";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+import { useParams } from "react-router-dom";
 function CustomerDocument() {
   const fileInput = useRef();
   //   let testImage = fileInput.current.files[0];
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   return (
     <>
       <NavBar />

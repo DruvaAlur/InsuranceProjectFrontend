@@ -2,7 +2,7 @@ import ReactQuill from "react-quill";
 import { useEffect, useState } from "react";
 
 import "react-quill/dist/quill.bubble.css";
-
+import swal from "sweetalert";
 import Table from "react-bootstrap/Table";
 
 import Button from "@mui/material/Button";
@@ -17,7 +17,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import SearchInput, { createFilter } from "react-search-input";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-
+const htmlToFormattedText = require("html-to-formatted-text");
 function ViewFeedbackComp() {
   const currentUser = useParams();
   // const [Customers, updateCustomers] = useState(0);
@@ -49,18 +49,6 @@ function ViewFeedbackComp() {
   useEffect(() => {
     getQuery();
   }, []);
-  const handleGetAccountDetails = (c) => {
-    console.log(c);
-    navigation(`/adminDashboard/GetAccountDetails/${currentUser.username}`, {
-      state: c,
-    });
-  };
-
-  // const handleUpdate = (username) => {
-  //   navigation(`/adminDashboard/UpdateCustomer/${currentUser.username}`, {
-  //     state: username,
-  //   });
-  // };
   async function getQuery() {
     axios
       .get("http://localhost:8082/api/v1/getAllQuery")
@@ -70,6 +58,7 @@ function ViewFeedbackComp() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal(error.response.data, "Employee not Updated", "warning");
       });
   }
   const handleReply = async (e, c) => {
@@ -79,9 +68,13 @@ function ViewFeedbackComp() {
         queryId,
       })
       .then((resp) => {
+        swal(resp.data, "Reply Succesfull", {
+          icon: "success",
+        });
         getQuery();
       })
       .catch((error) => {
+        swal(error.response.data, "Reply failed", "warning");
         console.log(error.response.data);
       });
     setOpen(false);
@@ -98,6 +91,7 @@ function ViewFeedbackComp() {
       })
       .catch((error) => {
         console.log(error.response.data);
+        swal(error.response.data, "Error Occured!", "warning");
       });
   };
   const searchUpdated = (term) => {

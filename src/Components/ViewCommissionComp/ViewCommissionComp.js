@@ -2,20 +2,6 @@ import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Table from "react-bootstrap/Table";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import swal from "sweetalert";
 // import SearchBar from "material-ui-search-bar";
 import SearchInput, { createFilter } from "react-search-input";
@@ -51,18 +37,6 @@ function ViewCommissionComp() {
   useEffect(() => {
     getCustomer();
   }, [pageNumber, limit]);
-  const handleGetAccountDetails = (c) => {
-    console.log(c);
-    navigation(`/adminDashboard/GetAccountDetails/${currentUser.username}`, {
-      state: c,
-    });
-  };
-
-  // const handleUpdate = (username) => {
-  //   navigation(`/adminDashboard/UpdateCustomer/${currentUser.username}`, {
-  //     state: username,
-  //   });
-  // };
   async function getCustomer() {
     axios
       .post(`http://localhost:8082/api/v1/getAllCommision`, {
@@ -79,57 +53,6 @@ function ViewCommissionComp() {
         swal(error.response.data, "Error Occured!", "warning");
       });
   }
-  const handleEditCustomer = async (e) => {
-    // console.log(e.target.id);
-    // const customertoUpdate = e.target.id;
-    swal({
-      title: "Are you sure?",
-      text: "Click OK to Update this Employee",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (UpdatingEmployee) => {
-      if (UpdatingEmployee === true) {
-        await axios
-          .put(
-            `http://localhost:8082/api/v1/updateCustomer/${currentUser.username}`,
-            {
-              customertoUpdate,
-              propertyToUpdate,
-              value,
-            }
-          )
-          .then((resp) => {
-            swal(resp.data, "Updated Succesfully", {
-              icon: "success",
-            });
-            getCustomer();
-          })
-          .catch((error) => {
-            swal(error.response.data, "Employee not Updated", "warning");
-          });
-      }
-    });
-    setOpen(false);
-  };
-  const toogleActiveFlag = (e, c) => {
-    const customerId = c._id;
-    const userName = currentUser.username;
-    console.log(userName);
-    axios
-      .post(
-        `http://localhost:8082/api/v1/deleteCustomer/${currentUser.username}`,
-        {
-          customerId,
-        }
-      )
-      .then((resp) => {
-        getCustomer();
-      })
-      .catch((error) => {
-        swal(error.response.data, "Error Occured!", "warning");
-      });
-  };
   const searchUpdated = (term) => {
     updateSearchTerm(term);
   };

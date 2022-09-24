@@ -4,15 +4,31 @@ import axios from "axios";
 import NavBar from "../NavBar/NavBar";
 import "./InsuranceScheme.css";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+
 function InsuranceScheme() {
   const navigate = new useNavigate();
   const insuranceType = useLocation().state;
   const username = useParams().username;
   console.log(insuranceType);
   const [insuranceSchemes, updateInsuranceSchemes] = useState("");
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(username));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
   useEffect(() => {
     getAllInsuranceScheme();
   }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   async function getAllInsuranceScheme() {
     await axios
       .post("http://localhost:8082/api/v1/getAllInsuranceScheme", {

@@ -2,10 +2,12 @@ import NavBar from "../NavBar/NavBar";
 import "./PolicyPaymentReceipt.css";
 import { useLocation } from "react-router-dom";
 import jsPDF from "jspdf";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
 import html2canvas from "html2canvas";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 function PolicyPaymentReceipt() {
-  // const username = useParams().username;const policy = useLocation().state;
   const username = useLocation().state[0];
 
   const date = useLocation().state[1];
@@ -14,6 +16,19 @@ function PolicyPaymentReceipt() {
 
   const taxAmount = useLocation().state[4];
   const totalPayAmount = useLocation().state[5];
+  const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const printDocument = () => {
     console.log("in here");
     const input = document.getElementById("divToPrint");

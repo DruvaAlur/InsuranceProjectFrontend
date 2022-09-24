@@ -1,13 +1,25 @@
 import NavBar from "../AgentNavBar/AgentNavBar";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-
+import IsValidUser from "../isValidUser/isValidUser";
+import isAgentLoggedIn from "../isAgentLoggedIn/isAgentLoggedIn";
+import { useEffect, useState } from "react";
 function AgentDashboard() {
   const navigate = new useNavigate();
   const username = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAgentLoggedIn(username));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   return (
     <>
       <NavBar />

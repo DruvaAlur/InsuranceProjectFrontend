@@ -78,39 +78,7 @@ function ViewCommissionWithdrawalComp() {
         swal(error.response.data, "Error Occured!", "warning");
       });
   }
-  const handleEditCustomer = async (e) => {
-    // console.log(e.target.id);
-    // const customertoUpdate = e.target.id;
-    swal({
-      title: "Are you sure?",
-      text: "Click OK to Update this Employee",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (UpdatingEmployee) => {
-      if (UpdatingEmployee === true) {
-        await axios
-          .put(
-            `http://localhost:8082/api/v1/updateCustomer/${currentUser.username}`,
-            {
-              customertoUpdate,
-              propertyToUpdate,
-              value,
-            }
-          )
-          .then((resp) => {
-            swal(resp.data, "Updated Succesfully", {
-              icon: "success",
-            });
-            getCustomer();
-          })
-          .catch((error) => {
-            swal(error.response.data, "Employee not Updated", "warning");
-          });
-      }
-    });
-    setOpen(false);
-  };
+
   const handleApprove = (e, c) => {
     const WithdrawReqId = c._id;
     const agentName = c.agentName;
@@ -184,13 +152,6 @@ function ViewCommissionWithdrawalComp() {
                 <p style={{ color: "red" }}>false</p>
               )}
             </td>
-
-            {/* <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.particulars}
-            </td> */}
             <td
               id={c.insuranceAccountNo}
               style={{ width: "15%", padding: "10px" }}

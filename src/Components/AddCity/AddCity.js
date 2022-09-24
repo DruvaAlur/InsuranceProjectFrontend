@@ -8,48 +8,61 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
+import { useParams } from "react-router-dom";
 function AddcityName() {
+  const userName = useParams().username;
   const [isActive, updateIsActive] = useState(true);
   const [stateName, updateStateName] = useState("");
   const [cityName, updateCityName] = useState("");
   const [allStates, updateAllStates] = useState("");
+  const [isLoggedIn, updateIsLoggedIn] = useState(true);
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isAdminLoggedIn(userName));
+      console.log(isLoggedIn);
+    }
+  }, []);
+
   const handleAddcityName = async (e) => {
     e.preventDefault();
-    if(cityName !=""){
-    swal({
-      title: "Are you sure?",
-      text: "Click OK for Adding City",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (AddingCity) => {
-      if (AddingCity === true) {
-    await axios
-      .post(`http://localhost:8082/api/v1/createCity`, {
-        stateName,
-        cityName,
-        isActive
-      })
-      .then((resp) => {
-        swal(
-          (resp.data),"Created Succesfully",
-          {
-            icon: "success",
-          }
-        );
-      })
-      .catch((error) => {
-        swal((error.response.data),"City not Created","warning");
+    if (cityName != "") {
+      swal({
+        title: "Are you sure?",
+        text: "Click OK for Adding City",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (AddingCity) => {
+        if (AddingCity === true) {
+          await axios
+            .post(`http://localhost:8082/api/v1/createCity`, {
+              stateName,
+              cityName,
+              isActive,
+            })
+            .then((resp) => {
+              swal(resp.data, "Created Succesfully", {
+                icon: "success",
+              });
+            })
+            .catch((error) => {
+              swal(error.response.data, "City not Created", "warning");
+            });
+        }
       });
+    } else {
+      swal("Require CityName!", "City not Created", "warning");
     }
-  });}
-  else{
-    swal("Require CityName!","City not Created","warning");
-  }
-}
+  };
   useEffect(() => {
     getStates();
   }, []);
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   const states = Object.values(allStates).map((s) => {
     return <MenuItem value={s.stateName}>{s.stateName}</MenuItem>;
   });
@@ -62,7 +75,7 @@ function AddcityName() {
         console.log(resp.data);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        swal(error.response.data, "Error Occured!", "warning");
       });
   }
   return (

@@ -4,13 +4,35 @@ import swal from "sweetalert";
 import Table from "react-bootstrap/Table";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import IsValidUser from "../isValidUser/isValidUser";
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
+
+import isEmployeeLoggedIn from "../isEmployeeLoggedIn/isEmployeeLoggedIn";
+
 function Profile() {
   const currentUser = useParams();
   const [user, updateuser] = useState("");
+  // const userName = useParams().username;
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(
+        (await isAdminLoggedIn(currentUser.username)) ||
+          (await isEmployeeLoggedIn(currentUser.userName))
+      );
+      console.log(isLoggedIn);
+    }
+  }, []);
 
   useEffect(() => {
     getProfile();
   }, []);
+
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
   async function getProfile() {
     axios
       .get(`http://localhost:8082/api/v1/profile/${currentUser.username}`)

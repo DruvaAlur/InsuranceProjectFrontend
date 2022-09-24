@@ -28,7 +28,7 @@
   overflow-y: scroll;
   /* overflow-y: hidden; */
   /* scrollbar-width: none; */
-  height: 90vh;
+  height: auto;
   box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
