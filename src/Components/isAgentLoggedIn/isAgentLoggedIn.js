@@ -1,6 +1,7 @@
 import axios from "axios";
 async function isAgentLoggedIn(userName) {
   let isLoggedIn = false;
+  console.log(userName);
   await axios
     .post(`http://localhost:8082/api/v1/isAgentLogin/${userName}`)
     .then((resp) => {

@@ -5,12 +5,29 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import swal from "sweetalert";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import IsValidUser from "../isValidUser/isValidUser";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+
 import "./CustomerDashboard.css";
 function CustomerDashboard() {
+  const navigate = new useNavigate();
+  const username = useParams().username;
   const [insuranceType, updateInsuranceType] = useState("");
+  const [isLoggedIn, updateIsLoggedIn] = useState();
+  useEffect(() => {
+    isLoggedIn();
+    async function isLoggedIn() {
+      updateIsLoggedIn(await isCustomerLoggedIn(username));
+      console.log(isLoggedIn);
+    }
+  }, []);
   useEffect(() => {
     getAllInsuranceTypes();
   }, []);
+  if (!isLoggedIn) {
+    return <IsValidUser />;
+  }
+
   async function getAllInsuranceTypes() {
     await axios
       .get("http://localhost:8082/api/v1/getAllInsuranceType")
@@ -28,8 +45,7 @@ function CustomerDashboard() {
       state: i,
     });
   };
-  const navigate = new useNavigate();
-  const username = useParams().username;
+
   let OptionOfInsuranceTypes;
   if (insuranceType != null) {
     OptionOfInsuranceTypes = Object.values(insuranceType).map((i) => {
