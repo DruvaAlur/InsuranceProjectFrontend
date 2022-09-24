@@ -80,7 +80,6 @@ function AddAgentComp() {
                   label="Fullname"
                   variant="standard"
                   onChange={(e) => updateFullName(e.target.value)}
-                  required
                 />
               </Box>
               <Box

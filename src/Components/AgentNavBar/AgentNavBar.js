@@ -108,7 +108,7 @@ function BasicExample() {
                 View Customer
               </NavDropdown.Item>
 
-              <NavDropdown.Item onClick={handleInsuranceAccount}>
+              {/* <NavDropdown.Item onClick={handleInsuranceAccount}>
                 Insurance Account
               </NavDropdown.Item>
 
@@ -118,7 +118,7 @@ function BasicExample() {
 
               <NavDropdown.Item onClick={handleViewPolicyClaim}>
                 View Policy Claim
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
             </NavDropdown>
             <NavDropdown title="Account" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={handleViewCommission}>

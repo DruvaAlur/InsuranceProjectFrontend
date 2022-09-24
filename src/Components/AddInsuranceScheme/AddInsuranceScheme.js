@@ -1,32 +1,18 @@
 import NavBar from "../NavBarAdmin/NavBarAdmin";
 import ReactQuill from "react-quill";
 import TextField from "@mui/material/TextField";
-import Parser from "html-react-parser";
 import Box from "@mui/material/Box";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useEffect, useRef, useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-// or for Day.js
-
-// or for Luxon
-// import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-// // or for Moment.js
-// import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-
 import axios from "axios";
+import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
-import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 function AddInsuranceScheme() {
-  const navigation = new useNavigate();
   const [insuranceType, updateInsuranceType] = useState("");
   const [insuranceScheme, updateInsuranceScheme] = useState("");
-  const [image, updateImage] = useState("");
   const [commissionNewReg, updateCommissionNewReg] = useState(0);
   const [commissionInstall, updateCommissionInstall] = useState(0);
   const [insuranceNote, updateInsuranceNote] = useState("");
@@ -61,14 +47,37 @@ function AddInsuranceScheme() {
     bodyFormData.append("profitRatio", profitRatio);
 
     bodyFormData.append("isActive", isActive);
-    await axios
-      .post("http://localhost:8082/api/v1/createInsuranceScheme", bodyFormData)
-      .then((resp) => {
-        console.log(resp.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
+    if (testImage != "") {
+      swal({
+        title: "Are you sure?",
+        text: "Click OK for Adding Insurance Scheme",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (AddingCity) => {
+        if (AddingCity === true) {
+          await axios
+            .post(
+              "http://localhost:8082/api/v1/createInsuranceScheme",
+              bodyFormData
+            )
+            .then((resp) => {
+              swal(resp.data, "Created Succesfully", {
+                icon: "success",
+              });
+            })
+            .catch((error) => {
+              swal(
+                error.response.data,
+                "Insurance Scheme not Created",
+                "warning"
+              );
+            });
+        }
       });
+    } else {
+      swal("Fill all fields", "Insurance Scheme not Created", "warning");
+    }
   };
   useEffect(() => {
     getInsuranceTypes();

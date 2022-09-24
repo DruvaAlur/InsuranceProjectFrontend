@@ -226,6 +226,16 @@ function App() {
         {/*___________________________________________________________________*/}
         <Route
           exact
+          path="/EmployeeDashboard/Profile/:username"
+          element={<Profile />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ChangePassword/:username"
+          element={<ChangePassword />}
+        />
+        <Route
+          exact
           path={"/EmployeeDashboard/AddAgent/:username"}
           element={<AddAgentEmp />}
         />

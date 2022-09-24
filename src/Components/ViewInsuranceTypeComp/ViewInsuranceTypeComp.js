@@ -29,11 +29,13 @@ function ViewInsuranceTypeComp() {
   const [propertyToUpdate, updatePropertyToUpdate] = useState("FirstName");
   const [value, updateValue] = useState("");
   const [image, updateImage] = useState();
+  const [insuranceTypetoUpdate, updateinsuranceTypetoUpdate] = useState();
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-  const handleClickOpen = (e) => {
+  const handleClickOpen = (e, c) => {
     // console.log(e.target.id);
     // updateEmployetoUpdate(e.target.id);
+    updateinsuranceTypetoUpdate(c.insuranceType);
     setOpen(true);
   };
 
@@ -60,6 +62,7 @@ function ViewInsuranceTypeComp() {
   }
   const handleEditInsuranceType = async (e) => {
     e.preventDefault();
+
     swal({
       title: "Are you sure?",
       text: "Click OK to Update this Scheme",
@@ -68,8 +71,6 @@ function ViewInsuranceTypeComp() {
       dangerMode: true,
     }).then(async (UpdatingCity) => {
       if (UpdatingCity === true) {
-        await axios;
-        const insuranceTypetoUpdate = e.target.id;
         console.log(insuranceTypetoUpdate);
         await axios
           .put("http://localhost:8082/api/v1/updateInsuranceType", {
@@ -134,7 +135,7 @@ function ViewInsuranceTypeComp() {
           </td>
           <td style={{ width: "15%" }}>
             <span
-              onClick={handleClickOpen}
+              onClick={(event) => handleClickOpen(event, c)}
               style={{ cursor: "pointer", color: "blue" }}
               // id={s.cityName}
             >

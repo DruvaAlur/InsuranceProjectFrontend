@@ -104,9 +104,9 @@ function BasicExample() {
               <NavDropdown.Item onClick={handleViewProfile}>
                 Profile
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={handleViewDocuments}>
+              {/* <NavDropdown.Item onClick={handleViewDocuments}>
                 Documents
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
               <NavDropdown.Item onClick={handleChangePassword}>
                 Change Password
               </NavDropdown.Item>
