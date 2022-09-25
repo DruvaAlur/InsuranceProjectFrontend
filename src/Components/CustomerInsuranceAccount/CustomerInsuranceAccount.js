@@ -64,7 +64,7 @@ function CustomerInsuranceAccount() {
 
   let rowOfPolicies;
   if (allPolicies != null) {
-    const KEYS_TO_FILTERS = ["credential.userName"];
+    const KEYS_TO_FILTERS = ["accountno", "insuranceType", "insuranceScheme"];
     const filteredEmails = Object.values(allPolicies).filter(
       createFilter(searchTerm, KEYS_TO_FILTERS)
     );
@@ -115,13 +115,13 @@ function CustomerInsuranceAccount() {
             //  id={s.credential.userName}
             style={{ width: "15%" }}
           >
-            {p.totalAmount}
+            {p.totalAmount.toFixed(2)}
           </td>
           <td
             //  id={s.credential.userName}
             style={{ width: "15%" }}
           >
-            {p.profitRatio}
+            {p.profitRatio.toFixed(2)}
           </td>
           <td
             //  id={s.credential.userName}
@@ -156,7 +156,7 @@ function CustomerInsuranceAccount() {
           <div id="wrap-login1002">
             <div>
               <span id="login100-form-title2" style={{ color: "#27CCFD" }}>
-                States
+                Insurance Account
               </span>
               <br />
               <SearchInput
