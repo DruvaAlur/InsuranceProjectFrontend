@@ -105,6 +105,16 @@ function AgentProfile() {
                     </th>
                     <td style={{ padding: "10px" }}>{profile.address}</td>
                   </tr>
+                  <tr>
+                    <th
+                      style={{ width: "30%", height: "50%", padding: "10px" }}
+                    >
+                      Total Balance :
+                    </th>
+                    <td style={{ padding: "10px" }}>
+                      {profile.totalCommisionAmmount}
+                    </td>
+                  </tr>
                 </tbody>
               }
             </Table>

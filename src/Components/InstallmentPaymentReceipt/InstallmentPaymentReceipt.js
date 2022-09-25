@@ -130,19 +130,19 @@ function InstallmentPaymentReceipt() {
                                               <tr>
                                                 <td>Installment Amount</td>
                                                 <td class="alignright">
-                                                  {installAmount}
+                                                  {installAmount.toFixed(2)}
                                                 </td>
                                               </tr>
                                               <tr>
                                                 <td>Penalty Fee</td>
                                                 <td class="alignright">
-                                                  {penaltyfee}
+                                                  {penaltyfee.toFixed(2)}
                                                 </td>
                                               </tr>
                                               <tr>
                                                 <td>Tax</td>
                                                 <td class="alignright">
-                                                  {taxAmount}
+                                                  {taxAmount.toFixed(2)}
                                                 </td>
                                               </tr>
 
@@ -154,7 +154,7 @@ function InstallmentPaymentReceipt() {
                                                   Total
                                                 </td>
                                                 <td class="alignright">
-                                                  {totalPayAmount}
+                                                  {totalPayAmount.toFixed(2)}
                                                 </td>
                                               </tr>
                                             </tbody>

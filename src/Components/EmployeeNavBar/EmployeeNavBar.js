@@ -172,7 +172,7 @@ function BasicExample() {
               <NavDropdown.Item onClick={handleViewCustomer}>
                 View Customers
               </NavDropdown.Item>
-              {/* <NavDropdown.Item onClick={handleInsuranceAccount}>
+              <NavDropdown.Item onClick={handleInsuranceAccount}>
                 Insurance Account
               </NavDropdown.Item>
               <NavDropdown.Item onClick={handleViewPolicyPayment}>
@@ -181,7 +181,7 @@ function BasicExample() {
 
               <NavDropdown.Item onClick={handleViewPolicyClaim}>
                 View Policy Claim
-              </NavDropdown.Item> */}
+              </NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Query" id="basic-nav-dropdown">
               <NavDropdown.Item onClick={handleViewFeedback}>

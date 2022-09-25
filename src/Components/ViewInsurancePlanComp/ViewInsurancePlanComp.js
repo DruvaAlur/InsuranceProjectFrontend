@@ -117,7 +117,7 @@ function ViewInsurancePlanComp() {
   };
   let rowOfAllInsuranceScheme;
   if (allInsuranceScheme != null) {
-    const KEYS_TO_FILTERS = ["allInsuranceTypes"];
+    const KEYS_TO_FILTERS = ["insuranceScheme"];
     const filteredEmails = Object.values(allInsuranceScheme).filter(
       createFilter(searchTerm, KEYS_TO_FILTERS)
     );
@@ -165,7 +165,7 @@ function ViewInsurancePlanComp() {
               open={open}
               onClose={handleClose}
             >
-              <DialogTitle>Update Employee</DialogTitle>
+              <DialogTitle>Update Insurance Plan</DialogTitle>
               <DialogContent>
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                   <InputLabel id="demo-simple-select-standard-label">
@@ -244,7 +244,7 @@ function ViewInsurancePlanComp() {
           <div id="wrap-login1002">
             <div>
               <span id="login100-form-title2" style={{ color: "#27CCFD" }}>
-                View Insurance Scheme
+                View Insurance Plans
               </span>
               <br />
               <SearchInput

@@ -246,7 +246,7 @@ function ViewCustomerComp() {
                 open={open}
                 onClose={handleClose}
               >
-                <DialogTitle>Update Employee</DialogTitle>
+                <DialogTitle>Update Customer</DialogTitle>
                 <DialogContent>
                   {/* <TextField
                   autoFocus

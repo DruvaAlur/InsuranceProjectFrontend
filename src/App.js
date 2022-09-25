@@ -69,6 +69,11 @@ import AgentWithdrawAmount from "./Components/AgentWithdrawAmount/AgentWithdrawA
 import ViewAllInstallments from "./Components/ViewAllInstallments/ViewAllInstallments";
 import InstallmentPayment from "./Components/InstallmentPayment/InstallmentPayment";
 import InstallmentPaymentReceipt from "./Components/InstallmentPaymentReceipt/InstallmentPaymentReceipt";
+import ViewInstallments from "./Components/ViewInstallments/ViewInstallments";
+import BankDetails from "./Components/BankDetails/BankDetails";
+import EmpViewPolicyClaim from "./Components/EmpViewPolicyClaim/EmpViewPolicyClaim";
+import EmpInsuranceAcc from "./Components/EmpInsuranceAcc/EmpInsuranceAcc";
+import EmpViewInstallments from "./Components/EmpViewInstallments/EmpViewInstallments";
 function App() {
   return (
     <ScrollToTop>
@@ -84,6 +89,11 @@ function App() {
           exact
           path="/AdminDashboard/:username"
           element={<AdminDashboard />}
+        />
+        <Route
+          exact
+          path="/AdminDashboard/InsuranceAccount/ViewInstallments/:username"
+          element={<ViewInstallments />}
         />
         <Route
           exact
@@ -224,6 +234,21 @@ function App() {
 
         {/* Employee routes */}
         {/*___________________________________________________________________*/}
+        <Route
+          exact
+          path="/EmployeeDashboard/InsuranceAccount/ViewInstallments/:username"
+          element={<EmpViewInstallments />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/ViewPolicyClaim/:username"
+          element={<EmpViewPolicyClaim />}
+        />
+        <Route
+          exact
+          path="/EmployeeDashboard/InsuranceAccount/:username"
+          element={<EmpInsuranceAcc />}
+        />
         <Route
           exact
           path="/EmployeeDashboard/Profile/:username"
@@ -428,6 +453,11 @@ function App() {
           exact
           path="/CustomerDashboard/InstallmentPaymentReceipt/:username"
           element={<InstallmentPaymentReceipt />}
+        />
+        <Route
+          exact
+          path="/CustomerDashboard/BankDetails/:username"
+          element={<BankDetails />}
         />
       </Routes>
     </ScrollToTop>

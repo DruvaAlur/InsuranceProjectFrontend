@@ -78,7 +78,7 @@ function AddEmployee() {
       <div id="limiter1">
         <div id="container-login1001">
           <div id="wrap-login1001">
-            <form id="login100-form1 validate-form">
+            <form id="login100-form1 validate-form" onSubmit={onAddEmployee}>
               <span id="login100-form-title1" style={{ color: "#27CCFD" }}>
                 Add Employee
               </span>
@@ -91,6 +91,7 @@ function AddEmployee() {
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
                   value={role}
+                  required
                   onChange={(event) => {
                     updateRole(event.target.value);
                   }}
@@ -113,6 +114,7 @@ function AddEmployee() {
                 <TextField
                   id="standard-basic"
                   label="Employee FirstName"
+                  required
                   variant="standard"
                   onChange={(e) => updateFirstName(e.target.value)}
                 />
@@ -127,6 +129,7 @@ function AddEmployee() {
               >
                 <TextField
                   id="standard-basic"
+                  required
                   label="Employee LastName"
                   variant="standard"
                   onChange={(e) => updateLastName(e.target.value)}
@@ -142,6 +145,7 @@ function AddEmployee() {
               >
                 <TextField
                   id="standard-basic"
+                  required
                   label="Username"
                   variant="standard"
                   onChange={(e) => updateUserName(e.target.value)}
@@ -158,6 +162,7 @@ function AddEmployee() {
                 <TextField
                   id="standard-basic"
                   label="Password"
+                  required
                   variant="standard"
                   onChange={(e) => updatePassword(e.target.value)}
                 />
@@ -174,6 +179,7 @@ function AddEmployee() {
                   id="standard-basic"
                   label="Confirm Password"
                   variant="standard"
+                  required
                   onChange={(e) => updateConfirmPassword(e.target.value)}
                 />
               </Box>
@@ -188,6 +194,7 @@ function AddEmployee() {
                   onChange={(event) => {
                     updateIsActive(event.target.value);
                   }}
+                  required
                   label="Status"
                 >
                   <MenuItem value={true}>Active</MenuItem>
@@ -203,7 +210,7 @@ function AddEmployee() {
                   <div id="login100-form-bgbtn1"></div>
                   <button
                     id="login100-form-btn1"
-                    onClick={onAddEmployee}
+                    type="submit"
                     style={{ width: "100%" }}
                   >
                     Add Employee

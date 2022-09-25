@@ -1,15 +1,14 @@
-import NavBar from "../AgentNavBar/AgentNavBar";
+import ViewInsuranceAccDetailsComp from "../ViewInsuranceAccDetailsComp/ViewInsuranceAccDetailsComp";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
+import SearchInput, { createFilter } from "react-search-input";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import swal from "sweetalert";
 import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Table from "react-bootstrap/Table";
-import swal from "sweetalert";
-import SearchInput, { createFilter } from "react-search-input";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import IsValidUser from "../isValidUser/isValidUser";
-import isAgentLoggedIn from "../isAgentLoggedIn/isAgentLoggedIn";
-import axios from "axios";
-function AgentViewCustomer() {
+function EmpInsuranceAcc() {
   const currentUser = useParams();
   const [Customers, updateCustomers] = useState(0);
   const [allCustomers, updateAllCustomers] = useState("");
@@ -22,33 +21,29 @@ function AgentViewCustomer() {
   const [customertoUpdate, updateCustomertoUpdate] = useState("");
   const [focused, setFocused] = useState(false);
 
-  const [isLoggedIn, updateIsLoggedIn] = useState();
-  useEffect(() => {
-    isLoggedIn();
-    async function isLoggedIn() {
-      updateIsLoggedIn(await isAgentLoggedIn(currentUser.username));
-      console.log(isLoggedIn);
-    }
-  }, []);
-
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const navigation = new useNavigate();
+
   useEffect(() => {
     getCustomer();
   }, [pageNumber, limit]);
-  if (!isLoggedIn) {
-    return <IsValidUser />;
-  }
+
+  // const handleUpdate = (username) => {
+  //   navigation(`/adminDashboard/UpdateCustomer/${currentUser.username}`, {
+  //     state: username,
+  //   });
+  // };
   async function getCustomer() {
     axios
-      .post(
-        `http://localhost:8082/api/v1/getAllAgentRefer/${currentUser.username}`,
-        {
-          limit,
-          pageNumber,
-        }
-      )
+      .post("http://localhost:8082/api/v1/getAllCustomer", {
+        limit,
+        pageNumber,
+      })
       .then((resp) => {
         let [allCusts, allCustsCount] = resp.data;
         updateAllCustomers(allCusts);
@@ -59,8 +54,19 @@ function AgentViewCustomer() {
         swal(error.response.data, "Error Occured!", "warning");
       });
   }
+
   const searchUpdated = (term) => {
     updateSearchTerm(term);
+  };
+
+  const viewInstallments = (e, p, username) => {
+    e.preventDefault();
+    navigation(
+      `/EmployeeDashboard/InsuranceAccount/ViewInstallments/${currentUser.username}`,
+      {
+        state: [p, username],
+      }
+    );
   };
   let rowOfEmployee;
 
@@ -77,49 +83,79 @@ function AgentViewCustomer() {
         createFilter(searchTerm, KEYS_TO_FILTERS)
       );
       rowOfEmployee = filteredEmails.map((c) => {
-        return (
-          <tr id={c.credential.userName}>
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.credential.userName}
-            </td>
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.dateOfBirth.split("T")[0].split("-").reverse().join("-")}
-            </td>
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.address}
-            </td>
+        return c.policies.map((p) => {
+          return (
+            <tr id={c.credential.userName}>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {c.credential.userName}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {p.insuranceType}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {p.insuranceScheme}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {p.installMentAmount.toFixed(2)}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "7%", padding: "10px" }}
+              >
+                {p.interestAmount.toFixed(2)}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "8%", padding: "10px" }}
+              >
+                {p.profitRatio.toFixed(2)}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "8%", padding: "10px" }}
+              >
+                {p.sumAssuredAfterYears.toFixed(2)}
+              </td>
 
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.nominee}
-            </td>
-
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.nomineeRelation}
-            </td>
-
-            <td
-              id={c.credential.userName}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.isActive ? "true" : "false"}
-            </td>
-          </tr>
-        );
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {p.dateCreated.split("T")[0]}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {p.maturityDate.split("T")[0]}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                <button
+                  onClick={(event) =>
+                    viewInstallments(event, p, c.credential.userName)
+                  }
+                >
+                  ViewMore
+                </button>
+              </td>
+            </tr>
+          );
+        });
       });
     }
   }
@@ -131,7 +167,7 @@ function AgentViewCustomer() {
           <div id="wrap-login1002">
             <div>
               <span id="login100-form-title2" style={{ color: "#27CCFD" }}>
-                View Customer
+                Insurance Account
               </span>
               <br />
               <SearchInput
@@ -179,22 +215,38 @@ function AgentViewCustomer() {
                 <thead>
                   <tr>
                     <th scope="col" style={{ width: "15%" }}>
-                      Customer Name
+                      UserName
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
-                      DOB
-                    </th>
-                    <th scope="col" style={{ width: "10%" }}>
-                      Address
+                      Plan Type
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
-                      Nominee
+                      Plan Name
+                    </th>
+                    <th scope="col" style={{ width: "15%" }}>
+                      Installment Amount
                     </th>
                     <th scope="col" style={{ width: "10%" }}>
-                      Nominee Relation
+                      interestAmount
                     </th>
                     <th scope="col" style={{ width: "10%" }}>
-                      Status
+                      profitRatio
+                    </th>
+                    <th scope="col" style={{ width: "8%" }}>
+                      sumAssuredAfterYears
+                    </th>
+
+                    {/* <th scope="col" style={{ width: "10%" }}>
+                    Account Details
+                  </th> */}
+                    <th scope="col" style={{ width: "12%" }}>
+                      dateCreated
+                    </th>
+                    <th scope="col" style={{ width: "12%" }}>
+                      maturityDate
+                    </th>
+                    <th scope="col" style={{ width: "10%" }}>
+                      Details
                     </th>
                   </tr>
                 </thead>
@@ -207,4 +259,4 @@ function AgentViewCustomer() {
     </>
   );
 }
-export default AgentViewCustomer;
+export default EmpInsuranceAcc;

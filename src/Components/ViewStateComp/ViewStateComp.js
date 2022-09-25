@@ -99,7 +99,7 @@ function ViewStateComp() {
   };
   let rowOfState;
   if (allStates != null) {
-    const KEYS_TO_FILTERS = ["credential.userName"];
+    const KEYS_TO_FILTERS = ["stateName"];
     const filteredEmails = Object.values(allStates).filter(
       createFilter(searchTerm, KEYS_TO_FILTERS)
     );
@@ -130,7 +130,7 @@ function ViewStateComp() {
               Edit
             </span>
             <Dialog id={s.stateName} open={open} onClose={handleClose}>
-              <DialogTitle>Update Employee</DialogTitle>
+              <DialogTitle>Update State</DialogTitle>
               <DialogContent>
                 {/* <TextField
                       autoFocus

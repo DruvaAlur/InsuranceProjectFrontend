@@ -1,6 +1,6 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
 import ViewPolicyClaimComp from "../ViewPolicyClaimComp/ViewPolicyClaimComp";
-function ViewPolicyClaim() {
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
+function EmpViewPolicyClaim() {
   return (
     <>
       <NavBar />
@@ -8,4 +8,4 @@ function ViewPolicyClaim() {
     </>
   );
 }
-export default ViewPolicyClaim;
+export default EmpViewPolicyClaim;

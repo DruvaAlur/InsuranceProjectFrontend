@@ -255,7 +255,7 @@ function PolicyPayment() {
                   <td style={{ padding: "10px" }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DesktopDatePicker
-                        label="Date Of Birth"
+                        label="Expire Date"
                         inputFormat="DD/MM/YYYY"
                         value={expDate}
                         onChange={(value) => updateExpireDate(value)}

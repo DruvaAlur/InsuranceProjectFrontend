@@ -1,4 +1,4 @@
-import NavBar from "../AgentNavBar/AgentNavBar";
+import NavBar from "../NavBar/NavBar";
 import axios from "axios";
 import swal from "sweetalert";
 import TextField from "@mui/material/TextField";
@@ -6,16 +6,19 @@ import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
 import IsValidUser from "../isValidUser/isValidUser";
 import isAgentLoggedIn from "../isAgentLoggedIn/isAgentLoggedIn";
-import { useParams } from "react-router-dom";
-function AgentViewCommissionWithdrawal() {
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
+function BankDetails() {
   const [bankDetails, updateBankDetails] = useState("");
   const [withdrawAmount, updateWithdrawAmount] = useState("");
   const username = useParams().username;
+  const navigation = new useNavigate();
   const [isLoggedIn, updateIsLoggedIn] = useState();
+  const policyId = useLocation().state;
   useEffect(() => {
     isLoggedIn();
     async function isLoggedIn() {
-      updateIsLoggedIn(await isAgentLoggedIn(username));
+      updateIsLoggedIn(await isCustomerLoggedIn(username));
       console.log(isLoggedIn);
     }
   }, []);
@@ -35,17 +38,15 @@ function AgentViewCommissionWithdrawal() {
       }).then(async (AddingState) => {
         if (AddingState === true) {
           await axios
-            .post(
-              `http://localhost:8082/api/v1/withdrawCommision/${username}`,
-              {
-                bankDetails,
-                withdrawAmount,
-              }
-            )
+            .post(`http://localhost:8082/api/v1/reqPolicyClaim/${username}`, {
+              bankDetails,
+              policyId,
+            })
             .then((resp) => {
               swal(resp.data, "Withdraw Succesfull", {
                 icon: "success",
               });
+              navigation(`/CustomerDashboard/InsuranceAccount/${username}`);
             })
             .catch((error) => {
               swal(error.response.data, "Withdraw failed", "warning");
@@ -67,7 +68,7 @@ function AgentViewCommissionWithdrawal() {
               onSubmit={handleAddStateName}
             >
               <span id="login100-form-title1" style={{ color: "#27CCFD" }}>
-                Withdraw Amount
+                Claim
               </span>
               <Box
                 // component="form"
@@ -102,23 +103,6 @@ function AgentViewCommissionWithdrawal() {
                 />
               </Box>
 
-              <Box
-                // component="form"
-                sx={{
-                  "& > :not(style)": { m: 1, width: "30ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  id="standard-basic"
-                  label="Amount"
-                  variant="standard"
-                  required
-                  onChange={(e) => updateWithdrawAmount(e.target.value)}
-                />
-              </Box>
-
               <div id="container-login100-form-btn1">
                 <div id="wrap-login100-form-btn1">
                   <div id="login100-form-bgbtn1"></div>
@@ -127,7 +111,7 @@ function AgentViewCommissionWithdrawal() {
                     type="submit"
                     style={{ width: "100%" }}
                   >
-                    Withdraw
+                    Claim
                   </button>
                 </div>
               </div>
@@ -138,4 +122,4 @@ function AgentViewCommissionWithdrawal() {
     </>
   );
 }
-export default AgentViewCommissionWithdrawal;
+export default BankDetails;

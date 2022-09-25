@@ -1,4 +1,4 @@
-import NavBar from "../EmployeeNavBar/EmployeeNavBar";
+import NavBar from "../NavBarAdmin/NavBarAdmin";
 import { useEffect, useState } from "react";
 import swal from "sweetalert";
 import Table from "react-bootstrap/Table";

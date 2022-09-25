@@ -29,7 +29,7 @@ function CustomerGiveFeedback() {
   }
   const handleEnquiry = async () => {
     const message = htmlToFormattedText(Msg);
-    if (Msg != "") {
+    if (message != "" && title != "") {
       swal({
         title: "Are you sure?",
         text: "Click OK for Changing Password",
@@ -56,7 +56,11 @@ function CustomerGiveFeedback() {
         }
       });
     } else {
-      swal("Please type message to send", "Message is Empty", "warning");
+      swal(
+        "Please type message and title to send",
+        "Message or Title is Empty",
+        "warning"
+      );
     }
   };
   return (

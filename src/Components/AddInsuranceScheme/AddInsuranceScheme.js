@@ -137,7 +137,10 @@ function AddInsuranceScheme() {
             <span id="login100-form-title1" style={{ color: "#27CCFD" }}>
               Add Insurance Scheme
             </span>
-            <form className="login100-form validate-form">
+            <form
+              className="login100-form validate-form"
+              onSubmit={handleAddInsuranceScheme}
+            >
               <FormControl variant="standard" sx={{ m: 1, width: "50ch" }}>
                 <InputLabel id="demo-simple-select-standard-label">
                   Insurance Type
@@ -166,6 +169,7 @@ function AddInsuranceScheme() {
                   id="standard-basic"
                   label="Insurance Scheme"
                   variant="standard"
+                  required
                   onChange={(e) => updateInsuranceScheme(e.target.value)}
                 />
               </Box>
@@ -176,7 +180,7 @@ function AddInsuranceScheme() {
                 noValidate
                 autoComplete="off"
               >
-                <input type="file" ref={fileInput} />
+                <input type="file" ref={fileInput} required />
               </Box>
               <Box
                 sx={{
@@ -189,6 +193,7 @@ function AddInsuranceScheme() {
                   id="standard-basic"
                   label="Commission For New Registration (in %)"
                   type="number"
+                  required
                   variant="standard"
                   onChange={(e) => updateCommissionNewReg(e.target.value)}
                 />
@@ -205,6 +210,7 @@ function AddInsuranceScheme() {
                   label="Commission Installment Payment (in %)"
                   typeof="Number"
                   variant="standard"
+                  required
                   onChange={(e) => updateCommissionInstall(e.target.value)}
                 />
               </Box>
@@ -226,6 +232,7 @@ function AddInsuranceScheme() {
                   // value={insuranceNote}
                   onChange={updateInsuranceNote}
                   //   style={{ height: "20vh" }}
+                  required
                 />
               </div>
 
@@ -240,6 +247,7 @@ function AddInsuranceScheme() {
                   id="standard-basic"
                   label="Minimum Termplan"
                   typeof="Number"
+                  required
                   onChange={(e) => updateMinTermPlan(e.target.value)}
                   variant="standard"
                 />
@@ -254,6 +262,7 @@ function AddInsuranceScheme() {
                 <TextField
                   id="standard-basic"
                   typeof="Number"
+                  required
                   label="Maximum Termplan"
                   onChange={(e) => updateMaxTermPlan(e.target.value)}
                   variant="standard"
@@ -271,6 +280,7 @@ function AddInsuranceScheme() {
                   label="Minimum Age"
                   typeof="Number"
                   variant="standard"
+                  required
                   onChange={(e) => updateMinAge(e.target.value)}
                 />
               </Box>
@@ -285,6 +295,7 @@ function AddInsuranceScheme() {
                   id="standard-basic"
                   label="Maximum Age"
                   typeof="Number"
+                  required
                   onChange={(e) => updateMaxAge(e.target.value)}
                   variant="standard"
                 />
@@ -301,6 +312,7 @@ function AddInsuranceScheme() {
                   onChange={(e) => updateMinInvestment(e.target.value)}
                   label="Minimum Investment"
                   typeof="Number"
+                  required
                   variant="standard"
                 />
               </Box>
@@ -316,6 +328,7 @@ function AddInsuranceScheme() {
                   id="standard-basic"
                   label="Maximum Investment"
                   typeof="Number"
+                  required
                   onChange={(e) => updateMaxInvestment(e.target.value)}
                   variant="standard"
                 />
@@ -332,6 +345,7 @@ function AddInsuranceScheme() {
                   id="standard-basic"
                   label="Profit Ratio"
                   typeof="Number"
+                  required
                   onChange={(e) => updateProfitRatio(e.target.value)}
                   variant="standard"
                 />
@@ -344,6 +358,7 @@ function AddInsuranceScheme() {
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
                   value={isActive}
+                  required
                   onChange={(event) => {
                     updateIsActive(event.target.value);
                   }}
@@ -354,21 +369,18 @@ function AddInsuranceScheme() {
                   {/* <MenuItem value={30}>Thirty</MenuItem> */}
                 </Select>
               </FormControl>
+              <div className="container-login100-form-btn">
+                <div className="wrap-login100-form-btn">
+                  <div className="login100-form-bgbtn"></div>
+                  <button className="login100-form-btn" type="submit">
+                    Add Insurance Scheme
+                  </button>
+                </div>
+              </div>
             </form>
             <br />
             <br />
 
-            <div className="container-login100-form-btn">
-              <div className="wrap-login100-form-btn">
-                <div className="login100-form-bgbtn"></div>
-                <button
-                  className="login100-form-btn"
-                  onClick={handleAddInsuranceScheme}
-                >
-                  Add Insurance Scheme
-                </button>
-              </div>
-            </div>
             <br></br>
           </div>
         </div>

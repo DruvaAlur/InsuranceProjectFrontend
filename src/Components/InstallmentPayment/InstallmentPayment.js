@@ -252,6 +252,7 @@ function InstallmentPayment() {
                         label=""
                         variant="standard"
                         fullWidth
+                        required
                         onChange={(e) => updateCardHolder(e.target.value)}
                       />
                     </td>
@@ -268,6 +269,7 @@ function InstallmentPayment() {
                         label=""
                         variant="standard"
                         fullWidth
+                        required
                         onChange={(e) => updateCardNumber(e.target.value)}
                       />
                     </td>
@@ -284,6 +286,7 @@ function InstallmentPayment() {
                         label=""
                         variant="standard"
                         fullWidth
+                        required
                         onChange={(e) => updateCvvNumber(e.target.value)}
                       />
                     </td>
@@ -300,6 +303,7 @@ function InstallmentPayment() {
                           label="Expire Date"
                           inputFormat="DD/MM/YYYY"
                           value={expDate}
+                          required
                           onChange={(value) => updateExpireDate(value)}
                           renderInput={(params) => <TextField {...params} />}
                         />

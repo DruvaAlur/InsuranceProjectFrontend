@@ -80,7 +80,6 @@ function ViewInsuranceSchemeComp() {
         console.log(resp.data);
       })
       .catch((error) => {
-        swal(error.response.data, "Error Occured!", "warning");
         console.log(error.response.data);
       });
   }
@@ -125,7 +124,7 @@ function ViewInsuranceSchemeComp() {
   };
   let rowOfAllInsuranceScheme;
   if (allInsuranceScheme != null) {
-    const KEYS_TO_FILTERS = ["allInsuranceTypes"];
+    const KEYS_TO_FILTERS = ["insuranceScheme"];
     const filteredEmails = Object.values(allInsuranceScheme).filter(
       createFilter(searchTerm, KEYS_TO_FILTERS)
     );
@@ -174,7 +173,7 @@ function ViewInsuranceSchemeComp() {
               open={open}
               onClose={handleClose}
             >
-              <DialogTitle>Update Employee</DialogTitle>
+              <DialogTitle>Update Insurance Scheme</DialogTitle>
               <DialogContent>
                 <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                   <InputLabel id="demo-simple-select-standard-label">

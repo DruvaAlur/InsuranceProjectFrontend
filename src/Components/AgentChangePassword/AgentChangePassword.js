@@ -74,7 +74,10 @@ function AgentChangePassword() {
       <div id="limiter1">
         <div id="container-login1001">
           <div id="wrap-login1001">
-            <form id="login100-form1 validate-form">
+            <form
+              id="login100-form1 validate-form"
+              onSubmit={handleChangePassword}
+            >
               <span id="login100-form-title1" style={{ color: "#27CCFD" }}>
                 Change Password
               </span>
@@ -91,6 +94,7 @@ function AgentChangePassword() {
                 <TextField
                   id="standard-basic"
                   label="Old Password"
+                  required
                   variant="standard"
                   onChange={(e) => updateOldPassword(e.target.value)}
                 />
@@ -107,6 +111,7 @@ function AgentChangePassword() {
                   id="standard-basic"
                   label="New Password"
                   variant="standard"
+                  required
                   onChange={(e) => updateNewPassword(e.target.value)}
                 />
               </Box>
@@ -122,6 +127,7 @@ function AgentChangePassword() {
                   id="standard-basic"
                   label="confirm new password"
                   variant="standard"
+                  required
                   onChange={(e) => updateConfirmPassword(e.target.value)}
                 />
               </Box>
@@ -129,11 +135,7 @@ function AgentChangePassword() {
               <div id="container-login100-form-btn1">
                 <div id="wrap-login100-form-btn1">
                   <div id="login100-form-bgbtn1"></div>
-                  <button
-                    id="login100-form-btn1"
-                    onClick={handleChangePassword}
-                    style={{ width: "100%" }}
-                  >
+                  <button id="login100-form-btn1" style={{ width: "100%" }}>
                     Change Password
                   </button>
                 </div>

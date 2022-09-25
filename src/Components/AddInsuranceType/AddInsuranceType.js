@@ -72,7 +72,10 @@ function AddInsuranceType() {
       <div id="limiter1">
         <div id="container-login1001">
           <div id="wrap-login1001">
-            <form id="login100-form1 validate-form">
+            <form
+              id="login100-form1 validate-form"
+              onSubmit={handleAddInsuranceType}
+            >
               <span id="login100-form-title1" style={{ color: "#27CCFD" }}>
                 Add Insurance Type
               </span>
@@ -89,6 +92,7 @@ function AddInsuranceType() {
                 <TextField
                   id="standard-basic"
                   label="Insurance Type"
+                  required
                   variant="standard"
                   onChange={(e) => updateInsuranceType(e.target.value)}
                 />
@@ -101,7 +105,7 @@ function AddInsuranceType() {
                 noValidate
                 autoComplete="off"
               >
-                <input type="file" ref={fileInput} />
+                <input type="file" ref={fileInput} required />
               </Box>
               <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                 <InputLabel id="demo-simple-select-standard-label">
@@ -111,6 +115,7 @@ function AddInsuranceType() {
                   labelId="demo-simple-select-standard-label"
                   id="demo-simple-select-standard"
                   value={isActive}
+                  required
                   onChange={(event) => {
                     updateIsActive(event.target.value);
                   }}
@@ -128,8 +133,8 @@ function AddInsuranceType() {
                   <div id="login100-form-bgbtn1"></div>
                   <button
                     id="login100-form-btn1"
-                    onClick={handleAddInsuranceType}
                     style={{ width: "100%" }}
+                    type="submit"
                   >
                     Add Insurance Type
                   </button>

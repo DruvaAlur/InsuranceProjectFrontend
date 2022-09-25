@@ -30,6 +30,7 @@ function Login() {
   const [allCities, updateAllCities] = useState([]);
   const [stateName, updateStateName] = useState("");
   const [cityName, updateCityName] = useState("");
+  const [allAgents, updateAllAgents] = useState("");
   async function getStates() {
     await axios
       .get("http://localhost:8082/api/v1/getAllState")
@@ -56,11 +57,24 @@ function Login() {
         });
     }
   }
-
+  async function getAgents() {
+    await axios
+      .post("http://localhost:8082/api/v1/getAllAgent1")
+      .then((resp) => {
+        updateAllAgents(resp.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  }
   const states = Object.values(allStates).map((s) => {
     return <MenuItem value={s.stateName}>{s.stateName}</MenuItem>;
   });
-
+  const agents = Object.values(allAgents).map((a) => {
+    return (
+      <MenuItem value={a.credential.userName}>{a.credential.userName}</MenuItem>
+    );
+  });
   const cities = Object.values(allCities).map((s) => {
     return <MenuItem value={s.cityName}>{s.cityName}</MenuItem>;
   });
@@ -70,6 +84,7 @@ function Login() {
   }, [stateName]);
   useEffect(() => {
     getStates();
+    getAgents();
   }, []);
 
   const handleRegister = async (e) => {
@@ -328,13 +343,24 @@ function Login() {
                 noValidate
                 autoComplete="off"
               >
-                {" "}
-                <TextField
-                  id="standard-basic"
-                  label="Agent Name"
-                  onChange={(e) => updateAgentName(e.target.value)}
-                  variant="standard"
-                />
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
+                  <InputLabel id="demo-simple-select-standard-label">
+                    Agent Name
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={agentName}
+                    autoWidth
+                    onChange={(event) => {
+                      updateAgentName(event.target.value);
+                    }}
+                    label="State"
+                  >
+                    <MenuItem value="">No Agent</MenuItem>
+                    {agents}
+                  </Select>
+                </FormControl>
               </Box>
             </form>
             <br />

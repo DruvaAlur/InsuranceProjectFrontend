@@ -68,7 +68,7 @@ function AgentWithdrawAmount() {
       emps = allCustomers;
     }
     if (emps != null) {
-      const KEYS_TO_FILTERS = ["insuranceAccountNo"];
+      const KEYS_TO_FILTERS = ["bankDetail", "agentName"];
       const filteredEmails = Object.values(emps).filter(
         createFilter(searchTerm, KEYS_TO_FILTERS)
       );

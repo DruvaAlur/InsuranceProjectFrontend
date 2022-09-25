@@ -128,14 +128,14 @@ function PolicyPaymentReceipt() {
                                               <tr>
                                                 <td>Installment Amount</td>
                                                 <td class="alignright">
-                                                  {installAmount}
+                                                  {installAmount.toFixed(2)}
                                                 </td>
                                               </tr>
 
                                               <tr>
                                                 <td>Tax</td>
                                                 <td class="alignright">
-                                                  {taxAmount}
+                                                  {taxAmount.toFixed(2)}
                                                 </td>
                                               </tr>
 
@@ -147,7 +147,7 @@ function PolicyPaymentReceipt() {
                                                   Total
                                                 </td>
                                                 <td class="alignright">
-                                                  {totalPayAmount}
+                                                  {totalPayAmount.toFixed(2)}
                                                 </td>
                                               </tr>
                                             </tbody>

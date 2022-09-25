@@ -1,17 +1,12 @@
-import NavBar from "../AgentNavBar/AgentNavBar";
-
 import { useEffect, useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import Table from "react-bootstrap/Table";
-import swal from "sweetalert";
-// import SearchBar from "material-ui-search-bar";
 import SearchInput, { createFilter } from "react-search-input";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import IsValidUser from "../isValidUser/isValidUser";
-import isAgentLoggedIn from "../isAgentLoggedIn/isAgentLoggedIn";
-function AgentViewCommission() {
+import swal from "sweetalert";
+function ViewPolicyClaimComp() {
   const currentUser = useParams();
   const [Customers, updateCustomers] = useState(0);
   const [allCustomers, updateAllCustomers] = useState("");
@@ -26,29 +21,27 @@ function AgentViewCommission() {
 
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-  const [isLoggedIn, updateIsLoggedIn] = useState();
-  useEffect(() => {
-    isLoggedIn();
-    async function isLoggedIn() {
-      updateIsLoggedIn(await isAgentLoggedIn(currentUser.username));
-      console.log(isLoggedIn);
-    }
-  }, []);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const navigation = new useNavigate();
+
   useEffect(() => {
     getCustomer();
   }, [pageNumber, limit]);
-  if (!isLoggedIn) {
-    return <IsValidUser />;
-  }
+
+  // const handleUpdate = (username) => {
+  //   navigation(`/adminDashboard/UpdateCustomer/${currentUser.username}`, {
+  //     state: username,
+  //   });
+  // };
   async function getCustomer() {
     axios
-      .post(
-        `http://localhost:8082/api/v1/getAllAgentCommision/${currentUser.username}`,
-        {
-          limit,
-          pageNumber,
-        }
-      )
+      .post("http://localhost:8082/api/v1/getAllCustomer", {
+        limit,
+        pageNumber,
+      })
       .then((resp) => {
         let [allCusts, allCustsCount] = resp.data;
         updateAllCustomers(allCusts);
@@ -59,8 +52,24 @@ function AgentViewCommission() {
         swal(error.response.data, "Error Occured!", "warning");
       });
   }
+
   const searchUpdated = (term) => {
     updateSearchTerm(term);
+  };
+
+  const accceptClaim = (e, policyClaimId) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:8082/api/v1/accptPolicyClaim", {
+        policyClaimId,
+      })
+      .then((resp) => {
+        console.log(resp.data);
+        getCustomer();
+      })
+      .catch((error) => {
+        swal(error.response.data, "Error Occured!", "warning");
+      });
   };
   let rowOfEmployee;
 
@@ -72,67 +81,68 @@ function AgentViewCommission() {
       emps = allCustomers;
     }
     if (emps != null) {
-      const KEYS_TO_FILTERS = ["insuranceAccountNo", "agentName"];
+      const KEYS_TO_FILTERS = ["credential.userName"];
       const filteredEmails = Object.values(emps).filter(
         createFilter(searchTerm, KEYS_TO_FILTERS)
       );
       rowOfEmployee = filteredEmails.map((c) => {
-        return (
-          <tr id={c.insuranceAccountNo}>
-            <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.insuranceAccountNo}
-            </td>
-            <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.agentName}
-            </td>
+        return c.claimPolicy.map((p) => {
+          return (
+            <tr id={c.credential.userName}>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {c.credential.userName}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {p.insuranceAccount}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {p.insuranceScheme}
+              </td>
 
-            <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.createdAt.split("T")[0].split("-").reverse().join("-")}
-            </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "8%", padding: "10px" }}
+              >
+                {p.sumAssureAfterYears.toFixed(2)}
+              </td>
 
-            <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.customerName}
-            </td>
-
-            <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.insuranceSchema}
-            </td>
-
-            <td
-              id={c.insuranceAccountNo}
-              style={{ width: "15%", padding: "10px" }}
-            >
-              {c.commisionAmount}
-            </td>
-          </tr>
-        );
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                {p.withdrawCheck ? <p>true</p> : <p>false</p>}
+              </td>
+              <td
+                id={c.credential.userName}
+                style={{ width: "15%", padding: "10px" }}
+              >
+                <button onClick={(event) => accceptClaim(event, p._id)}>
+                  Accept
+                </button>
+              </td>
+            </tr>
+          );
+        });
       });
     }
   }
   return (
     <>
-      <NavBar />
       <div id="limiter2">
         <div id="container-login1002">
           <div id="wrap-login1002">
             <div>
               <span id="login100-form-title2" style={{ color: "#27CCFD" }}>
-                Commission
+                Insurance Account
               </span>
               <br />
               <SearchInput
@@ -180,22 +190,22 @@ function AgentViewCommission() {
                 <thead>
                   <tr>
                     <th scope="col" style={{ width: "15%" }}>
-                      Account No
+                      UserName
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
-                      Agent
-                    </th>
-                    <th scope="col" style={{ width: "10%" }}>
-                      Date
+                      Insurance Acc
                     </th>
                     <th scope="col" style={{ width: "15%" }}>
-                      Customer
-                    </th>
-                    <th scope="col" style={{ width: "10%" }}>
                       Insurance Scheme
                     </th>
+                    <th scope="col" style={{ width: "15%" }}>
+                      Amount
+                    </th>
                     <th scope="col" style={{ width: "10%" }}>
-                      Commission Amount
+                      Approved
+                    </th>
+                    <th scope="col" style={{ width: "10%" }}>
+                      Approve
                     </th>
                   </tr>
                 </thead>
@@ -208,4 +218,4 @@ function AgentViewCommission() {
     </>
   );
 }
-export default AgentViewCommission;
+export default ViewPolicyClaimComp;

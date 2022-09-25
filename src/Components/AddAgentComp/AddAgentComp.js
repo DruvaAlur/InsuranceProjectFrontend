@@ -62,7 +62,7 @@ function AddAgentComp() {
       <div id="limiter1">
         <div id="container-login1001">
           <div id="wrap-login1001">
-            <form id="login100-form1 validate-form">
+            <form id="login100-form1 validate-form" onSubmit={onAddAgent}>
               <span id="login100-form-title1" style={{ color: "#27CCFD" }}>
                 Add Agent
               </span>
@@ -79,6 +79,8 @@ function AddAgentComp() {
                   id="standard-basic"
                   label="Fullname"
                   variant="standard"
+                  required
+                  minlength="3"
                   onChange={(e) => updateFullName(e.target.value)}
                 />
               </Box>
@@ -110,6 +112,7 @@ function AddAgentComp() {
                   id="standard-basic"
                   label="Username"
                   variant="standard"
+                  required
                   onChange={(e) => updateUserName(e.target.value)}
                 />
               </Box>
@@ -124,6 +127,7 @@ function AddAgentComp() {
                 <TextField
                   id="standard-basic"
                   label="Password"
+                  required
                   variant="standard"
                   onChange={(e) => updatePassword(e.target.value)}
                 />
@@ -140,6 +144,7 @@ function AddAgentComp() {
                   id="standard-basic"
                   label="Confirm Password"
                   variant="standard"
+                  required
                   onChange={(e) => updateConfirmPassword(e.target.value)}
                 />
               </Box>
@@ -155,6 +160,7 @@ function AddAgentComp() {
                   id="standard-basic"
                   label="Address"
                   variant="standard"
+                  required
                   onChange={(e) => updateAddress(e.target.value)}
                 />
               </Box>
@@ -170,6 +176,7 @@ function AddAgentComp() {
                   id="standard-basic"
                   label="Qualification"
                   variant="standard"
+                  required
                   onChange={(e) => updateQualification(e.target.value)}
                 />
               </Box>
@@ -199,7 +206,7 @@ function AddAgentComp() {
                   <div id="login100-form-bgbtn1"></div>
                   <button
                     id="login100-form-btn1"
-                    onClick={onAddAgent}
+                    type="submit"
                     style={{ width: "100%" }}
                   >
                     Add Agent

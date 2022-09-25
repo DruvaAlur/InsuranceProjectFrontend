@@ -9,27 +9,17 @@ import swal from "sweetalert";
 import { useState } from "react";
 import IsValidUser from "../isValidUser/isValidUser";
 import isCustomerLoggedIn from "../isCustomerLoggedIn/isCustomerLoggedIn";
-
-function ViewAllInstallments() {
-  const policy = useLocation().state;
+import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
+function ViewInstallmentsComp() {
+  const policy = useLocation().state[0];
+  const userName = useLocation().state[1];
   const username = useParams().username;
   const navigation = new useNavigate();
   const [allInstallments, updateAllInstallments] = useState();
-  const [isLoggedIn, updateIsLoggedIn] = useState();
-  useEffect(() => {
-    isLoggedIn();
-    async function isLoggedIn() {
-      updateIsLoggedIn(await isCustomerLoggedIn(username));
-      console.log(isLoggedIn);
-    }
-  }, []);
+
   useEffect(() => {
     getInstallments();
   }, []);
-
-  if (!isLoggedIn) {
-    return <IsValidUser />;
-  }
 
   console.log(policy);
 
@@ -37,7 +27,7 @@ function ViewAllInstallments() {
     const policyId = policy._id;
     await axios
       .post(
-        `http://localhost:8082/api/v1/getAllInstallmentPolicy/${username}`,
+        `http://localhost:8082/api/v1/getAllInstallmentPolicy/${userName}`,
         { policyId }
       )
       .then((resp) => {
@@ -55,13 +45,6 @@ function ViewAllInstallments() {
       state: [policy.accountno, policy.insuranceScheme, i._id],
     });
   };
-  const handleClaim = (e) => {
-    e.preventDefault();
-    const policyId = policy._id;
-    navigation(`/CustomerDashboard/BankDetails/${username}`, {
-      state: policyId,
-    });
-  };
   let rowOfPaymentDetails;
   if (allInstallments != null) {
     rowOfPaymentDetails = Object.values(allInstallments).map((i) => {
@@ -74,16 +57,11 @@ function ViewAllInstallments() {
           <td>{i.paymentStatus}</td>
           <td>
             {i.paymentStatus == "Paid" ? (
-              <button style={{ color: "Grey" }} disabled>
+              <p style={{ color: "green" }} disabled>
                 paid
-              </button>
+              </p>
             ) : (
-              <button
-                style={{ color: "blue" }}
-                onClick={(event) => hanldePayInstallment(event, i)}
-              >
-                pay
-              </button>
+              <p style={{ color: "red" }}>not paid</p>
             )}
           </td>
         </tr>
@@ -92,7 +70,6 @@ function ViewAllInstallments() {
   }
   return (
     <>
-      <NavBar />
       <div id="limiter2">
         <div id="container-login1002">
           <div id="wrap-login1002">
@@ -143,7 +120,7 @@ function ViewAllInstallments() {
                   <td>{policy.insuranceType}</td>
                   <td>{policy.insuranceScheme}</td>
                   <td>{policy.dateCreated.split("T")[0]}</td>
-                  <td>{policy.maturityDate.split("T")[0]}</td>
+                  <td>{policy.maturityDate}</td>
                   <td>{policy.premiumType}</td>
                 </tr>
               </tbody>
@@ -199,22 +176,10 @@ function ViewAllInstallments() {
               </thead>
               <tbody>{rowOfPaymentDetails}</tbody>
             </Table>
-            <button
-              style={{
-                color: "white",
-                backgroundColor: "blue",
-                width: "130px",
-                height: "40px",
-                float: "right",
-              }}
-              onClick={handleClaim}
-            >
-              Claim
-            </button>
           </div>
         </div>
       </div>
     </>
   );
 }
-export default ViewAllInstallments;
+export default ViewInstallmentsComp;

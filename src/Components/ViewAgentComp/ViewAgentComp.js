@@ -52,18 +52,7 @@ function ViewAgentComp() {
   useEffect(() => {
     getAgents();
   }, [pageNumber, limit]);
-  const handleGetAccountDetails = (c) => {
-    console.log(c);
-    navigation(`/adminDashboard/GetAccountDetails/${currentUser.username}`, {
-      state: c,
-    });
-  };
 
-  // const handleUpdate = (username) => {
-  //   navigation(`/adminDashboard/UpdateCustomer/${currentUser.username}`, {
-  //     state: username,
-  //   });
-  // };
   async function getAgents() {
     axios
       .post("http://localhost:8082/api/v1/getAllAgent", {
@@ -183,7 +172,7 @@ function ViewAgentComp() {
                 open={open}
                 onClose={handleClose}
               >
-                <DialogTitle>Update Employee</DialogTitle>
+                <DialogTitle>Update Agent</DialogTitle>
                 <DialogContent>
                   <FormControl variant="standard" sx={{ m: 1, minWidth: 270 }}>
                     <InputLabel id="demo-simple-select-standard-label">
@@ -212,6 +201,7 @@ function ViewAgentComp() {
                     id="name"
                     label="Value"
                     fullWidth
+                    required
                     variant="standard"
                     onChange={(e) => {
                       updateValue(e.target.value);

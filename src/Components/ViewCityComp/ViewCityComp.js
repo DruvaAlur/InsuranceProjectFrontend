@@ -115,7 +115,7 @@ function ViewCityComp() {
   };
   let rowOfCity;
   if (allCities != null) {
-    const KEYS_TO_FILTERS = ["credential.userName"];
+    const KEYS_TO_FILTERS = ["cityName"];
     const filteredEmails = Object.values(allCities).filter(
       createFilter(searchTerm, KEYS_TO_FILTERS)
     );
@@ -150,7 +150,7 @@ function ViewCityComp() {
               open={open}
               onClose={handleClose}
             >
-              <DialogTitle>Update Employee</DialogTitle>
+              <DialogTitle>Update City</DialogTitle>
               <DialogContent>
                 {/* <TextField
                         autoFocus
