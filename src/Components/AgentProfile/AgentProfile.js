@@ -21,9 +21,7 @@ function AgentProfile() {
   useEffect(() => {
     getProfile();
   }, []);
-  if (!isLoggedIn) {
-    return <IsValidUser />;
-  }
+
   async function getProfile() {
     await axios
       .get(`http://localhost:8082/api/v1/profileAgent/${currentUser.username}`)
@@ -34,6 +32,9 @@ function AgentProfile() {
       .catch((error) => {
         console.log(error.response.data);
       });
+  }
+  if (!isLoggedIn) {
+    return <IsValidUser />;
   }
   return (
     <>

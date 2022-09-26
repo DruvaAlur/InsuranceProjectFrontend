@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import NavBar from "../EmployeeNavBar/EmployeeNavBar";
+import NavBar from "../NavBarAdmin/NavBarAdmin";
 import axios from "axios";
 import swal from "sweetalert";
 import IsValidUser from "../isValidUser/isValidUser";
 import isEmployeeLoggedIn from "../isEmployeeLoggedIn/isEmployeeLoggedIn";
 
 import isAdminLoggedIn from "../isAdminLoggedIn/isAdminLoggedIn";
-function ChangePassword() {
+function AdminChangePassword() {
   const currentUser = useParams();
   const [oldPassword, updateOldPassword] = useState();
   const [newPassword, updateNewPassword] = useState();
@@ -159,4 +159,4 @@ function ChangePassword() {
     </>
   );
 }
-export default ChangePassword;
+export default AdminChangePassword;

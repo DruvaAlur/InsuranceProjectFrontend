@@ -59,7 +59,7 @@ function Login() {
   }
   async function getAgents() {
     await axios
-      .post("http://localhost:8082/api/v1/getAllAgent1")
+      .get("http://localhost:8082/api/v1/getAllAgent1")
       .then((resp) => {
         updateAllAgents(resp.data);
       })

@@ -63,32 +63,6 @@ function AgentDashboard() {
                       >
                         View Customer
                       </Button>
-                      <Button
-                        variant="primary"
-                        onClick={() => {
-                          navigate(
-                            `/AgentDashboard/InsuranceAccount/${username}`
-                          );
-                        }}
-                      >
-                        Insurance Account
-                      </Button>
-                      <Button
-                        variant="primary"
-                        onClick={() => {
-                          navigate(`/AgentDashboard/PolicyPayment/${username}`);
-                        }}
-                      >
-                        View Policy Payment
-                      </Button>
-                      <Button
-                        variant="primary"
-                        onClick={() => {
-                          navigate(`/AgentDashboard/PolicyClaim/${username}`);
-                        }}
-                      >
-                        View Policy Claim
-                      </Button>
                     </div>
                   </Card.Body>
                 </Card>

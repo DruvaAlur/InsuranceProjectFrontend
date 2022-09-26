@@ -1,4 +1,4 @@
-import NavBar from "../NavBarAdmin/NavBarAdmin";
+import NavBar from "../EmployeeNavBar/EmployeeNavBar";
 import { useEffect, useState } from "react";
 import swal from "sweetalert";
 import Table from "react-bootstrap/Table";
@@ -20,7 +20,7 @@ function Profile() {
     async function isLoggedIn() {
       updateIsLoggedIn(
         (await isAdminLoggedIn(currentUser.username)) ||
-          (await isEmployeeLoggedIn(currentUser.userName))
+          (await isEmployeeLoggedIn(currentUser.username))
       );
       console.log(isLoggedIn);
     }

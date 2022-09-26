@@ -175,9 +175,9 @@ function BasicExample() {
               <NavDropdown.Item onClick={handleInsuranceAccount}>
                 Insurance Account
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={handleViewPolicyPayment}>
+              {/* <NavDropdown.Item onClick={handleViewPolicyPayment}>
                 View Policy Payment
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
 
               <NavDropdown.Item onClick={handleViewPolicyClaim}>
                 View Policy Claim

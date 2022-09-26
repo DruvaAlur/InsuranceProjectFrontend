@@ -87,10 +87,12 @@ function ViewFeedbackComp() {
         queryId,
       })
       .then((resp) => {
+        console.log(resp.data);
         getQuery();
       })
       .catch((error) => {
         console.log(error.response.data);
+        getQuery();
         swal(error.response.data, "Error Occured!", "warning");
       });
   };

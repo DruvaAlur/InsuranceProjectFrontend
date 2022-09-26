@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import PlanDetails from "../PlanDetails/PlanDetails";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import swal from "sweetalert";
 function InsuranceSchemeDetails() {
   const navigate = new useNavigate();
   const insuranceScheme = useLocation().state[0];
@@ -82,18 +83,33 @@ function InsuranceSchemeDetails() {
     updateTotalAmount(Number(totalInvestmentAmount) + Number(interest));
   };
   const handleBuy = () => {
-    navigate(`/CustomerDashboard/InsuranceAccountDetails/${username}`, {
-      state: [
-        insuranceScheme,
-        insuranceType,
-        noOfYears,
-        totalInvestmentAmount,
-        years,
-        installmentAmount,
-        interestAmount,
-        totalAmount,
-      ],
-    });
+    if (
+      parseInt(insuranceScheme.minInvestment) <=
+        parseInt(totalInvestmentAmount) &&
+      parseInt(totalInvestmentAmount) <=
+        parseInt(insuranceScheme.maxInvestment) &&
+      parseInt(insuranceScheme.minTermPlan) <= parseInt(noOfYears) &&
+      parseInt(noOfYears) <= parseInt(insuranceScheme.maxTermPlan)
+    ) {
+      navigate(`/CustomerDashboard/InsuranceAccountDetails/${username}`, {
+        state: [
+          insuranceScheme,
+          insuranceType,
+          noOfYears,
+          totalInvestmentAmount,
+          years,
+          installmentAmount,
+          interestAmount,
+          totalAmount,
+        ],
+      });
+    } else {
+      swal(
+        "wrong entry",
+        "Please enter as above mentioned conditions",
+        "warning"
+      );
+    }
   };
   return (
     <>

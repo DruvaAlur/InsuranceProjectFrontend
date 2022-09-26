@@ -74,6 +74,7 @@ import BankDetails from "./Components/BankDetails/BankDetails";
 import EmpViewPolicyClaim from "./Components/EmpViewPolicyClaim/EmpViewPolicyClaim";
 import EmpInsuranceAcc from "./Components/EmpInsuranceAcc/EmpInsuranceAcc";
 import EmpViewInstallments from "./Components/EmpViewInstallments/EmpViewInstallments";
+import AdminChangePassword from "./Components/AdminChangePassword/AdminChangePassword";
 function App() {
   return (
     <ScrollToTop>
@@ -224,12 +225,12 @@ function App() {
         <Route
           exact
           path="/AdminDashboard/Profile/:username"
-          element={<Profile />}
+          element={<AdminProfile />}
         />
         <Route
           exact
           path="/AdminDashboard/ChangePassword/:username"
-          element={<ChangePassword />}
+          element={<AdminChangePassword />}
         />
 
         {/* Employee routes */}
